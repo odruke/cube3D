@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/11 14:03:52 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/11 15:53:13 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	main(int ac, char **av)
 	init_data(data, av[1]);
 	printf("\033[1;32m✅ Mlx connection establised \033[0m\n");
 	printf("\033[1;32m✅ window created \033[0m\n");
+	draw();
 	mlx_hook(data->window, 2, (1L << 0), handle_keypress, data);
 	mlx_hook(data->window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx);
