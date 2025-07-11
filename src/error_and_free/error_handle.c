@@ -12,37 +12,29 @@
 
 #include "cub3d.h"
 
-const t_errinfo	*get_errinfo(t_error error)
+const char	*err_str_format(t_error error)
 {
-	static t_errinfo	errtab[ERR_UNKNOWN + 1];
+	static char	*errstr_tab[ERR_UNKNOWN + 1];
 
-	errtab[ERR_BAD_ARGS] = (t_errinfo){ERR_BAD_ARGS, EXIT_FAILURE,
-		"Error: Bad input. Usage:\n./cub3D maps/[mapname]\n"};
-	errtab[ERR_MALLOC] = (t_errinfo){ERR_MALLOC, EXIT_FAILURE,
-		"Malloc failed at: %s:%i\n"};
-	errtab[ERR_MLX] = (t_errinfo){ERR_MLX, EXIT_FAILURE,
-		"MLX: %s failed at: %s:%i\n"};
-	errtab[ERR_UNKNOWN] = (t_errinfo){ERR_UNKNOWN, 1, "%s\n"};
-	return (&errtab[error]);
+	errstr_tab[ERR_BAD_ARGS] = "Error: Bad input. Usage:\n./cub3D maps/[mapname]\n";
+	errstr_tab[ERR_MALLOC] = "Malloc failed at: %s:%i\n";
+	errstr_tab[ERR_MLX] = "MLX: %s failed at: %s:%i\n";
+	errstr_tab[ERR_UNKNOWN] = "%s\n";
+	return (errstr_tab[error]);
 }
 
-int	error_handle(t_errarg err_args)
+
+int	error_handle(t_error error, char *msg, char *file, int line)
 {
-	const t_errinfo	*err_info;
+	const char	*err_str;
 	t_data			*data;
 
 	data = recover_data_address(NULL);
-	err_info = get_errinfo(err_args.error);
-	if (!err_args.msg)
-		printf(err_info->str_format, err_args.file, err_args.line);
+	err_str = err_str_format(error);
+	if (!msg)
+		printf(err_str, file, line);
 	else
-		printf(err_info->str_format, err_args.msg, err_args.file,
-			err_args.line);
-	if (err_args.terminate)
-	{
-		free_data(data);
-		exit(err_info->exit_code);
-	}
-	else
-		return (err_info->exit_code);
+		printf(err_str, msg, file, line);
+	free_data(data);
+	exit(EXIT_FAILURE);
 }

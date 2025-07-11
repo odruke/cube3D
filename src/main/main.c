@@ -33,12 +33,11 @@ void	init_data(t_data *data, char *map_to_load)
 	(void)map_to_load;
 	data->mlx = mlx_init();
 	if (!data->mlx)
-		error_handle((t_errarg){ERR_MLX, "init", __FILE__, __LINE__, KILL});
+		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
 	data->window = mlx_new_window(data->mlx,
 			800, 600, "cub3D");
 	if (!data->window)
-		error_handle((t_errarg){ERR_MLX,
-			"new window", __FILE__, __LINE__, KILL});
+		error_handle(ERR_MLX, "new window", __FILE__, __LINE__);
 	recover_data_address(data);
 }
 
@@ -48,7 +47,7 @@ int	main(int ac, char **av)
 
 	errno = 0;
 	if (ac != 2)
-		error_handle((t_errarg){ERR_BAD_ARGS, NULL, __FILE__, __LINE__, KILL});
+		error_handle(ERR_BAD_ARGS, NULL, __FILE__, __LINE__);
 	data = safe_calloc(1, sizeof(t_data), __FILE__, __LINE__);
 	init_data(data, av[1]);
 	printf("\033[1;32m✅ Mlx connection establised \033[0m\n");

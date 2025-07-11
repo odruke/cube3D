@@ -19,13 +19,9 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
-# define KILL 1
-# define CONTINUE 0
-# define TRUE 1
-# define FALSE 0
-/*# define __FILE__, __LINE__ __FILE__, __LINE__*/
 # define ESC_KEY 65307
 # define UP_KEY_W 119
 # define DOWN_KEY_S 115
@@ -44,22 +40,6 @@ typedef enum e_error
 	ERR_UNKNOWN
 }	t_error;
 
-typedef struct s_errinfo
-{
-	t_error		error;
-	int			exit_code;
-	const char	*str_format;
-}	t_errinfo;
-
-typedef struct s_errarg
-{
-	t_error	error;
-	char	*msg;
-	char	*file;
-	int		line;
-	int		terminate;
-}	t_errarg;
-
 typedef struct s_data
 {
 	void		*mlx;
@@ -73,7 +53,7 @@ t_data	*recover_data_address(t_data *data);
 
 /* error handeling and exiting functions*/
 
-int		error_handle(t_errarg err_args);
+int		error_handle(t_error error, char *msg, char *file, int line);
 void	free_table(char **table);
 void	free_data(t_data *data);
 int		free_and_exit(t_data *data);

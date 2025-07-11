@@ -18,7 +18,7 @@ void	*safe_malloc(size_t bytes, char *file, int line)
 
 	res = malloc(bytes);
 	if (!res)
-		error_handle((t_errarg){ERR_MALLOC, NULL, file, line, KILL});
+		error_handle(ERR_MALLOC, NULL, file, line);
 	return (res);
 }
 
@@ -28,6 +28,6 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line)
 
 	res = ft_calloc(bytes, size);
 	if (!res)
-		error_handle((t_errarg){ERR_MALLOC, NULL, file, line, KILL});
+		error_handle(ERR_MALLOC, NULL, file, line);
 	return (res);
 }
