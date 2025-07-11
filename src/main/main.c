@@ -28,9 +28,9 @@ t_data	*recover_data_address(t_data *data)
 	return (stock_data);
 }
 
-void	init_data(t_data *data, char *map_to_load)
+void	init_data(t_data *data, char *filemap)
 {
-	(void)map_to_load;
+	init_map(data->map, filemap);//implementation not finished
 	data->mlx = mlx_init();
 	if (!data->mlx)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);

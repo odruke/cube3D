@@ -37,6 +37,8 @@ typedef enum e_error
 	ERR_BAD_ARGS,
 	ERR_MALLOC,
 	ERR_MLX,
+	ERR_LOAD_MAP,
+	ERR_MAP_EXT,
 	ERR_UNKNOWN
 }	t_error;
 
@@ -44,13 +46,24 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*window;
+	t_map		map;
 }	t_data;
+
+typedef struct s_map
+{
+	int		width;
+	int		length;
+	char	**grid;
+}	t_map;
 
 /* V data management funcitons V*/
 
 void	init_data(t_data *data, char *map_to_load);
 t_data	*recover_data_address(t_data *data);
 
+/* map handeling functions */
+
+void	init_map(t_map map, char *filemap);
 /* error handeling and exiting functions*/
 
 int		error_handle(t_error error, char *msg, char *file, int line);
