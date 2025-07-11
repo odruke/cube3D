@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/06/24 11:35:52 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:07:48 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_errinfo
 typedef struct s_errarg
 {
 	t_error	error;
-	char	*cmd;
+	char	*msg;
 	char	*file;
 	int		line;
 	int		terminate;

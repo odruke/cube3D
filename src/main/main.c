@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/06/24 11:42:03 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:03:52 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ t_data	*recover_data_address(t_data *data)
 
 	if (data)
 		stock_data = data;
-	else
-		data = stock_data;
 	return (stock_data);
 }
 

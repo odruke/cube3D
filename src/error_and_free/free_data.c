@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:49 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/06/24 11:39:02 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:03:34 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	free_list(t_list **list, void (*del)(void *))
 
 	if (!list || !*list)
 		return ;
+	if (!del)
+		return ;
 	while (*list)
 	{
 		tmp = (*list)->next;
-		if ((*list)->content && del)
+		if ((*list)->content)
 			del((*list)->content);
 		free(*list);
 		*list = tmp;

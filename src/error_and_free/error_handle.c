@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:25 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/06/24 11:38:27 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:07:48 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int	error_handle(t_errarg err_args)
 
 	data = recover_data_address(NULL);
 	err_info = get_errinfo(err_args.error);
-	if (!err_args.cmd)
+	if (!err_args.msg)
 		printf(err_info->str_format, err_args.file, err_args.line);
 	else
-		printf(err_info->str_format, err_args.cmd, err_args.file,
+		printf(err_info->str_format, err_args.msg, err_args.file,
 			err_args.line);
 	if (err_args.terminate)
 	{
