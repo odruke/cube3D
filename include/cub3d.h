@@ -22,6 +22,10 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# define DEBUG 1
+# define BUFFER_SIZE 50
+# define RESET 1
+# define CONTINUE 0
 # define ESC_KEY 65307
 # define UP_KEY_W 119
 # define DOWN_KEY_S 115
@@ -39,8 +43,34 @@ typedef enum e_error
 	ERR_MLX,
 	ERR_LOAD_MAP,
 	ERR_MAP_EXT,
+	ERR_MAP_ELEM,
 	ERR_UNKNOWN
 }	t_error;
+
+typedef	struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+typedef struct s_elements
+{
+	char		*path_texture_no;
+	char		*path_texture_so;
+	char		*path_texture_we;
+	char		*path_texture_ea;
+	t_color		f_color;
+	t_color		c_color;
+}	t_elements;
+
+typedef struct s_map
+{
+	int			width;
+	int			length;
+	char		**grid;
+	t_elements	elements;
+}	t_map;
 
 typedef struct s_data
 {
@@ -48,13 +78,6 @@ typedef struct s_data
 	void		*window;
 	t_map		map;
 }	t_data;
-
-typedef struct s_map
-{
-	int		width;
-	int		length;
-	char	**grid;
-}	t_map;
 
 /* V data management funcitons V*/
 
