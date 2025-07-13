@@ -30,7 +30,12 @@ void	free_list(t_list **list, void (*del)(void *))
 	}
 	*list = NULL;
 }
-
+void	free_map(t_map *map)
+{
+	if (map->grid)
+		free_table(map->grid);
+	free(map);
+}
 void	free_data(t_data *data)
 {
 	if (data)
@@ -42,6 +47,8 @@ void	free_data(t_data *data)
 			mlx_destroy_display(data->mlx);
 			free(data->mlx);
 		}
+		if (data->map)
+			free_map(data->map);
 		free(data);
 	}
 	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");

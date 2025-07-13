@@ -69,14 +69,14 @@ typedef struct s_map
 	int			width;
 	int			height;
 	char		**grid;
-	t_elements	elements;
+	t_elements	*elements;
 }	t_map;
 
 typedef struct s_data
 {
 	void		*mlx;
 	void		*window;
-	t_map		map;
+	t_map		*map;
 }	t_data;
 
 typedef struct s_fd
@@ -92,7 +92,7 @@ t_data	*recover_data_address(t_data *data);
 
 /* map handeling functions */
 
-void	init_map(t_map map, char *filemap);
+void	init_map(t_map *map, char *filemap);
 /* error handeling and exiting functions*/
 
 int		error_handle(t_error error, char *msg, char *file, int line);

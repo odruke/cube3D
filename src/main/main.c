@@ -30,6 +30,7 @@ t_data	*recover_data_address(t_data *data)
 
 void	init_data(t_data *data, char *filemap)
 {
+	data->map = (t_map *)safe_calloc(sizeof(t_map), 1, __FILE__, __LINE__);
 	init_map(data->map, filemap);//implementation not finished
 	data->mlx = mlx_init();
 	if (!data->mlx)

@@ -30,7 +30,7 @@ int str_append_mem(char **s1, char *s2, size_t size2)//refactor this | use ft_st
 	return 1;
 }
 
-char	*get_next_line(t_fd fd, int reset)//refactor this to comply with norminette. move to libft
+char	*get_next_line(t_fd fd, int reset)//refactor this to comply with norm. move to libft
 {
 	static char	buffer[BUFFER_SIZE + 1] = {0};
 	static int	buff_pos;
@@ -48,16 +48,16 @@ char	*get_next_line(t_fd fd, int reset)//refactor this to comply with norminette
 		fd.fd = open(fd.filename, O_RDONLY);
 		if (fd.fd < 0)
 		{
-			printf("why would you erase the file in the middle of the load, OMG you are such a tryhard");
+			printf("why would you erase the file in the middle of the load, OMG you are such a tryhard");//how will we handle this?
 			exit(1);
 		}
-		return (NULL);
+		return (NULL); // return reset function that returns null. that keeps this statement in only 2 line
 	}
 	line = NULL;
 	byte_read = 0;
 	while (1)
 	{
-		if(buff_pos < buff_len)
+		if(buff_pos < buff_len)//we need to somehow make this onto an aux function that returs line or NULL
 		{
 			c = buffer[buff_pos++];
 			if (!str_append_mem(&line, &c, 1))
@@ -141,12 +141,13 @@ static char	**get_grid(t_fd fd)
 {
 	char	*line;
 	char	*tmp;
+	char	*temp;
 	char	**map;
 
 	line = ft_strdup("");
 	if (!valid_grid(fd))
 		error_handle(ERR_LOAD_MAP, "grid", __FILE__, __LINE__);
-	tmp = get_next_line(fd, CONTINUE);
+	tmp = get_next_line(fd, CONTINUE);//from 149 to 154 transform onto an aux funcion to comply with norm
 	while (!line_is_grid(tmp))
 	{
 		free(tmp);
@@ -154,8 +155,10 @@ static char	**get_grid(t_fd fd)
 	}
 	while (tmp)
 	{
-		line = ft_strjoin(line, tmp);
+		temp = line;
+		line = ft_strjoin(line, tmp);//can we create a more eficient function that uses the same memory so we dont have to free
 		free(tmp);
+		free(temp);
 		tmp = get_next_line(fd, CONTINUE);
 		if (!tmp || tmp[0] == '\n')
 			break ;
@@ -209,29 +212,29 @@ static bool	valid_ext(char *filemap)
 	return (false);
 }
 
-static bool	get_texture_paths(t_elements elements, t_fd fd)//TODO
+static bool	get_texture_paths(t_elements *elements, t_fd fd)//TODO
 {
 	(void)elements;
 	(void)fd.fd;
 	return (true);
 }
 
-static bool	get_colours(t_elements elements, t_fd fd)//TODO
+static bool	get_colours(t_elements *elements, t_fd fd)//TODO
 {
 	(void)elements;
 	(void)fd;
 	return (true);
 }
 
-static void	get_elements(t_elements elements, t_fd fd)//bad approach, could must refactor. getline will update the buffer position,
-{													//and the elements could be mixed on the file so it could miss some elements
-	if (!get_texture_paths(elements, fd))			//posible solutions: unify both texture and colors search in one function | reset getline somehow. check the until <line_is_grid> or EOF
+static void	get_elements(t_elements *elements, t_fd fd)//add all allocated files to free_map when implemented
+{
+	if (!get_texture_paths(elements, fd))
 		error_handle(ERR_MAP_ELEM, "texture paths", __FILE__, __LINE__);
 	if (!get_colours(elements, fd))
 		error_handle(ERR_MAP_ELEM, "colour codes", __FILE__, __LINE__);
 }
 
-void	init_map(t_map map, char *filemap)
+void	init_map(t_map *map, char *filemap)
 {
 	t_fd fd;
 
@@ -239,15 +242,15 @@ void	init_map(t_map map, char *filemap)
 		error_handle(ERR_MAP_EXT, filemap, __FILE__, __LINE__);
 	fd.fd = open(filemap, O_RDONLY);
 	if (fd.fd < 0)
-		error_handle(ERR_LOAD_MAP, filemap, __FILE__, __LINE__);//will a file named ".cub" pass from here?
+		error_handle(ERR_LOAD_MAP, filemap, __FILE__, __LINE__);
 	fd.filename = filemap;
-	get_elements(map.elements, fd);
-	map.grid = get_grid(fd);
-	map.height = get_map_height(map.grid);
-	map.width = get_map_width(map.grid);
+	get_elements(map->elements, fd);
+	map->grid = get_grid(fd);
+	map->height = get_map_height(map->grid);
+	map->width = get_map_width(map->grid);
 	if (DEBUG)
 	{
-		debug_print_grid(map.grid);
-		printf("\n\nmap width is %i, height is %i\n", map.width, map.height);
+		debug_print_grid(map->grid);
+		printf("\n\nmap width is %i, height is %i\n", map->width, map->height);
 	}
 }
