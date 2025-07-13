@@ -14,10 +14,10 @@
 
 bool map_check(char *map)
 {
-    char    *buffer;
+    char    **buffer;
 
     buffer = ft_split(map, '.');
     if (!buffer)
         error_handle(ERR_BAD_ARGS, map, __FILE__, __LINE__);
-
+    return (true);
 }

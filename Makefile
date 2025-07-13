@@ -12,6 +12,7 @@ MFLAGS = -Lmlx -lmlx -lXext -lX11 -lm -lbsd
 MAIN_DIR = main/
 UTILS_DIR = utils/
 ERR_DIR = error_and_free/
+PARS_DIR = parsing/
 SRC_DIR = ./src/
 OBJ_DIR = $(SRC_DIR)target/
 INC_DIR = ./include/
@@ -25,12 +26,14 @@ MLX = $(MLX_DIR)libmlx.a
 # files
 MAIN_FILES = main.c
 UTILS_FILES = safe_functions.c
+PARSING_FILES = load_map.c parsing.c
 ERR_FILES = error_handle.c free_data.c free_data_utils.c
 FILES = $(addprefix $(ERR_DIR), $(ERR_FILES)) \
 		$(addprefix $(MAIN_DIR), $(MAIN_FILES)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_FILES)) \
+		$(addprefix $(PARS_DIR), $(PARSING_FILES)) \
 
-INC_FILES = minishell.h
+INC_FILES = cub3d.h
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 INC = $(addprefix $(INC_DIR)%.h, $(INC_FILES))

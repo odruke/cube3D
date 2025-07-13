@@ -67,7 +67,7 @@ typedef struct s_elements
 typedef struct s_map
 {
 	int			width;
-	int			length;
+	int			height;
 	char		**grid;
 	t_elements	elements;
 }	t_map;
@@ -78,6 +78,12 @@ typedef struct s_data
 	void		*window;
 	t_map		map;
 }	t_data;
+
+typedef struct s_fd
+{
+	int		fd;
+	char	*filename;
+}	t_fd;
 
 /* V data management funcitons V*/
 
