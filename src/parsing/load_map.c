@@ -1,22 +1,9 @@
 #include "cub3d.h"
 
-// static void	free_single_line(char *temp, t_fd fd)//is this necesary?
-// {
-// 	char	*free_me;
-
-// 	free_me = get_next_line(fd, CONTINUE);
-// 	free(temp);
-// 	while (free_me)
-// 	{
-// 		free(free_me);
-// 		free_me = get_next_line(fd, CONTINUE);
-// 	}
-// }
-
 int str_append_mem(char **s1, char *s2, size_t size2)//refactor this | use ft_strjoin. move to libft
 {
 	size_t size1 = (*s1) ? ft_strlen(*s1) : 0;//ternary not norminette compliant
-	char *tmp = malloc(size1 + size2 + 1);
+	char *tmp = malloc(size1 + size2 + 1);//make it with safe function
 	if (!tmp)
 		return 0;
 	if (*s1)
@@ -79,72 +66,7 @@ char	*get_next_line(t_fd fd, int reset)//refactor this to comply with norm. move
 	return line;
 }
 
-static bool	is_grid_char(char c)
-{
-	if (c == '1' || c == '0' || c == ' ' || c == 'N'
-		|| c == 'S' || c == 'E' || c == 'W' || c == '\n')
-		return (true);
-	return (false);
-}
 
-static bool	line_is_grid(char *line)
-{
-	if (!line)
-		return (false);
-	while (*line)//*line == '\n'  can this happen?
-	{
-		if (!is_grid_char(*line))
-			return (false);
-		line++;
-	}
-	return (true);
-}
-
-static void	debug_print_grid(char **grid)
-{
-	int	i;
-
-	i = -1;
-	while (grid[++i])
-		printf("%s\n", grid[i]);
-}
-
-static int	valid_grid(t_fd fd)
-{
-	char	*line;
-	int		size;
-
-	size = 0;
-	line = get_next_line(fd, CONTINUE);
-	while (!line_is_grid(line))
-	{
-		free (line);
-		line = get_next_line(fd, CONTINUE);
-	}
-	if (line)
-		size = 1;
-	while (line)
-	{
-		free (line);
-		line = get_next_line(fd, CONTINUE);
-		if (line && !line_is_grid(line))
-		{
-			size = 0;
-			break;
-		}
-		size++;
-	}
-	get_next_line(fd, RESET);
-	return size;
-}
-
-void	zeroing_endstring(char **str)
-{
-	size_t len;
-
-	len = ft_strlen(*str);
-	str[0][len - 1] = '\0';
-}
 
 static char	**get_grid(t_fd fd)
 {
@@ -157,12 +79,7 @@ static char	**get_grid(t_fd fd)
 	if (!size)
 		error_handle(ERR_LOAD_MAP, "grid", __FILE__, __LINE__);
 	map = (char **)safe_calloc(sizeof(char *), size + 1, __FILE__, __LINE__);
-	map[0] = get_next_line(fd, CONTINUE);
-	while (!line_is_grid(map[0]))
-	{
-		free(map[0]);
-		map[0] = get_next_line(fd, CONTINUE);
-	}
+	map[0] = skip_until_grid(fd);
 	while (map[i])
 	{
 		zeroing_endstring(&map[i]);
@@ -195,32 +112,6 @@ static int	get_map_width(char **grid)
 	return (witdth);
 }
 
-static bool	valid_ext(char *filemap)
-{
-	int		len;
-
-	len = ft_strlen(filemap);
-	if (len <= 4)
-		return (false);
-	if (!ft_strcmp(".cub", filemap + (len - 4)))
-		return (true);
-	return (false);
-}
-
-static bool	get_texture_paths(t_elements *elements, t_fd fd)//TODO
-{
-	(void)elements;
-	(void)fd.fd;
-	return (true);
-}
-
-static bool	get_colours(t_elements *elements, t_fd fd)//TODO
-{
-	(void)elements;
-	(void)fd;
-	return (true);
-}
-
 static void	get_elements(t_elements *elements, t_fd fd)//add all allocated files to free_map when implemented
 {
 	if (!get_texture_paths(elements, fd))
@@ -247,5 +138,8 @@ void	init_map(t_map *map, char *filemap)
 	{
 		debug_print_grid(map->grid);
 		printf("\n\nmap width is %i, height is %i\n", map->width, map->height);
+		debug_print_texture_path(map->elements);
+		debug_print_colors(map->elements);
 	}
+	close(fd.fd);
 }

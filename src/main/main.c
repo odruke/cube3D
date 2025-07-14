@@ -27,10 +27,31 @@ t_data	*recover_data_address(t_data *data)
 		stock_data = data;
 	return (stock_data);
 }
+void	init_elements(t_elements *elements)
+{
+	elements->c_color = (t_color *)safe_calloc(sizeof(t_color), 1,
+		__FILE__, __LINE__);
+	elements->f_color = (t_color *)safe_calloc(sizeof(t_color), 1,
+		__FILE__, __LINE__);
+	elements->c_color->r = 0;
+	elements->c_color->g = 0;
+	elements->c_color->b = 0;
+	elements->f_color->r = 0;
+	elements->f_color->g = 0;
+	elements->f_color->b = 0;
+	elements->path_texture_ea = NULL;
+	elements->path_texture_no = NULL;
+	elements->path_texture_so = NULL;
+	elements->path_texture_we = NULL;
+}
 
 void	init_data(t_data *data, char *filemap)
 {
+	recover_data_address(data);
 	data->map = (t_map *)safe_calloc(sizeof(t_map), 1, __FILE__, __LINE__);
+	data->map->elements = (t_elements *)safe_calloc(sizeof(t_elements), 1,
+		__FILE__, __LINE__);
+	init_elements(data->map->elements);
 	init_map(data->map, filemap);//implementation not finished
 	data->mlx = mlx_init();
 	if (!data->mlx)
@@ -39,7 +60,6 @@ void	init_data(t_data *data, char *filemap)
 			800, 600, "cub3D");
 	if (!data->window)
 		error_handle(ERR_MLX, "new window", __FILE__, __LINE__);
-	recover_data_address(data);
 }
 
 int	main(int ac, char **av)

@@ -36,6 +36,24 @@ void	free_map(t_map *map)
 		free_table(map->grid);
 	free(map);
 }
+
+void	free_elements(t_elements *elements)
+{
+	if (elements->path_texture_ea)
+		free(elements->path_texture_ea);
+	if (elements->path_texture_no)
+		free(elements->path_texture_no);
+	if (elements->path_texture_so)
+		free(elements->path_texture_so);
+	if (elements->path_texture_we)
+		free(elements->path_texture_we);
+	if (elements->c_color)
+		free(elements->c_color);
+	if (elements->f_color)
+		free(elements->f_color);
+	free(elements);
+}
+
 void	free_data(t_data *data)
 {
 	if (data)
@@ -48,7 +66,12 @@ void	free_data(t_data *data)
 			free(data->mlx);
 		}
 		if (data->map)
+		{
+			if (data->map->elements)
+				free_elements(data->map->elements);
 			free_map(data->map);
+		}
+
 		free(data);
 	}
 	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");

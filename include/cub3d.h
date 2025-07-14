@@ -60,8 +60,8 @@ typedef struct s_elements
 	char		*path_texture_so;
 	char		*path_texture_we;
 	char		*path_texture_ea;
-	t_color		f_color;
-	t_color		c_color;
+	t_color		*f_color;
+	t_color		*c_color;
 }	t_elements;
 
 typedef struct s_map
@@ -85,6 +85,8 @@ typedef struct s_fd
 	char	*filename;
 }	t_fd;
 
+
+char	*get_next_line(t_fd fd, int reset);
 /* V data management funcitons V*/
 
 void	init_data(t_data *data, char *map_to_load);
@@ -93,6 +95,21 @@ t_data	*recover_data_address(t_data *data);
 /* map handeling functions */
 
 void	init_map(t_map *map, char *filemap);
+
+/* parsing helpers and validation functions */
+
+bool	is_grid_char(char c);
+bool	line_is_grid(char *line);
+bool	line_is_only_spaces(char *line);
+int		valid_grid(t_fd fd);
+bool	valid_ext(char *filemap);
+char	*skip_until_grid(t_fd fd);
+bool	get_texture_paths(t_elements *elements, t_fd fd);
+bool	get_colours(t_elements *elements, t_fd fd);
+void	zeroing_endstring(char **str);
+bool	color_is_in_range(char *code, int start, int len);
+
+
 /* error handeling and exiting functions*/
 
 int		error_handle(t_error error, char *msg, char *file, int line);
@@ -110,5 +127,11 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line);
 
 int		handle_keypress(int keycode, t_data *data);
 int		count_table(char **table);//?
+
+/* debug functions */
+
+void	debug_print_grid(char **grid);
+void	debug_print_texture_path(t_elements *elements);
+void	debug_print_colors(t_elements *elements);
 
 #endif
