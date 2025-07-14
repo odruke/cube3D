@@ -109,12 +109,12 @@ static void	debug_print_grid(char **grid)
 		printf("%s\n", grid[i]);
 }
 
-static bool	valid_grid(t_fd fd)
+static int	valid_grid(t_fd fd)
 {
 	char	*line;
-	bool	ret;
+	int		size;
 
-	ret = false;
+	size = 0;
 	line = get_next_line(fd, CONTINUE);
 	while (!line_is_grid(line))
 	{
@@ -122,56 +122,53 @@ static bool	valid_grid(t_fd fd)
 		line = get_next_line(fd, CONTINUE);
 	}
 	if (line)
-		ret = true;
+		size = 1;
 	while (line)
 	{
 		free (line);
 		line = get_next_line(fd, CONTINUE);
 		if (line && !line_is_grid(line))
 		{
-			ret = false;
+			size = 0;
 			break;
 		}
+		size++;
 	}
 	get_next_line(fd, RESET);
-	return ret;
+	return size;
+}
+
+void	zeroing_endstring(char **str)
+{
+	size_t len;
+
+	len = ft_strlen(*str);
+	str[0][len - 1] = '\0';
 }
 
 static char	**get_grid(t_fd fd)
 {
-	char	*line;
-	char	*tmp;
-	char	*temp;
 	char	**map;
+	int		size;
+	int		i;
 
-	line = ft_strdup("");
-	if (!valid_grid(fd))
+	i = 0;
+	size = valid_grid(fd);
+	if (!size)
 		error_handle(ERR_LOAD_MAP, "grid", __FILE__, __LINE__);
-	tmp = get_next_line(fd, CONTINUE);//from 149 to 154 transform onto an aux funcion to comply with norm
-	while (!line_is_grid(tmp))
+	map = (char **)safe_calloc(sizeof(char *), size + 1, __FILE__, __LINE__);
+	map[0] = get_next_line(fd, CONTINUE);
+	while (!line_is_grid(map[0]))
 	{
-		free(tmp);
-		tmp = get_next_line(fd, CONTINUE);
+		free(map[0]);
+		map[0] = get_next_line(fd, CONTINUE);
 	}
-	while (tmp)
+	while (map[i])
 	{
-		temp = line;
-		line = ft_strjoin(line, tmp);//can we create a more eficient function that uses the same memory so we dont have to free
-		free(tmp);
-		free(temp);
-		tmp = get_next_line(fd, CONTINUE);
-		if (!tmp || tmp[0] == '\n')
-			break ;
+		zeroing_endstring(&map[i]);
+		i++;
+		map[i] = get_next_line(fd, CONTINUE);
 	}
-	map = ft_split(line, '\n');
-	if (tmp)
-	{
-		get_next_line(fd, RESET);
-		free(tmp);
-		// free_single_line(tmp, fd.fd);
-	}
-	close(fd.fd);
-	free(line);
 	return (map);
 }
 
@@ -197,8 +194,6 @@ static int	get_map_width(char **grid)
 			witdth = ft_strlen(grid[i]);
 	return (witdth);
 }
-
-
 
 static bool	valid_ext(char *filemap)
 {
