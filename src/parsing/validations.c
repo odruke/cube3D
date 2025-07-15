@@ -32,7 +32,7 @@ bool	line_is_only_spaces(char *line)
 	return (true);
 }
 
-int	valid_grid(t_fd fd)
+int	check_grid(t_fd fd)
 {
 	char	*line;
 	int		size;

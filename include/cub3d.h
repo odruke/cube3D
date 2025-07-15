@@ -44,8 +44,15 @@ typedef enum e_error
 	ERR_LOAD_MAP,
 	ERR_MAP_EXT,
 	ERR_MAP_ELEM,
+	ERR_GRID_BAD_ITEM,
 	ERR_UNKNOWN
 }	t_error;
+
+typedef struct s_coords
+{
+	int	y;
+	int	x;
+}	t_coords;
 
 typedef	struct s_color
 {
@@ -101,13 +108,18 @@ void	init_map(t_map *map, char *filemap);
 bool	is_grid_char(char c);
 bool	line_is_grid(char *line);
 bool	line_is_only_spaces(char *line);
-int		valid_grid(t_fd fd);
+int		check_grid(t_fd fd);
 bool	valid_ext(char *filemap);
 char	*skip_until_grid(t_fd fd);
 bool	get_texture_paths(t_elements *elements, t_fd fd);
 bool	get_colours(t_elements *elements, t_fd fd);
 void	zeroing_endstring(char **str);
 bool	color_is_in_range(char *code, int start, int len);
+bool	valid_grid(char **grid, int y, int x);
+
+/* flood fill and helpers */
+
+char	**copy_grid(char **grid, int max_y);
 
 
 /* error handeling and exiting functions*/

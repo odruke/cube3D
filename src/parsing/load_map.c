@@ -75,7 +75,7 @@ static char	**get_grid(t_fd fd)
 	int		i;
 
 	i = 0;
-	size = valid_grid(fd);
+	size = check_grid(fd);
 	if (!size)
 		error_handle(ERR_LOAD_MAP, "grid", __FILE__, __LINE__);
 	map = (char **)safe_calloc(sizeof(char *), size + 1, __FILE__, __LINE__);
@@ -120,10 +120,14 @@ static void	get_elements(t_elements *elements, t_fd fd)//add all allocated files
 		error_handle(ERR_MAP_ELEM, "colour codes", __FILE__, __LINE__);
 }
 
+
+
 void	init_map(t_map *map, char *filemap)
 {
-	t_fd fd;
+	t_fd	fd;
+	char	**ff_grid;
 
+	ff_grid = NULL;
 	if (!valid_ext(filemap))
 		error_handle(ERR_MAP_EXT, filemap, __FILE__, __LINE__);
 	fd.fd = open(filemap, O_RDONLY);
@@ -134,6 +138,9 @@ void	init_map(t_map *map, char *filemap)
 	map->grid = get_grid(fd);
 	map->height = get_map_height(map->grid);
 	map->width = get_map_width(map->grid);
+	ff_grid = copy_grid(map->grid, map->height);
+	if (!valid_grid(ff_grid, map->height, map->width))//TODO
+		error_handle(ERR_GRID_BAD_ITEM, "wall is open", __FILE__, __LINE__);//rethink error handeling for this function.should this be a boolean? is everitying already checkd?
 	if (DEBUG)
 	{
 		debug_print_grid(map->grid);

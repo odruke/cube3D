@@ -26,7 +26,7 @@ MLX = $(MLX_DIR)libmlx.a
 # files
 MAIN_FILES = main.c
 UTILS_FILES = safe_functions.c
-PARSING_FILES = load_map.c parsing.c validations.c load_cardinal_textures.c parsing_utils.c debug_parsing.c load_colors.c
+PARSING_FILES = load_map.c parsing.c validations.c load_cardinal_textures.c parsing_utils.c debug_parsing.c load_colors.c grid_check.c
 ERR_FILES = error_handle.c free_data.c free_data_utils.c
 FILES = $(addprefix $(ERR_DIR), $(ERR_FILES)) \
 		$(addprefix $(MAIN_DIR), $(MAIN_FILES)) \
