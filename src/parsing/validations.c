@@ -45,7 +45,7 @@ int	check_grid(t_fd fd)
 	{
 		free (line);
 		line = get_next_line(fd, CONTINUE);
-		if (line && (!line_is_grid(line) || line_is_only_spaces(line)))
+		if (line && (!line_is_grid(line) || line[0] == '\n'))
 		{
 			free(line);
 			size = 0;
