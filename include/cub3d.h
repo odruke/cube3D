@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/16 14:51:33 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/16 15:52:17 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# define WIN_WIDTH 1601
+# define WIN_HEIGHT 801
+# define SQUARE_WIDTH 20
+# define SQUARE_HEIGHT 20
 # define DEBUG 1
 # define BUFFER_SIZE 50
 # define RESET 1
@@ -48,17 +52,16 @@ typedef enum e_error
 	ERR_UNKNOWN
 }	t_error;
 
-typedef struct s_camera
-{
-	int	x;
-	int	y;
-}	t_camera;
-
 typedef struct s_coords
 {
 	int	y;
 	int	x;
 }	t_coords;
+
+typedef struct s_camera
+{
+	t_coords	pos;
+}	t_camera;
 
 typedef	struct s_color
 {
@@ -167,8 +170,9 @@ int		count_table(char **table);//?
 
 /*on-screen printing functions*/
 
-void	draw(void);
-void	draw_player_pos(int	x, int y);
+void	generate_world(void);
+void	generate_grid(void);
+void	draw_player(void);
 
 /* debug functions */
 

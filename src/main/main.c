@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/16 14:48:32 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/16 15:44:38 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,17 @@
 
 int	handle_keypress(int keycode, t_data *data)
 {
-	switch (keycode)
-	{
-		case ESC_KEY:
-			free_and_exit(data);
-			break;
-		case UP_KEY_W:
-			data->player.y -= 5;
-			draw();
-			break;
-		case DOWN_KEY_S:
-			data->player.y += 5;
-			draw();
-			break;
-		case LEFT_KEY_A:
-			data->player.x -= 5;
-			draw();
-			break;
-		case RIGHT_KEY_D:
-			data->player.x += 5;
-			draw();
-			break;
-	}
+	if (keycode == ESC_KEY)
+		free_and_exit(data);
+	else if (keycode == UP_KEY_W)
+		data->player.pos.y -= 5;
+	else if (keycode == DOWN_KEY_S)
+		data->player.pos.y += 5;
+	else if (keycode == LEFT_KEY_A)
+		data->player.pos.x -= 5;
+	else if (keycode == RIGHT_KEY_D)
+		data->player.pos.x += 5;
+	generate_world();
 	return (0);
 }
 
@@ -73,10 +62,10 @@ void	init_data(t_data *data, char *filemap)
 		__FILE__, __LINE__);
 	init_elements(data->map->elements);
 	init_map(data->map, filemap);//implementation not finished
-	data->mlx.w = 1601;
-	data->mlx.h = 801;
-	data->player.x = data->mlx.w / 2;
-	data->player.y = data->mlx.h / 2;
+	data->mlx.w = WIN_WIDTH;
+	data->mlx.h = WIN_HEIGHT;
+	data->player.pos.x = 800;
+	data->player.pos.y = 800;
 	data->mlx.mlx_tunnel = mlx_init();
 	if (!data->mlx.mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
@@ -102,7 +91,7 @@ int	main(int ac, char **av)
 	init_data(data, av[1]);
 	printf("\033[1;32m✅ Mlx connection establised \033[0m\n");
 	printf("\033[1;32m✅ window created \033[0m\n");
-	draw();
+	generate_world();
 	mlx_hook(data->mlx.window, 2, (1L << 0), handle_keypress, data);
 	mlx_hook(data->mlx.window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx.mlx_tunnel);
