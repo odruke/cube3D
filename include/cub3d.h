@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/16 14:21:56 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/16 14:51:33 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@
 typedef enum e_error
 {
 	ERR_BAD_ARGS,
-	ERR_BAD_MAP,
-	ERR_MLX,
 	ERR_MALLOC,
 	ERR_MLX,
 	ERR_LOAD_MAP,
