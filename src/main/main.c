@@ -20,19 +20,19 @@ int	handle_keypress(int keycode, t_data *data)
 			free_and_exit(data);
 			break;
 		case UP_KEY_W:
-			data->player.y -= 5;
+			data->player.pos.y -= 5;
 			draw();
 			break;
 		case DOWN_KEY_S:
-			data->player.y += 5;
+			data->player.pos.y += 5;
 			draw();
 			break;
 		case LEFT_KEY_A:
-			data->player.x -= 5;
+			data->player.pos.x -= 5;
 			draw();
 			break;
 		case RIGHT_KEY_D:
-			data->player.x += 5;
+			data->player.pos.x += 5;
 			draw();
 			break;
 	}
@@ -75,8 +75,8 @@ void	init_data(t_data *data, char *filemap)
 	init_map(data->map, filemap);//implementation not finished
 	data->mlx.w = 1601;
 	data->mlx.h = 801;
-	data->player.x = data->mlx.w / 2;
-	data->player.y = data->mlx.h / 2;
+	data->player.pos.x = data->mlx.w / 2;
+	data->player.pos.y = data->mlx.h / 2;
 	data->mlx.mlx_tunnel = mlx_init();
 	if (!data->mlx.mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);

@@ -86,6 +86,6 @@ void    draw(void)
 		}
 		y++;
 	}
-	draw_player_pos(data->player.x, data->player.y);
+	draw_player_pos(data->player.pos.x, data->player.pos.y);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 }

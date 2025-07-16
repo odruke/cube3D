@@ -7,7 +7,7 @@ char	**copy_grid(char **grid, int max_y)
 	char	**ff_grid;
 
 	y = -1;
-	ff_grid = (char **)safe_calloc(sizeof(char *), max_y, __FILE__, __LINE__);
+	ff_grid = (char **)safe_calloc(sizeof(char *), max_y + 1, __FILE__, __LINE__);
 	while (++y < max_y)
 		ff_grid[y] = ft_strdup(grid[y]);
 	return (ff_grid);
@@ -28,6 +28,11 @@ static bool	is_player(char c)
 	return (false);
 }
 
+void	find_player_error(char **grid)
+{
+	free_table(grid);
+	error_handle(ERR_GRID_BAD_ITEM, "multiple players", __FILE__, __LINE__);
+}
 t_coords	find_player(char **grid, int max_y, int max_x)
 {
 	t_coords	coords;
@@ -40,7 +45,7 @@ t_coords	find_player(char **grid, int max_y, int max_x)
 	while (++y < max_y)
 	{
 		x = -1;
-		while (++x < max_x)
+		while (grid[y][++x] && x < max_x)
 			if (is_player(grid[y][x]))
 			{
 				if (!check)
@@ -50,9 +55,8 @@ t_coords	find_player(char **grid, int max_y, int max_x)
 					coords.y = y;
 				}
 				else
-					error_handle(ERR_GRID_BAD_ITEM, "multiple players", __FILE__, __LINE__);
+					find_player_error(grid);
 			}
-
 	}
 	return (coords);
 }
@@ -83,7 +87,10 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 	if (grid[y][x] == '1' || grid[y][x] == 'x')
 		return ;
 	if (!validate_pos(grid, start, max))
+	{
+		free_table(grid);
 		error_handle(ERR_GRID_BAD_ITEM, "wall is open", __FILE__, __LINE__);
+	}
 	grid[start.y][start.x] = 'x';
 	y -= 1;
 	if (y >= 0)

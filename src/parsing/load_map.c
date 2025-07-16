@@ -148,5 +148,6 @@ void	init_map(t_map *map, char *filemap)
 		debug_print_texture_path(map->elements);
 		debug_print_colors(map->elements);
 	}
+	free_table(ff_grid);
 	close(fd.fd);
 }

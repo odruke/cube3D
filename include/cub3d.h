@@ -48,17 +48,16 @@ typedef enum e_error
 	ERR_UNKNOWN
 }	t_error;
 
-typedef struct s_camera
-{
-	int	x;
-	int	y;
-}	t_camera;
-
 typedef struct s_coords
 {
 	int	y;
 	int	x;
 }	t_coords;
+
+typedef struct s_camera
+{
+	t_coords	pos;
+}	t_camera;
 
 typedef	struct s_color
 {
