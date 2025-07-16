@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/11 14:07:48 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/11 15:54:09 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 typedef enum e_error
 {
 	ERR_BAD_ARGS,
+	ERR_BAD_MAP,
+	ERR_MLX,
 	ERR_MALLOC,
 	ERR_MLX,
 	ERR_LOAD_MAP,
@@ -139,6 +141,11 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line);
 
 int		handle_keypress(int keycode, t_data *data);
 int		count_table(char **table);//?
+
+
+/*on-screen printing functions*/
+
+void	draw(void);
 
 /* debug functions */
 
