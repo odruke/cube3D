@@ -105,8 +105,8 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 	if (x < max.x)
 		flood_fill(grid, (t_coords){start.y, start.x + 1}, max);
 }
-
-bool	valid_grid(char **grid, int y, int x)
+/* also returns player position */
+t_coords	valid_grid(char **grid, int y, int x)
 {
 	t_coords player_coords;
 	t_coords max;
@@ -115,7 +115,7 @@ bool	valid_grid(char **grid, int y, int x)
 	max.x = x;
 	player_coords = find_player(grid, y, x);
 	flood_fill(grid, player_coords, max);
-	return true;
+	return player_coords;
 }
 
 

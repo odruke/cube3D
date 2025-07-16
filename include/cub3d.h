@@ -109,7 +109,7 @@ typedef struct s_mlx
 typedef struct s_data
 {
 	t_mlx		mlx;
-	t_camera	player;
+	t_camera	*player;
 	t_map		*map;
 }	t_data;
 
@@ -128,7 +128,7 @@ t_data	*recover_data_address(t_data *data);
 
 /* map handeling functions */
 
-void	init_map(t_map *map, char *filemap);
+void	init_map(t_camera *player, t_map *map, char *filemap);
 
 /* parsing helpers and validation functions */
 
@@ -142,7 +142,7 @@ bool	get_texture_paths(t_elements *elements, t_fd fd);
 bool	get_colours(t_elements *elements, t_fd fd);
 void	zeroing_endstring(char **str);
 bool	color_is_in_range(char *code, int start, int len);
-bool	valid_grid(char **grid, int y, int x);
+t_coords	valid_grid(char **grid, int y, int x);
 
 /* flood fill and helpers */
 
@@ -176,6 +176,7 @@ void	draw_player(void);
 
 /* debug functions */
 
+void	print_debug_data(t_data *data);
 void	debug_print_grid(char **grid);
 void	debug_print_texture_path(t_elements *elements);
 void	debug_print_colors(t_elements *elements);

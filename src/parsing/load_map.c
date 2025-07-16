@@ -112,7 +112,7 @@ static int	get_map_width(char **grid)
 	return (witdth);
 }
 
-static void	get_elements(t_elements *elements, t_fd fd)//add all allocated files to free_map when implemented
+static void	get_elements(t_elements *elements, t_fd fd)
 {
 	if (!get_texture_paths(elements, fd))
 		error_handle(ERR_MAP_ELEM, "texture paths", __FILE__, __LINE__);
@@ -122,7 +122,7 @@ static void	get_elements(t_elements *elements, t_fd fd)//add all allocated files
 
 
 
-void	init_map(t_map *map, char *filemap)
+void	init_map(t_camera *player, t_map *map, char *filemap)
 {
 	t_fd	fd;
 	char	**ff_grid;
@@ -139,15 +139,7 @@ void	init_map(t_map *map, char *filemap)
 	map->height = get_map_height(map->grid);
 	map->width = get_map_width(map->grid);
 	ff_grid = copy_grid(map->grid, map->height);
-	if (!valid_grid(ff_grid, map->height, map->width))//TODO
-		error_handle(ERR_GRID_BAD_ITEM, "wall is open", __FILE__, __LINE__);//rethink error handeling for this function.should this be a boolean? is everitying already checkd?
-	if (DEBUG)
-	{
-		debug_print_grid(map->grid);
-		printf("\n\nmap width is %i, height is %i\n", map->width, map->height);
-		debug_print_texture_path(map->elements);
-		debug_print_colors(map->elements);
-	}
+	player->pos = valid_grid(ff_grid, map->height, map->width);
 	free_table(ff_grid);
 	close(fd.fd);
 }

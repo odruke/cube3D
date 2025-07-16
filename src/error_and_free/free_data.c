@@ -68,14 +68,15 @@ void	free_data(t_data *data)
 		{
 			mlx_destroy_display(data->mlx.mlx_tunnel);
 			free(data->mlx.mlx_tunnel);
-		}			
+		}
 		if (data->map)
 		{
 			if (data->map->elements)
 				free_elements(data->map->elements);
 			free_map(data->map);
 		}
-
+		if (data->player)
+			free(data->player);
 		free(data);
 	}
 	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");
