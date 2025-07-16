@@ -19,6 +19,10 @@ const char	*err_str_format(t_error error)
 	errstr_tab[ERR_BAD_ARGS] = "Error: Bad input. Usage:\n./cub3D maps/[mapname]\n";
 	errstr_tab[ERR_MALLOC] = "Malloc failed at: %s:%i\n";
 	errstr_tab[ERR_MLX] = "MLX: %s failed at: %s:%i\n";
+	errstr_tab[ERR_LOAD_MAP] = "Can't open file %s. Failed at: %s:%i\n";
+	errstr_tab[ERR_MAP_EXT] = "%s is not a .cub file. Failed at: %s:%i\n";
+	errstr_tab[ERR_MAP_ELEM] = "Can't find element %s on map file. Failed at: %s:%i\n";
+	errstr_tab[ERR_GRID_BAD_ITEM] = "Bad items on grid: %s. Failed at: %s:%i\n";
 	errstr_tab[ERR_UNKNOWN] = "%s\n";
 	return (errstr_tab[error]);
 }
