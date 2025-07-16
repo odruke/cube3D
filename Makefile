@@ -6,82 +6,55 @@ NAME = cub3D
 # compilator and compilation flags
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
-MFLAGS = -Lmlx -lmlx -lXext -lX11 -lm -lbsd
+INCLUDES = -I ./include
+LDFLAGS = -L ./libft -L ./mlx
+LDLIBS = -lmlx -lft -lXext -lX11 -lm -lz
 
-# directories
-MAIN_DIR = main/
-UTILS_DIR = utils/
-ERR_DIR = error_and_free/
-SRC_DIR = ./src/
-OBJ_DIR = $(SRC_DIR)target/
-INC_DIR = ./include/
-LIBFT_DIR = ./libft/
-MLX_DIR = ./mlx/
+# variables
+src_dir = ./src
+obj_dir = ./obj
 
-# custom libraries
-LIBFT = $(LIBFT_DIR)libft.a
-MLX = $(MLX_DIR)libmlx.a
+# source files (recursively find all .c files)
+SRCS = $(shell find $(src_dir) -name "*.c")
+OBJS = $(addprefix $(obj_dir)/,$(notdir $(SRCS:.c=.o)))
 
-# files
-MAIN_FILES = main.c
-UTILS_FILES = safe_functions.c
-ERR_FILES = error_handle.c free_data.c free_data_utils.c
-FILES = $(addprefix $(ERR_DIR), $(ERR_FILES)) \
-		$(addprefix $(MAIN_DIR), $(MAIN_FILES)) \
-		$(addprefix $(UTILS_DIR), $(UTILS_FILES)) \
+###RULES###
+all: $(NAME)
 
-INC_FILES = minishell.h
-SRC = $(addprefix $(SRC_DIR), $(FILES))
-OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
-INC = $(addprefix $(INC_DIR)%.h, $(INC_FILES))
+$(NAME): libft/libft.a mlx/libmlx.a $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@ 
 
+# Create object files from source files
+$(obj_dir)/%.o: $(src_dir)/*/%.c | $(obj_dir)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+$(obj_dir)/%.o: $(src_dir)/%.c | $(obj_dir)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-#####RULES####
+# Create object directory
+$(obj_dir):
+	mkdir -p $(obj_dir)
 
-all: aux_libraries $(NAME)
+# Build libft
+libft/libft.a:
+	$(MAKE) -C libft
 
-$(NAME): $(OBJ)
-	@$(CC) $(OBJ) $(MFLAGS) $(MLX) $(LIBFT) -o $@
-	@$(MAKE) compilation_success
+# Build mlx
+mlx/libmlx.a:
+	$(MAKE) -C mlx
 
-# create .o file
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-	@mkdir -p $(dir $@)
-	@printf "Compiling: %s                                    \r" $<
-	@$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
-
-$(OBJ_DIR):
-	printf "Starting compilation..."
-	@mkdir -p $(OBJ_DIR)
-
-aux_libraries:
-	@make -C $(MLX_DIR) -s all
-	@make -C $(LIBFT_DIR) -s all
-
-# delete just file OBJ_DIR and o file inside
+# Clean object files
 clean:
-	@rm -rf $(OBJ_DIR)
-	@make -C $(LIBFT_DIR) -s clean
-	@make -C $(MLX_DIR) -s clean
+	rm -rf $(obj_dir)
+	$(MAKE) -C libft clean
 
-# executes clean and deletes the executable
+# Clean everything
 fclean: clean
-	@rm -f $(NAME)
-	@make -C $(LIBFT_DIR) -s fclean
+	rm -f $(NAME)
+	$(MAKE) -C libft fclean
+	$(MAKE) -C mlx clean
 
+# Rebuild everything
 re: fclean all
 
-compilation_success:
-	@echo "╔╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╗"
-	@echo "╠╬╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╬╣"
-	@echo "╠╣ ██████╗██╗   ██╗██████╗ ██████╗ ██████╗ ╠╣"
-	@echo "╠╣██╔════╝██║   ██║██╔══██╗╚════██╗██╔══██╗╠╣"
-	@echo "╠╣██║     ██║   ██║██████╔╝ █████╔╝██║  ██║╠╣"
-	@echo "╠╣██║     ██║   ██║██╔══██╗ ╚═══██╗██║  ██║╠╣"
-	@echo "╠╣╚██████╗╚██████╔╝██████╔╝██████╔╝██████╔╝╠╣"
-	@echo "╠╣ ╚═════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╠╣"
-	@echo "╠╬╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╬╣"
-	@echo "╚╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╝"
-
-.PHONY: clean fclean re all aux_libraries compilation_success
+.PHONY: all clean fclean re

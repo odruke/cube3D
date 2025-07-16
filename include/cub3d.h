@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/11 15:54:09 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/15 10:53:15 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ typedef enum e_error
 	ERR_UNKNOWN
 }	t_error;
 
+typedef struct s_camera
+{
+	int	x;
+	int	y;
+}	t_camera;
+
 typedef	struct s_map
 {
 	int		width;
@@ -48,10 +54,28 @@ typedef	struct s_map
 	char	**grid;
 }	t_map;
 
+typedef struct s_mlx_img
+{
+	void	*img;
+	char	*pixel_arr;
+	int		bpp;
+	int		line;
+	int		endian;
+}	t_mlx_img;
+
+typedef struct s_mlx
+{
+	void		*mlx_tunnel;
+	void		*window;
+	t_mlx_img	mlx_img;
+	int			w;
+	int			h;
+}	t_mlx;
+
 typedef struct s_data
 {
-	void		*mlx;
-	void		*window;
+	t_mlx		mlx;
+	t_camera	player;
 }	t_data;
 
 /* V data management funcitons V*/
@@ -81,5 +105,6 @@ int		count_table(char **table);//?
 /*on-screen printing functions*/
 
 void	draw(void);
+void	draw_player_pos(int	x, int y);
 
 #endif
