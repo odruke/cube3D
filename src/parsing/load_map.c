@@ -134,6 +134,7 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 	if (fd.fd < 0)
 		error_handle(ERR_LOAD_MAP, filemap, __FILE__, __LINE__);
 	fd.filename = filemap;
+	//add a function here that checks that any line without elements or grid is \n or space
 	get_elements(map->elements, fd);
 	map->grid = get_grid(fd);
 	map->height = get_map_height(map->grid);
