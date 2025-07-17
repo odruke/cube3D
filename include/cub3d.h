@@ -39,6 +39,12 @@
 # define DOWN_ARROW 65364
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define BLUE 0x0000FF
+# define WHITE 0xFFFFFF
+# define BLACK 0x000000
+# define YELLOW 0xFFFF00
 
 typedef enum e_error
 {
@@ -142,6 +148,7 @@ bool	get_texture_paths(t_elements *elements, t_fd fd);
 bool	get_colours(t_elements *elements, t_fd fd);
 void	zeroing_endstring(char **str);
 bool	color_is_in_range(char *code, int start, int len);
+void	fordward_index(char *line, int *i);
 t_coords	valid_grid(char **grid, int y, int x);
 
 /* flood fill and helpers */

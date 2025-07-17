@@ -17,13 +17,13 @@ int	handle_keypress(int keycode, t_data *data)
 	if (keycode == ESC_KEY)
 		free_and_exit(data);
 	else if (keycode == UP_KEY_W)
-		data->player->pos.y -= 5;
+		data->player->pos.y -= 1;
 	else if (keycode == DOWN_KEY_S)
-		data->player->pos.y += 5;
+		data->player->pos.y += 1;
 	else if (keycode == LEFT_KEY_A)
-		data->player->pos.x -= 5;
+		data->player->pos.x -= 1;
 	else if (keycode == RIGHT_KEY_D)
-		data->player->pos.x += 5;
+		data->player->pos.x += 1;
 	generate_world();
 	return (0);
 }
