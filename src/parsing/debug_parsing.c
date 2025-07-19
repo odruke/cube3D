@@ -4,7 +4,7 @@ void	print_debug_data(t_data *data)
 {
 	debug_print_grid(data->map->grid);
 	printf("\n\nmap width is %i, height is %i\n", data->map->width, data->map->height);
-	printf("player position is y=%i, x=%i\n\n", data->player->pos.y, data->player->pos.y);
+	printf("player position is y=%f, x=%f\n\n", data->player->pos.y, data->player->pos.y);
 	debug_print_texture_path(data->map->elements);
 	debug_print_colors(data->map->elements);
 

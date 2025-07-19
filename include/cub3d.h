@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/19 09:39:19 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/19 12:53:12 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <limits.h>
 # include <sys/types.h>
+# include <math.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <stdbool.h>
@@ -54,14 +55,20 @@ typedef enum e_error
 
 typedef struct s_coords
 {
-	int	y;
-	int	x;
+	float	y;
+	float	x;
 }	t_coords;
 
 typedef struct s_camera
 {
 	t_coords	pos;
-	float		angle;
+	double		angle;
+	bool		key_up;
+    bool		key_down;
+    bool		key_left;
+    bool		key_right;
+    bool		left_rotate;
+    bool		right_rotate;
 }	t_camera;
 
 typedef	struct s_color
@@ -171,9 +178,12 @@ int		count_table(char **table);//?
 
 /*on-screen printing functions*/
 
+double	torad(int x);
+int		toangle(double x);
 void	clear_display(t_data *data);
 void	draw_square(t_data *data, int x, int y, int color);
 void	put_pixel(t_data *data, int x, int y, int color);
+int		loop_hook(t_data *data);
 void	generate_world(t_data *data);
 
 /* debug functions */

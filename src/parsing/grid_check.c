@@ -91,7 +91,7 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 		free_table(grid);
 		error_handle(ERR_GRID_BAD_ITEM, "wall is open", __FILE__, __LINE__);
 	}
-	grid[start.y][start.x] = 'x';
+	grid[(int)start.y][(int)start.x] = 'x';
 	y -= 1;
 	if (y >= 0)
 		flood_fill(grid, (t_coords){start.y - 1, start.x}, max);

@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/19 09:14:05 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/19 12:54:23 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,36 @@ int	handle_keypress(int keycode, t_data *data)
 	if (keycode == ESC_KEY)
 		free_and_exit(data);
 	else if (keycode == UP_KEY_W)
-		data->player->pos.y -= 5;
+		data->player->key_up = true;
 	else if (keycode == DOWN_KEY_S)
-		data->player->pos.y += 5;
+		data->player->key_down = true;
 	else if (keycode == LEFT_KEY_A)
-		data->player->pos.x -= 5;
+		data->player->key_left = true;
 	else if (keycode == RIGHT_KEY_D)
-		data->player->pos.x += 5;
+		data->player->key_right = true;
+	else if (keycode == LEFT_ARROW)
+		data->player->left_rotate = true;
+	else if (keycode == RIGHT_ARROW)
+		data->player->right_rotate = true;
+	else if (keycode == 105)
+		printf("X Y is equal to %f %f and Angle is equal to %i\n",data->player->pos.x, data->player->pos.y, toangle(data->player->angle));
+	return (0);
+}
+
+int	handle_keyrelease(int keycode, t_data *data)
+{
+	if (keycode == UP_KEY_W)
+		data->player->key_up = false;
+	else if (keycode == DOWN_KEY_S)
+		data->player->key_down = false;
+	else if (keycode == LEFT_KEY_A)
+		data->player->key_left = false;
+	else if (keycode == RIGHT_KEY_D)
+		data->player->key_right = false;
+	else if (keycode == LEFT_ARROW)
+		data->player->left_rotate = false;
+	else if (keycode == RIGHT_ARROW)
+		data->player->right_rotate = false;
 	return (0);
 }
 
@@ -65,6 +88,7 @@ void	init_data(t_data *data, char *filemap)
 	data->mlx.w = WIN_WIDTH;
 	data->mlx.h = WIN_HEIGHT;
 	data->mlx.mlx_tunnel = mlx_init();
+	data->player->angle = torad(0);//change it when implementatino is there
 	if (!data->mlx.mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
 	data->mlx.window = mlx_new_window(data->mlx.mlx_tunnel,
@@ -93,6 +117,8 @@ int	main(int ac, char **av)
 		print_debug_data(data);
 	generate_world(data);
 	mlx_hook(data->mlx.window, 2, (1L << 0), handle_keypress, data);
+	mlx_hook(data->mlx.window, 3, (1L<<1), handle_keyrelease, data);
+	mlx_loop_hook(data->mlx.mlx_tunnel, loop_hook, data);
 	mlx_hook(data->mlx.window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx.mlx_tunnel);
 }
