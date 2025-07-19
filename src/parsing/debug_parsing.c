@@ -44,14 +44,14 @@ void	debug_print_colors(t_elements *elements)
 
 void	debug_print_player(char **grid, t_camera *player)
 {
-	printf("player position is y=%i, x=%i\n", player->pos.y, player->pos.x);
-	if (grid[player->pos.y][player->pos.x] == 'N')
-		printf("Player angle is North: %.2f°\n\n", player->angle);
-	else if (grid[player->pos.y][player->pos.x] == 'E')
-		printf("Player angle is East: %.2f°\n\n", player->angle);
-	else if (grid[player->pos.y][player->pos.x] == 'S')
-		printf("Player angle is South: %.2f°\n\n", player->angle);
-	else if (grid[player->pos.y][player->pos.x] == 'W')
-		printf("Player angle is West: %.2f°\n\n", player->angle);
+	printf("player position is y=%f, x=%f\n", player->pos.y, player->pos.x);
+	if (grid[(int)player->pos.y][(int)player->pos.x] == 'N')
+		printf("Player angle is North: %i°\n\n", toangle(player->angle));
+	else if (grid[(int)player->pos.y][(int)player->pos.x] == 'E')
+		printf("Player angle is East: %i°\n\n", toangle(player->angle));
+	else if (grid[(int)player->pos.y][(int)player->pos.x] == 'S')
+		printf("Player angle is South: %i°\n\n", toangle(player->angle));
+	else if (grid[(int)player->pos.y][(int)player->pos.x] == 'W')
+		printf("Player angle is West: %i°\n\n", toangle(player->angle));
 
 }

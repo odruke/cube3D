@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/19 18:01:53 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/19 18:07:47 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	init_data(t_data *data, char *filemap)
 	data->mlx.w = WIN_WIDTH;
 	data->mlx.h = WIN_HEIGHT;
 	data->mlx.mlx_tunnel = mlx_init();
-	data->player->angle = torad(0);//change it when implementatino is there
 	if (!data->mlx.mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
 	data->mlx.window = mlx_new_window(data->mlx.mlx_tunnel,

@@ -137,13 +137,13 @@ void	square_grid(char **grid, int max_x)
 
 float	get_player_angle(char **grid, t_coords coords)
 {
-	if(grid[coords.y][coords.x] == 'N')
+	if(grid[(int)coords.y][(int)coords.x] == 'N')
 		return (90);
-	if(grid[coords.y][coords.x] == 'E')
+	if(grid[(int)coords.y][(int)coords.x] == 'E')
 		return (0);
-	if(grid[coords.y][coords.x] == 'S')
+	if(grid[(int)coords.y][(int)coords.x] == 'S')
 		return (270);
-	if(grid[coords.y][coords.x] == 'W')
+	if(grid[(int)coords.y][(int)coords.x] == 'W')
 		return (180);
 	return (-1);
 }
@@ -168,7 +168,7 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 	square_grid(map->grid, map->width);
 	ff_grid = copy_grid(map->grid, map->height);
 	player->pos = valid_grid(ff_grid, map->height, map->width);
-	player->angle = get_player_angle(map->grid, player->pos);
+	player->angle = torad(get_player_angle(map->grid, player->pos));
 	free_table(ff_grid);
 	close(fd.fd);
 }
