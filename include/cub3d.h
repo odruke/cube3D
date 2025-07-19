@@ -67,6 +67,7 @@ typedef struct s_coords
 typedef struct s_camera
 {
 	t_coords	pos;
+	float		angle;
 }	t_camera;
 
 typedef	struct s_color
@@ -187,5 +188,7 @@ void	print_debug_data(t_data *data);
 void	debug_print_grid(char **grid);
 void	debug_print_texture_path(t_elements *elements);
 void	debug_print_colors(t_elements *elements);
+void	debug_print_player(char **grid, t_camera *player);
+
 
 #endif

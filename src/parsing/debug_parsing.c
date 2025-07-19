@@ -4,10 +4,9 @@ void	print_debug_data(t_data *data)
 {
 	debug_print_grid(data->map->grid);
 	printf("\n\nmap width is %i, height is %i\n", data->map->width, data->map->height);
-	printf("player position is y=%i, x=%i\n\n", data->player->pos.y, data->player->pos.x);
+	debug_print_player(data->map->grid, data->player);
 	debug_print_texture_path(data->map->elements);
 	debug_print_colors(data->map->elements);
-
 }
 
 void	debug_print_grid(char **grid)
@@ -41,4 +40,18 @@ void	debug_print_colors(t_elements *elements)
 	g = elements->f_color->g;
 	b = elements->f_color->b;
 	printf("Floor color is: R=%i, G=%i, B=%i\n", r, g, b);
+}
+
+void	debug_print_player(char **grid, t_camera *player)
+{
+	printf("player position is y=%i, x=%i\n", player->pos.y, player->pos.x);
+	if (grid[player->pos.y][player->pos.x] == 'N')
+		printf("Player angle is North: %.2f°\n\n", player->angle);
+	else if (grid[player->pos.y][player->pos.x] == 'E')
+		printf("Player angle is East: %.2f°\n\n", player->angle);
+	else if (grid[player->pos.y][player->pos.x] == 'S')
+		printf("Player angle is South: %.2f°\n\n", player->angle);
+	else if (grid[player->pos.y][player->pos.x] == 'W')
+		printf("Player angle is West: %.2f°\n\n", player->angle);
+
 }

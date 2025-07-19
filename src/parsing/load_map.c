@@ -120,7 +120,33 @@ static void	get_elements(t_elements *elements, t_fd fd)
 		error_handle(ERR_MAP_ELEM, "colour codes", __FILE__, __LINE__);
 }
 
+void	square_grid(char **grid, int max_x)
+{
+	int		y;
+	char	*tmp;
 
+	y = -1;
+	while (grid[++y])
+		while ((int)ft_strlen(grid[y]) < max_x)
+		{
+			tmp = grid[y];
+			grid[y] = ft_strjoin(grid[y], " ");
+			free(tmp);
+		}
+}
+
+float	get_player_angle(char **grid, t_coords coords)
+{
+	if(grid[coords.y][coords.x] == 'N')
+		return (90);
+	if(grid[coords.y][coords.x] == 'E')
+		return (0);
+	if(grid[coords.y][coords.x] == 'S')
+		return (270);
+	if(grid[coords.y][coords.x] == 'W')
+		return (180);
+	return (-1);
+}
 
 void	init_map(t_camera *player, t_map *map, char *filemap)
 {
@@ -139,8 +165,10 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 	map->grid = get_grid(fd);
 	map->height = get_map_height(map->grid);
 	map->width = get_map_width(map->grid);
+	square_grid(map->grid, map->width);
 	ff_grid = copy_grid(map->grid, map->height);
 	player->pos = valid_grid(ff_grid, map->height, map->width);
+	player->angle = get_player_angle(map->grid, player->pos);
 	free_table(ff_grid);
 	close(fd.fd);
 }
