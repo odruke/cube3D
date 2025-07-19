@@ -3,97 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/16 15:54:55 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/19 10:31:43 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_player(void)
+void	draw_player(t_data *data, int x, int y, int color)
 {
-	t_data	*data;
-	int		i;
-	int		u;
-	char	*pos;
+	int	i;
+	int	u;
 
-	data = recover_data_address(NULL);
-	i = data->mlx.w / 2 - 5;
-	u = data->mlx.h / 2 - 5;
-	while (u < data->mlx.h / 2 + 5)
+	u = y;
+	while (u - y <= 5)
 	{
-		while (i < data->mlx.w / 2 + 5)
+		i = x;
+		if ((u - y) % 5 == 0)
 		{
-			pos = data->mlx.mlx_img.pixel_arr + u * data->mlx.mlx_img.line
-				+ i * (data->mlx.mlx_img.bpp / 8);
-			*(int *)pos = 0xFF0000;
-			i++;
+			while (i - x <= 5)
+			{
+				put_pixel(data, i, u, color);
+				i++;
+			}
 		}
-		i = data->mlx.w / 2 - 5;
+		else
+		{
+			while (i - x <= 5)
+			{
+				if (i - x == 0 || i - x == 5)
+					put_pixel(data, i, u, color);
+				i++;
+			}
+		}
 		u++;
 	}
 }
 
-void    generate_grid(void)
+void	draw_map(t_data *data)
 {
-	t_data	*data;
-	int		i;
-	int		y;
-	char	*pos;
-
-	i = 0;
-	y = 0;
-	data = recover_data_address(NULL);
-	data->mlx.mlx_img.pixel_arr = mlx_get_data_addr(data->mlx.mlx_img.img, &data->mlx.mlx_img.bpp,
-		&data->mlx.mlx_img.line, &data->mlx.mlx_img.endian);
-	if (!data->mlx.mlx_img.pixel_arr)
-		error_handle(ERR_MLX, "get_data_addr failed", __FILE__, __LINE__);
-	while (y < data->mlx.h)
+	int	i;
+	int	u;
+	
+	u = 0;
+	while (u < data->map->height)
 	{
-		if (y % SQUARE_HEIGHT == 0)
+		i = 0;
+		while (i < data->map->width && data->map->grid[u][i])
 		{
-			while (i < data->mlx.w)
-			{
-				pos = data->mlx.mlx_img.pixel_arr + y * data->mlx.mlx_img.line
-					+ i * (data->mlx.mlx_img.bpp / 8);
-				*(int *)pos = 0xFFFFFF;
-				i++;
-			}
-			i = 0;
+			if ((data->map->grid)[u][i] == '1')
+				draw_square(data, i * SQUARE_WIDTH, u * SQUARE_HEIGHT, 0xFFFFFF);
+			i++;
 		}
-		else
-		{
-			while (i < data->mlx.w)
-			{
-				if (i % SQUARE_WIDTH == 0)
-				{
-					pos = data->mlx.mlx_img.pixel_arr + y * data->mlx.mlx_img.line
-						+ i * (data->mlx.mlx_img.bpp / 8);
-					*(int *)pos = 0xFFFFFF;
-				}
-				else
-				{
-					pos = data->mlx.mlx_img.pixel_arr + y * data->mlx.mlx_img.line
-						+ i * (data->mlx.mlx_img.bpp / 8);
-					*(int *)pos = 0x000000;
-				}
-				i++;
-			}
-			i = 0;
-		}
-		y++;
+		u++;
 	}
 }
 
-
-void	generate_world(void)
+void	generate_world(t_data *data)
 {
-	t_data	*data;
-
-	data = recover_data_address(NULL);
-	generate_grid();
-	draw_player();
+	data->mlx.mlx_img.pixel_arr = mlx_get_data_addr(data->mlx.mlx_img.img, &data->mlx.mlx_img.bpp
+		, &data->mlx.mlx_img.line, &data->mlx.mlx_img.endian);
+	clear_display(data);
+	draw_map(data);
+	draw_player(data, data->player->pos.x * SQUARE_WIDTH
+		, data->player->pos.y * SQUARE_HEIGHT, 0xFFFF00);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 }

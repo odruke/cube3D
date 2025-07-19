@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/16 15:44:38 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/19 09:14:05 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	handle_keypress(int keycode, t_data *data)
 		data->player->pos.x -= 5;
 	else if (keycode == RIGHT_KEY_D)
 		data->player->pos.x += 5;
-	generate_world();
 	return (0);
 }
 
@@ -92,7 +91,7 @@ int	main(int ac, char **av)
 	printf("\033[1;32m✅ window created \033[0m\n");
 	if (DEBUG)
 		print_debug_data(data);
-	generate_world();
+	generate_world(data);
 	mlx_hook(data->mlx.window, 2, (1L << 0), handle_keypress, data);
 	mlx_hook(data->mlx.window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx.mlx_tunnel);

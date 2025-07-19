@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/16 15:52:17 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/19 09:39:19 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_coords
 typedef struct s_camera
 {
 	t_coords	pos;
+	float		angle;
 }	t_camera;
 
 typedef	struct s_color
@@ -170,9 +171,10 @@ int		count_table(char **table);//?
 
 /*on-screen printing functions*/
 
-void	generate_world(void);
-void	generate_grid(void);
-void	draw_player(void);
+void	clear_display(t_data *data);
+void	draw_square(t_data *data, int x, int y, int color);
+void	put_pixel(t_data *data, int x, int y, int color);
+void	generate_world(t_data *data);
 
 /* debug functions */
 
