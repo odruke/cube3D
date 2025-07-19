@@ -30,6 +30,8 @@ static bool	is_valid_color_code(char *code)
 
 	i = -1;
 	comas = 0;
+	if (!code || !code[0] || !ft_isdigit(code[0]))
+		return (false);
 	while (code[++i] && comas < 3)
 	{
 		j = 0;
@@ -45,6 +47,14 @@ static bool	is_valid_color_code(char *code)
 		i += j;
 	}
 	return (true);
+}
+
+void	fordward_index(char *line, int *i)
+{
+	while (line[*i] && !ft_isblank(line[++(*i)]))
+		;
+	while (line[*i] && ft_isblank(line[++(*i)]))
+		;
 }
 static int	check_ide_and_format_c(char *line, int *i)
 {
@@ -63,9 +73,7 @@ static int	check_ide_and_format_c(char *line, int *i)
 			break ;
 	if (id == 2)
 		return -1;
-	(*i)++;
-	while (ft_isblank(line[++(*i)]))
-		;
+	fordward_index(line, i);
 	if (!is_valid_color_code(line + *i))
 		return -1;
 	ide[id] = '\0';

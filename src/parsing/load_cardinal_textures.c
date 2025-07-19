@@ -43,9 +43,7 @@ static	int	check_ide_and_format(char *line, int *i)
 			break ;
 	if (id == 4)
 		return -1;
-	*i += 2;
-	while (ft_isblank(line[++(*i)]))
-		;
+	fordward_index(line, i);
 	if (ft_strncmp(line + *i, "./", 2))
 		return -1;
 	ide[id] = '\0';

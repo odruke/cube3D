@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/19 12:47:37 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/19 18:01:29 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,3 +179,4 @@ void	generate_world(t_data *data)
 	draw_player(data, data->player->pos.x, data->player->pos.y, 0xFFFF00);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 }
+
