@@ -192,6 +192,8 @@ void	draw_square(t_data *data, int x, int y, int color);
 void	put_pixel(t_data *data, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	generate_world(t_data *data);
+bool	touch(float x, float y, char **grid);
+
 
 /* debug functions */
 
