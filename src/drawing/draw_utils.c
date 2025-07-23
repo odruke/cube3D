@@ -33,7 +33,7 @@ void	clear_display(t_data *data)
 		i = 0;
 		while (i < WIN_WIDTH)
 		{
-			put_pixel(data, i, u, 0x000000);
+			put_pixel(data, i, u, BLACK);
 			i++;
 		}
 		u++;
@@ -68,4 +68,16 @@ void	draw_square(t_data *data, int x, int y, int color)
 		}
 		u++;
 	}
+}
+
+bool	touch(float x, float y, char **grid)
+{
+	int	ymap;
+	int	xmap;
+
+	ymap = y / SQUARE_HEIGHT;
+	xmap = x / SQUARE_WIDTH;
+	if (grid[ymap][xmap] == '1')
+		return (true);
+	return (false);
 }

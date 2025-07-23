@@ -23,11 +23,13 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+#ifndef DEBUG
+# define DEBUG 0
+#endif
 # define WIN_WIDTH 1601
 # define WIN_HEIGHT 801
 # define SQUARE_WIDTH 20
 # define SQUARE_HEIGHT 20
-# define DEBUG 1
 # define BUFFER_SIZE 50
 # define RESET 1
 # define CONTINUE 0
@@ -196,6 +198,8 @@ void	draw_square(t_data *data, int x, int y, int color);
 void	put_pixel(t_data *data, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	generate_world(t_data *data);
+bool	touch(float x, float y, char **grid);
+
 
 /* debug functions */
 
