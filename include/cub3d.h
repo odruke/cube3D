@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/19 18:14:31 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/23 12:45:44 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ typedef struct s_data
 	t_mlx		mlx;
 	t_camera	*player;
 	t_map		*map;
+	t_coords	*mouse;
 }	t_data;
 
 typedef struct s_fd
@@ -180,6 +181,9 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line);
 /*game control functions*/
 
 int		handle_keypress(int keycode, t_data *data);
+int		handle_keyrelease(int keycode, t_data *data);
+int		mouse_move(int x, int y, t_data *data);
+void	player_movement(t_data *data);
 int		count_table(char **table);//?
 
 

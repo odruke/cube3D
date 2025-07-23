@@ -3,52 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/19 18:07:47 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/23 15:28:23 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	handle_keypress(int keycode, t_data *data)
-{
-	if (keycode == ESC_KEY)
-		free_and_exit(data);
-	else if (keycode == UP_KEY_W)
-		data->player->key_up = true;
-	else if (keycode == DOWN_KEY_S)
-		data->player->key_down = true;
-	else if (keycode == LEFT_KEY_A)
-		data->player->key_left = true;
-	else if (keycode == RIGHT_KEY_D)
-		data->player->key_right = true;
-	else if (keycode == LEFT_ARROW)
-		data->player->left_rotate = true;
-	else if (keycode == RIGHT_ARROW)
-		data->player->right_rotate = true;
-	else if (keycode == 105)
-		printf("X Y is equal to %f %f and Angle is equal to %i\n",data->player->pos.x, data->player->pos.y, toangle(data->player->angle));
-	return (0);
-}
-
-int	handle_keyrelease(int keycode, t_data *data)
-{
-	if (keycode == UP_KEY_W)
-		data->player->key_up = false;
-	else if (keycode == DOWN_KEY_S)
-		data->player->key_down = false;
-	else if (keycode == LEFT_KEY_A)
-		data->player->key_left = false;
-	else if (keycode == RIGHT_KEY_D)
-		data->player->key_right = false;
-	else if (keycode == LEFT_ARROW)
-		data->player->left_rotate = false;
-	else if (keycode == RIGHT_ARROW)
-		data->player->right_rotate = false;
-	return (0);
-}
 
 t_data	*recover_data_address(t_data *data)
 {
@@ -83,6 +45,7 @@ void	init_data(t_data *data, char *filemap)
 	data->map->elements = (t_elements *)safe_calloc(sizeof(t_elements), 1,
 		__FILE__, __LINE__);
 	data->player = (t_camera *)safe_calloc(sizeof(t_camera), 1, __FILE__, __LINE__);
+	data->mouse = (t_coords *)safe_calloc(sizeof(t_coords), 1, __FILE__, __LINE__);
 	init_elements(data->map->elements);
 	init_map(data->player, data->map, filemap);
 	data->mlx.w = WIN_WIDTH;
@@ -98,6 +61,7 @@ void	init_data(t_data *data, char *filemap)
 		data->mlx.w, data->mlx.h);
 	if (!data->mlx.mlx_img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
+	mlx_mouse_hide(data->mlx.mlx_tunnel, data->mlx.window);
 	recover_data_address(data);
 }
 
@@ -117,6 +81,7 @@ int	main(int ac, char **av)
 	generate_world(data);
 	mlx_hook(data->mlx.window, 2, (1L << 0), handle_keypress, data);
 	mlx_hook(data->mlx.window, 3, (1L<<1), handle_keyrelease, data);
+	mlx_hook(data->mlx.window, 6, (1L << 6), mouse_move, data);
 	mlx_loop_hook(data->mlx.mlx_tunnel, loop_hook, data);
 	mlx_hook(data->mlx.window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx.mlx_tunnel);
