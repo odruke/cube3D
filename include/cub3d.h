@@ -182,6 +182,7 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line);
 /*game control functions*/
 
 int		handle_keypress(int keycode, t_data *data);
+void	player_movement(t_data *data);
 int		count_table(char **table);//?
 
 
