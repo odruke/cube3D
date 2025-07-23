@@ -14,12 +14,14 @@
 
 double	torad(int x)
 {
-	return (x / (180.0 / M_PI));
+	return (x / (180.0 / M_PI));//OLD. is this the correct formula [degree to radian] ?
+	// return ((x * M_PI) / 180.0);
 }
 
 int	toangle(double x)
 {
-	return (x * (180.0 / M_PI));
+	return (x * (180.0 / M_PI));//OLD. is this the correct formula [radian to degree] ?
+	// return ((x / M_PI) /180.0);
 }
 
 void	draw_player(t_data *data, int x, int y, int color)
@@ -117,6 +119,7 @@ void	player_movement(t_data *data)
 
 	speed = 1;
 	angle_speed = torad(1);
+	// angle_speed = 1;
     if (data->player->left_rotate)
 		data->player->angle += angle_speed;
     if (data->player->right_rotate)
@@ -183,7 +186,7 @@ float	distance(float x, float y)
 {
 	return (sqrt(x * x + y * y));
 }
-void	draw_pov(t_data *data, float x_pos, float y_pos, float angle, int i)
+void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 {
 	float	ray_y;
 	float	ray_x;
@@ -214,6 +217,23 @@ void	draw_pov(t_data *data, float x_pos, float y_pos, float angle, int i)
 	}
 }
 
+void	draw_pov(t_data *data)
+{
+	float	start;
+	float	fraction;
+	int		i;
+
+	fraction = M_PI / 3 / WIN_WIDTH;
+	// Center the field of view on the player's angle
+	start = data->player->angle - (M_PI / 3) / 2;  // Start at left edge of 60° FOV
+	i = 0;
+	while (i < WIN_WIDTH)
+	{
+		draw_wall_line(data, data->player->pos.x, data->player->pos.y, start, i);
+		start += fraction;
+		i++;
+	}
+}
 
 void cone_of_view(t_data *data)
 {
@@ -227,7 +247,7 @@ void cone_of_view(t_data *data)
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
-		draw_pov(data, data->player->pos.x, data->player->pos.y, start, i);
+		draw_ray(data, data->player->pos.x, data->player->pos.y, start);
 		start += fraction;
 		i++;
 	}
@@ -237,9 +257,14 @@ int	loop_hook(t_data *data)
 {
 	player_movement(data);
 	clear_display(data);
-	// draw_map(data);
-	// draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
-	cone_of_view(data);
+	if (DEBUG)
+	{
+		draw_map(data);
+		draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
+		cone_of_view(data);
+	}
+	else
+		draw_pov(data);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 	return (0);
 }
@@ -250,8 +275,8 @@ void	generate_world(t_data *data)
 	data->player->pos.y *= SQUARE_HEIGHT;
 	data->mlx.mlx_img.pixel_arr = mlx_get_data_addr(data->mlx.mlx_img.img, &data->mlx.mlx_img.bpp
 		, &data->mlx.mlx_img.line, &data->mlx.mlx_img.endian);
-	// draw_map(data);
-	// draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
+	draw_map(data);
+	draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 }
 

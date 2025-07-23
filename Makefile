@@ -3,16 +3,18 @@
 # name of the executable
 NAME = cub3D
 
+# variables
+src_dir = ./src
+obj_dir = ./obj
+DEBUG ?= 0
+
 # compilator and compilation flags
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
 INCLUDES = -I ./include
 LDFLAGS = -L ./libft -L ./mlx
 LDLIBS = -lmlx -lft -lXext -lX11 -lm -lz
-
-# variables
-src_dir = ./src
-obj_dir = ./obj
+DB = -DDEBUG=$(DEBUG)
 
 # source files (recursively find all .c files)
 SRCS = $(shell find $(src_dir) -name "*.c")
@@ -21,15 +23,18 @@ OBJS = $(addprefix $(obj_dir)/,$(notdir $(SRCS:.c=.o)))
 ###RULES###
 all: $(NAME)
 
+debug: fclean
+	@$(MAKE) DEBUG=1
+
 $(NAME): libft/libft.a mlx/libmlx.a $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@ 
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 
 # Create object files from source files
 $(obj_dir)/%.o: $(src_dir)/*/%.c | $(obj_dir)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(DB) -c $< -o $@
 
 $(obj_dir)/%.o: $(src_dir)/%.c | $(obj_dir)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(DB) -c $< -o $@
 
 # Create object directory
 $(obj_dir):
@@ -52,7 +57,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
-	$(MAKE) -C mlx clean
+#	$(MAKE) -C mlx clean
 
 # Rebuild everything
 re: fclean all
