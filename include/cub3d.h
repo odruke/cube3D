@@ -23,9 +23,9 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
-#ifndef DEBUG
-# define DEBUG 0
-#endif
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 # define WIN_WIDTH 1601
 # define WIN_HEIGHT 801
 # define SQUARE_WIDTH 20
@@ -48,6 +48,14 @@
 # define WHITE 0xFFFFFF
 # define BLACK 0x000000
 # define YELLOW 0xFFFF00
+
+typedef enum e_move
+{
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT
+}	t_move;
 
 typedef enum e_error
 {
