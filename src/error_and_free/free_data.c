@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:49 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/23 13:07:21 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/25 19:43:37 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,19 @@ void	free_elements(t_elements *elements)
 	free(elements);
 }
 
+void	free_textures(t_data *data)
+{
+	if (data->map->elements->textures)//will need to see this
+	{
+		if (data->map->elements->textures->N_Wall)
+		{
+			mlx_destroy_image(data->mlx.mlx_tunnel, data->map->elements->textures->N_Wall->img);
+			free(data->map->elements->textures->N_Wall);
+		}
+		free(data->map->elements->textures);
+	}
+}
+
 void	free_data(t_data *data)
 {
 	if (data)
@@ -62,6 +75,8 @@ void	free_data(t_data *data)
 		{
 			mlx_destroy_image(data->mlx.mlx_tunnel, data->mlx.mlx_img.img);
 		}
+		if (data->map->elements->textures)
+			free_textures(data);
 		if (data->mlx.window)
 			mlx_destroy_window(data->mlx.mlx_tunnel, data->mlx.window);
 		if (data->mlx.mlx_tunnel)

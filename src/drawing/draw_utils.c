@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 09:38:08 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/25 16:23:35 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/25 19:16:09 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ void	put_pixel(t_data *data, int x, int y, int color)
 		+ x * (data->mlx.mlx_img.bpp / 8);
     *(int *)pos = color;
 }
+
+// void	put_texture(t_data data, int x, int y, int text)
+// {
+	
+// }
 
 void	fill_display(t_data *data, int color)
 {

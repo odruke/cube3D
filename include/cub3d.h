@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/25 16:24:19 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/25 19:35:12 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,34 @@ typedef	struct s_color
 	int	b;
 }	t_color;
 
+typedef struct s_mlx_img
+{
+	void	*img;
+	char	*pixel_arr;
+	int		bpp;
+	int		line;
+	int		endian;
+}	t_mlx_img;
+
+typedef struct s_texture_img
+{
+	void	*img;
+	char	*pixel_arr;
+	int		bpp;
+	int		line;
+	int		endian;
+	int		height;
+	int		width;
+}	t_texture_img;
+
+typedef struct s_texture
+{
+	t_texture_img	*N_Wall;
+	t_texture_img	S_Wall;
+	t_texture_img	W_Wall;
+	t_texture_img	E_Wall;
+}	t_texture;
+
 typedef struct s_elements
 {
 	char		*path_texture_no;
@@ -94,6 +122,7 @@ typedef struct s_elements
 	char		*path_texture_ea;
 	t_color		*f_color;
 	t_color		*c_color;
+	t_texture	*textures;
 }	t_elements;
 
 typedef struct s_map
@@ -103,15 +132,6 @@ typedef struct s_map
 	char		**grid;
 	t_elements	*elements;
 }	t_map;
-
-typedef struct s_mlx_img
-{
-	void	*img;
-	char	*pixel_arr;
-	int		bpp;
-	int		line;
-	int		endian;
-}	t_mlx_img;
 
 typedef struct s_mlx
 {
