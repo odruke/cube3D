@@ -48,6 +48,15 @@
 # define WHITE 0xFFFFFF
 # define BLACK 0x000000
 # define YELLOW 0xFFFF00
+# define SPEED 1
+
+typedef enum e_move
+{
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT
+}	t_move;
 
 typedef enum e_move
 {
