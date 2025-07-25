@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/25 23:31:05 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/25 23:37:59 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,54 +62,4 @@ int	handle_keyrelease(int keycode, t_data *data)
 	else if (keycode == RIGHT_ARROW)
 		data->player->right_rotate = false;
 	return (0);
-}
-
-void	player_movement(t_data *data)
-{
-	float   speed;
-	double  angle_speed;
-	float   cos_angle;
-	float   sin_angle;
-
-	speed = 0.5;
-	angle_speed = torad(1);
-	if (data->player->left_rotate)
-		data->player->angle += angle_speed;
-	if (data->player->right_rotate)
-		data->player->angle -= angle_speed;
-	if (data->player->angle > torad(360))
-		data->player->angle = 0;
-	if (data->player->angle < 0)
-		data->player->angle = torad(360);
-	if (data->player->pos.x == 0)
-		data->player->pos.x += 1;
-	if (data->player->pos.y == 0)
-		data->player->pos.y += 1;
-	if (data->player->pos.x == WIN_WIDTH)
-		data->player->pos.x -= 1;
-	if (data->player->pos.y == WIN_HEIGHT)
-		data->player->pos.y -= 1;
-	cos_angle = cos(data->player->angle);
-	sin_angle = -sin(data->player->angle);
-	
-	if (data->player->key_up)
-	{
-		data->player->pos.x += cos_angle * speed;
-		data->player->pos.y += sin_angle * speed;
-	}
-	if (data->player->key_down)
-	{
-		data->player->pos.x -= cos_angle * speed;
-		data->player->pos.y -= sin_angle * speed;
-	}
-	if (data->player->key_left)
-	{
-		data->player->pos.x += sin_angle * speed;
-		data->player->pos.y -= cos_angle * speed;
-	}
-	if (data->player->key_right)
-	{
-		data->player->pos.x -= sin_angle * speed;
-		data->player->pos.y += cos_angle * speed;
-	}
 }

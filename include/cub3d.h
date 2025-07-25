@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/25 19:35:12 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/25 23:32:37 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,6 @@
 # define BLACK 0x000000
 # define YELLOW 0xFFFF00
 # define SPEED 1
-
-typedef enum e_move
-{
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT
-}	t_move;
 
 typedef enum e_move
 {

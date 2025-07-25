@@ -9,7 +9,7 @@ bool	valid_move(t_map *map, int x, int y)
 	x = x / SQUARE_WIDTH;
 	if (y < 0 || y > map->height || x < 0 || x > map->width)
 		return (false);
-	valid_pos = "NSWE0";
+	valid_pos = "NSWE0";//maybe we should change the NSWE to 0 when we parse ?
 	pos = map->grid[y][x];
 	while (*valid_pos)
 	{
@@ -79,7 +79,6 @@ void	player_movement(t_data *data)
 		data->player->angle = 0;
 	if (data->player->angle < 0)
 		data->player->angle = torad(360);
-	// Use same angle calculation as arrow for consistency
 	cos_angle = cos(data->player->angle);
 	sin_angle = -sin(data->player->angle);
 
