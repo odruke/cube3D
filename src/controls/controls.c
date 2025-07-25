@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/23 15:25:28 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/25 15:41:07 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,28 +89,27 @@ void	player_movement(t_data *data)
 		data->player->pos.x -= 1;
 	if (data->player->pos.y == WIN_HEIGHT)
 		data->player->pos.y -= 1;
-	// Use same angle calculation as arrow for consistency
 	cos_angle = cos(data->player->angle);
 	sin_angle = -sin(data->player->angle);
 	
 	if (data->player->key_up)
 	{
-		data->player->pos.x += cos_angle * speed;  // Move in arrow direction
+		data->player->pos.x += cos_angle * speed;
 		data->player->pos.y += sin_angle * speed;
 	}
 	if (data->player->key_down)
 	{
-		data->player->pos.x -= cos_angle * speed;  // Move opposite to arrow
+		data->player->pos.x -= cos_angle * speed;
 		data->player->pos.y -= sin_angle * speed;
 	}
 	if (data->player->key_left)
 	{
-		data->player->pos.x += sin_angle * speed;  // Strafe left
+		data->player->pos.x += sin_angle * speed;
 		data->player->pos.y -= cos_angle * speed;
 	}
 	if (data->player->key_right)
 	{
-		data->player->pos.x -= sin_angle * speed;  // Strafe right
+		data->player->pos.x -= sin_angle * speed;
 		data->player->pos.y += cos_angle * speed;
 	}
 }

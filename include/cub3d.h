@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/23 12:45:44 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/25 16:24:19 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,20 +186,19 @@ int		handle_keypress(int keycode, t_data *data);
 int		handle_keyrelease(int keycode, t_data *data);
 int		mouse_move(int x, int y, t_data *data);
 void	player_movement(t_data *data);
-int		count_table(char **table);//?
 
 
 /*on-screen printing functions*/
 
 double	torad(int x);
 int		toangle(double x);
-void	clear_display(t_data *data);
+void	fill_display(t_data *data, int color);
 void	draw_square(t_data *data, int x, int y, int color);
 void	put_pixel(t_data *data, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	generate_world(t_data *data);
 bool	touch(float x, float y, char **grid);
-
+int		get_hexa(t_color *color);
 
 /* debug functions */
 

@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 09:38:08 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/19 10:14:52 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/25 16:23:35 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
     *(int *)pos = color;
 }
 
-void	clear_display(t_data *data)
+void	fill_display(t_data *data, int color)
 {
 	int	i;
 	int	u;
@@ -33,7 +33,7 @@ void	clear_display(t_data *data)
 		i = 0;
 		while (i < WIN_WIDTH)
 		{
-			put_pixel(data, i, u, BLACK);
+			put_pixel(data, i, u, color);
 			i++;
 		}
 		u++;
@@ -68,6 +68,11 @@ void	draw_square(t_data *data, int x, int y, int color)
 		}
 		u++;
 	}
+}
+
+int	get_hexa(t_color *color)
+{
+	return ((color->r << 16) | (color->g << 8) | color->b);
 }
 
 bool	touch(float x, float y, char **grid)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/23 16:53:06 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/25 16:54:15 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,33 +133,55 @@ float	distance(float x, float y)
 {
 	return (sqrt(x * x + y * y));
 }
+
+float	fixed_dist(t_data *data, float x, float y, t_coords p2)
+{
+	t_coords	delta;
+	float		fixed_angl;
+	float		ret_val;
+
+	delta.x = p2.x - x;
+	delta.y = p2.y - y;
+	fixed_angl = (atan2(delta.y, delta.x) + data->player->angle);
+	ret_val = distance(delta.x, delta.y) * cos(fixed_angl);
+	return (ret_val);
+}
 void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 {
-	float	ray_y;
-	float	ray_x;
-	float	cos_angle;
-    float	sin_angle;
-	float	dist;
-	float	height;
-	int	start_y;
-	int	end_y;
+	t_coords	ray;
+	float		cos_angle;
+    float		sin_angle;
+	float		dist;
+	float		height;
+	int			start_y;
+	int			end_y;
 
-	ray_y = y_pos;
-	ray_x = x_pos;
+	ray.x = x_pos;
+	ray.y = y_pos;
 	cos_angle = cos(angle);//make it to calculate at each loop iteration outside functions
 	sin_angle = -sin(angle);//and pass to all functions to improve performance
-	while (!touch(ray_x, ray_y, data->map->grid))
+	while (!touch(ray.x, ray.y, data->map->grid))
 	{
-		ray_y += sin_angle;
-		ray_x += cos_angle;
+		ray.y += sin_angle;
+		ray.x += cos_angle;
 	}
-	dist = distance(ray_x - x_pos, ray_y - y_pos);
-	height = (SQUARE_HEIGHT / dist) * (WIN_WIDTH / 2);
+	dist = fixed_dist(data, x_pos, y_pos, ray);//issue here where sometimes we get a distance bigger than win height
+	if (dist == 0)//temp fix as well
+		height = WIN_HEIGHT;
+	else
+		height = (SQUARE_HEIGHT / dist) * (WIN_WIDTH / 2);
+	if (height > WIN_HEIGHT)//temporary fix
+		height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
-	while (start_y < end_y)
+	while (start_y < end_y && start_y <= WIN_HEIGHT)
 	{
 		put_pixel(data, i, start_y, BLUE);
+		start_y++;
+	}
+	while (start_y <= WIN_HEIGHT)
+	{
+		put_pixel(data, i, start_y, get_hexa(data->map->elements->c_color));
 		start_y++;
 	}
 }
@@ -167,17 +189,17 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 void	draw_pov(t_data *data)
 {
 	float	start;
-	float	fraction;
+	float	fov_slice;
 	int		i;
 
-	fraction = M_PI / 3 / WIN_WIDTH;
+	fov_slice = torad(60) / WIN_WIDTH;
 	// Center the field of view on the player's angle
-	start = data->player->angle - (M_PI / 3) / 2;  // Start at left edge of 60° FOV
+	start = data->player->angle + torad(60) / 2;  // Start at left edge of 60° FOV
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
 		draw_wall_line(data, data->player->pos.x, data->player->pos.y, start, i);
-		start += fraction;
+		start -= fov_slice;
 		i++;
 	}
 }
@@ -203,7 +225,7 @@ void cone_of_view(t_data *data)
 int	loop_hook(t_data *data)
 {
 	player_movement(data);
-	clear_display(data);
+	fill_display(data, get_hexa(data->map->elements->f_color));
 	if (DEBUG)
 	{
 		draw_map(data);
