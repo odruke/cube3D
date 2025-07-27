@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validations.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/27 22:03:24 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/07/27 22:03:28 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 bool	is_grid_char(char c)
@@ -49,12 +61,12 @@ int	check_grid(t_fd fd)
 		{
 			free(line);
 			size = 0;
-			break;
+			break ;
 		}
 		size++;
 	}
 	get_next_line(fd, RESET);
-	return size;
+	return (size);
 }
 
 bool	valid_ext(char *filemap)

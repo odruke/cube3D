@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   load_colors.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/27 22:00:17 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/07/27 22:00:19 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static int	color_code(char	*line)
@@ -22,6 +34,7 @@ static int	color_code(char	*line)
 	return (nb);
 
 }
+
 static bool	is_valid_color_code(char *code)
 {
 	int	i;
@@ -49,17 +62,10 @@ static bool	is_valid_color_code(char *code)
 	return (true);
 }
 
-void	fordward_index(char *line, int *i)
-{
-	while (line[*i] && !ft_isblank(line[++(*i)]))
-		;
-	while (line[*i] && ft_isblank(line[++(*i)]))
-		;
-}
 static int	check_ide_and_format_c(char *line, int *i)
 {
 	static char	*ide[3];
-	int		id;
+	int			id;
 
 	*i = -1;
 	id = -1;
@@ -72,13 +78,14 @@ static int	check_ide_and_format_c(char *line, int *i)
 		if (!ft_strncmp(line + *i, ide[id], 1))
 			break ;
 	if (id == 2)
-		return -1;
+		return (-1);
 	fordward_index(line, i);
 	if (!is_valid_color_code(line + *i))
-		return -1;
+		return (-1);
 	ide[id] = '\0';
 	return (id);
 }
+
 static void	assign_colors(t_elements *elements, char *line, int i, int ide)
 {
 	if (ide == 0)

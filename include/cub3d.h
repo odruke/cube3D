@@ -188,10 +188,14 @@ void	init_map(t_camera *player, t_map *map, char *filemap);
 /* parsing helpers and validation functions */
 
 bool	is_grid_char(char c);
+bool	is_player(char c);
+bool	player_founded(t_coords *coords, t_coords *ret);
+void	find_player_error(char **grid, bool player_found);
 bool	line_is_grid(char *line);
 bool	line_is_only_spaces(char *line);
 int		check_grid(t_fd fd);
 void	check_corners(char **grid);
+bool	validate_corner(char **grid, int x, int y);
 bool	valid_ext(char *filemap);
 char	*skip_until_grid(t_fd fd);
 bool	get_texture_paths(t_elements *elements, t_fd fd);
@@ -199,7 +203,10 @@ bool	get_colours(t_elements *elements, t_fd fd);
 void	zeroing_endstring(char **str);
 bool	color_is_in_range(char *code, int start, int len);
 void	fordward_index(char *line, int *i);
+int			str_append_mem(char **s1, char *s2, size_t size2);
 t_coords	valid_grid(char **grid, int y, int x);
+int		get_map_height(char **grid);
+int		get_map_width(char **grid);
 
 /* flood fill and helpers */
 

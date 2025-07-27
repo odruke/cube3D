@@ -12,74 +12,6 @@
 
 #include "cub3d.h"
 
-int str_append_mem(char **s1, char *s2, size_t size2)//refactor this | use ft_strjoin. move to libft
-{
-	size_t size1 = (*s1) ? ft_strlen(*s1) : 0;//ternary not norminette compliant
-	char *tmp = malloc(size1 + size2 + 1);//make it with safe function
-	if (!tmp)
-		return 0;
-	if (*s1)
-	{
-		ft_memcpy(tmp, *s1, size1);
-		free(*s1);
-	}
-	ft_memcpy(tmp + size1, s2, size2);
-	tmp[size1 + size2] = '\0';
-	*s1 = tmp;
-	return 1;
-}
-
-char	*get_next_line(t_fd fd, int reset)//refactor this to comply with norm. move to libft
-{
-	static char	buffer[BUFFER_SIZE + 1] = {0};
-	static int	buff_pos;
-	static int	buff_len;
-	char 		*line;
-	char		c;
-	int 		byte_read;
-
-	if (reset)
-	{
-		buffer[0] = 0;
-		buff_len = 0;
-		buff_pos = 0;
-		close(fd.fd);
-		fd.fd = open(fd.filename, O_RDONLY);
-		if (fd.fd < 0)
-		{
-			printf("why would you erase the file in the middle of the load, OMG you are such a tryhard");//how will we handle this?
-			exit(1);
-		}
-		return (NULL); // return reset function that returns null. that keeps this statement in only 2 line
-	}
-	line = NULL;
-	byte_read = 0;
-	while (1)
-	{
-		if(buff_pos < buff_len)//we need to somehow make this onto an aux function that returs line or NULL
-		{
-			c = buffer[buff_pos++];
-			if (!str_append_mem(&line, &c, 1))
-				return (NULL);
-			if (c == '\n')
-				return (line);
-		}
-		else
-		{
-			byte_read = read(fd.fd, buffer, BUFFER_SIZE);
-			if(byte_read < 0)
-				return (NULL);
-			if (byte_read == 0)
-				return (line);
-			buff_pos = 0;
-			buff_len = byte_read;
-		}
-	}
-	return line;
-}
-
-
-
 static char	**get_grid(t_fd fd)
 {
 	char	**map;
@@ -101,29 +33,6 @@ static char	**get_grid(t_fd fd)
 	return (map);
 }
 
-static int	get_map_height(char **grid)
-{
-	int	height;
-
-	height = -1;
-	while (grid[++height])
-		;
-	return (height);
-}
-
-static int	get_map_width(char **grid)
-{
-	size_t	witdth;
-	int	i;
-
-	witdth = 0;
-	i = -1;
-	while (grid[++i])
-		if (ft_strlen(grid[i]) > witdth)
-			witdth = ft_strlen(grid[i]);
-	return (witdth);
-}
-
 static void	get_elements(t_elements *elements, t_fd fd)
 {
 	if (!get_texture_paths(elements, fd))
@@ -139,12 +48,14 @@ void	square_grid(char **grid, int max_x)
 
 	y = -1;
 	while (grid[++y])
+	{
 		while ((int)ft_strlen(grid[y]) < max_x)
 		{
 			tmp = grid[y];
 			grid[y] = ft_strjoin(grid[y], " ");
 			free(tmp);
 		}
+	}
 }
 
 float	get_player_angle(char **grid, t_coords coords)
@@ -178,7 +89,6 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 	map->height = get_map_height(map->grid);
 	map->width = get_map_width(map->grid);
 	square_grid(map->grid, map->width);
-	check_corners(map->grid);
 	ff_grid = copy_grid(map->grid, map->height);
 	player->pos = valid_grid(ff_grid, map->height, map->width);
 	player->angle = torad(get_player_angle(map->grid, player->pos));

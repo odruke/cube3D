@@ -47,3 +47,34 @@ bool	color_is_in_range(char *code, int start, int len)
 		return (false);
 	return (true);
 }
+
+void	fordward_index(char *line, int *i)
+{
+	while (line[*i] && !ft_isblank(line[++(*i)]))
+		;
+	while (line[*i] && ft_isblank(line[++(*i)]))
+		;
+}
+
+int	str_append_mem(char **s1, char *s2, size_t size2)
+{
+	size_t	size1;
+	char	*tmp;
+
+	if (*s1)
+		size1 = ft_strlen(*s1);
+	else
+		size1 = 0;
+	tmp = safe_calloc(size1 + size2 + 1, sizeof(char), __FILE__, __LINE__);
+	if (!tmp)
+		return (0);
+	if (*s1)
+	{
+		ft_memcpy(tmp, *s1, size1);
+		free(*s1);
+	}
+	ft_memcpy(tmp + size1, s2, size2);
+	tmp[size1 + size2] = '\0';
+	*s1 = tmp;
+	return (1);
+}

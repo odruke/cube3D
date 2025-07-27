@@ -1,55 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   grid_check.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/27 21:58:15 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/07/27 21:58:17 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
-
-
-char	**copy_grid(char **grid, int max_y)
-{
-	int		y;
-	char	**ff_grid;
-
-	y = -1;
-	ff_grid = (char **)safe_calloc(sizeof(char *),
-			max_y + 1, __FILE__, __LINE__);
-	while (++y < max_y)
-		ff_grid[y] = ft_strdup(grid[y]);
-	return (ff_grid);
-}
-
-static bool	is_player(char c)
-{
-	char	*player;
-
-	player = "NSEW";
-	while (*player)
-	{
-		if (*player == c)
-			return (true);
-		player++;
-	}
-
-	return (false);
-}
-
-void	find_player_error(char **grid, bool player_found)
-{
-	if (player_found)
-	{
-		free_table(grid);
-		error_handle(ERR_GRID_BAD_ITEM, "multiple players", __FILE__, __LINE__);
-	}
-	else
-	{
-		free_table(grid);
-		error_handle(ERR_GRID_BAD_ITEM, "player not found", __FILE__, __LINE__);
-	}
-
-}
-
-static bool	player_founded(t_coords *coords, t_coords *ret)
-{
-	ret->y = coords->y;
-	ret->x = coords->x;
-	return (true);
-}
 
 t_coords	find_player(char **grid, int max_y, int max_x)
 {
@@ -124,26 +85,6 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 		flood_fill(grid, (t_coords){start.y, start.x + 1}, max);
 }
 
-static bool	validate_corner(char **grid, int x, int y)
-{
-	if (y > 0 && x > 0)
-		if (grid[y -1][x -1] == '0')
-			return (false);
-	if (grid[y + 1] && x > 0)
-		if (grid[y + 1][x - 1] == '0')
-			return (false);
-	if (!grid[y][x] || grid[y][x + 1] == ' ')
-		return (true);
-	if (y > 0 && grid[y][x + 1])
-		if (grid[y -1][x + 1] == '0')
-			return (false);
-	if (grid[y + 1] && grid[y][x + 1])
-		if (grid[y + 1][x + 1] == '0')
-			return (false);
-	return (true);
-}
-
-
 void	check_corners(char **grid)
 {
 	int		y;
@@ -160,7 +101,8 @@ void	check_corners(char **grid)
 				if (!validate_corner(grid, x, y))
 					error_handle(ERR_GRID_BAD_ITEM, "bad corner",
 						__FILE__, __LINE__);
-				while (ft_isblank(grid[y][x + 2]))
+				while (grid[y][x] && grid[y][x + 1]
+					&& ft_isblank(grid[y][x + 2]))
 					x++;
 			}
 		}
@@ -168,7 +110,7 @@ void	check_corners(char **grid)
 			error_handle(ERR_GRID_BAD_ITEM, "bad corner", __FILE__, __LINE__);
 	}
 }
-/* also returns player position */
+/* also returns player position *///this is done this way to relieve weight on the init_map function.
 t_coords	valid_grid(char **grid, int y, int x)
 {
 	t_coords	player_coords;
@@ -176,9 +118,8 @@ t_coords	valid_grid(char **grid, int y, int x)
 
 	max.y = y;
 	max.x = x;
-	player_coords = find_player(grid, y, x);
-	flood_fill(grid, player_coords, max);
+	check_corners(grid);
+	player_coords = find_player(grid, y, x);// this is calculated here just once and passed both to the player structure via return and the flood_fill function.
+	flood_fill(grid, player_coords, max);//flood fill function needs to have max_whidth and max_height passed in the correct format
 	return (player_coords);
 }
-
-

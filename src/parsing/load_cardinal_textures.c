@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   load_cardinal_textures.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/27 21:59:35 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/07/27 21:59:39 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-static void	assign_texture_path(t_elements *elements, char *line, int i, int ide)
+static void	assign_texture_path(t_elements *elements,
+	char *line, int i, int ide)
 {
 	if (ide == 0)
 	{
@@ -27,7 +40,7 @@ static void	assign_texture_path(t_elements *elements, char *line, int i, int ide
 static	int	check_ide_and_format(char *line, int *i)
 {
 	static char	*ide[5];
-	int		id;
+	int			id;
 
 	*i = -1;
 	id = -1;
@@ -42,10 +55,10 @@ static	int	check_ide_and_format(char *line, int *i)
 		if (!ft_strncmp(line + *i, ide[id], 2))
 			break ;
 	if (id == 4)
-		return -1;
+		return (-1);
 	fordward_index(line, i);
 	if (ft_strncmp(line + *i, "./", 2))
-		return -1;
+		return (-1);
 	ide[id] = '\0';
 	return (id);
 
