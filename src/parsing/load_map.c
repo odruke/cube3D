@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   load_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/27 17:08:53 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/07/27 17:08:55 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int str_append_mem(char **s1, char *s2, size_t size2)//refactor this | use ft_strjoin. move to libft
@@ -137,13 +149,13 @@ void	square_grid(char **grid, int max_x)
 
 float	get_player_angle(char **grid, t_coords coords)
 {
-	if(grid[(int)coords.y][(int)coords.x] == 'N')
+	if (grid[(int)coords.y][(int)coords.x] == 'N')
 		return (90);
-	if(grid[(int)coords.y][(int)coords.x] == 'E')
+	if (grid[(int)coords.y][(int)coords.x] == 'E')
 		return (0);
-	if(grid[(int)coords.y][(int)coords.x] == 'S')
+	if (grid[(int)coords.y][(int)coords.x] == 'S')
 		return (270);
-	if(grid[(int)coords.y][(int)coords.x] == 'W')
+	if (grid[(int)coords.y][(int)coords.x] == 'W')
 		return (180);
 	return (-1);
 }
@@ -166,6 +178,7 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 	map->height = get_map_height(map->grid);
 	map->width = get_map_width(map->grid);
 	square_grid(map->grid, map->width);
+	check_corners(map->grid);
 	ff_grid = copy_grid(map->grid, map->height);
 	player->pos = valid_grid(ff_grid, map->height, map->width);
 	player->angle = torad(get_player_angle(map->grid, player->pos));

@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/27 17:08:10 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/07/27 17:08:13 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	print_debug_data(t_data *data)
 {
 	debug_print_grid(data->map->grid);
-	printf("\n\nmap width is %i, height is %i\n", data->map->width, data->map->height);
+	printf("\n\nmap width is %i, height is %i\n",
+		data->map->width, data->map->height);
 	debug_print_player(data->map->grid, data->player);
 	debug_print_texture_path(data->map->elements);
 	debug_print_colors(data->map->elements);

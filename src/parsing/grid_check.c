@@ -7,7 +7,8 @@ char	**copy_grid(char **grid, int max_y)
 	char	**ff_grid;
 
 	y = -1;
-	ff_grid = (char **)safe_calloc(sizeof(char *), max_y + 1, __FILE__, __LINE__);
+	ff_grid = (char **)safe_calloc(sizeof(char *),
+			max_y + 1, __FILE__, __LINE__);
 	while (++y < max_y)
 		ff_grid[y] = ft_strdup(grid[y]);
 	return (ff_grid);
@@ -28,40 +29,56 @@ static bool	is_player(char c)
 	return (false);
 }
 
-void	find_player_error(char **grid)
+void	find_player_error(char **grid, bool player_found)
 {
-	free_table(grid);
-	error_handle(ERR_GRID_BAD_ITEM, "multiple players", __FILE__, __LINE__);
+	if (player_found)
+	{
+		free_table(grid);
+		error_handle(ERR_GRID_BAD_ITEM, "multiple players", __FILE__, __LINE__);
+	}
+	else
+	{
+		free_table(grid);
+		error_handle(ERR_GRID_BAD_ITEM, "player not found", __FILE__, __LINE__);
+	}
+
 }
+
+static bool	player_founded(t_coords *coords, t_coords *ret)
+{
+	ret->y = coords->y;
+	ret->x = coords->x;
+	return (true);
+}
+
 t_coords	find_player(char **grid, int max_y, int max_x)
 {
 	t_coords	coords;
-	int			y;
-	int			x;
-	bool		check;
+	t_coords	ret_coords;
+	bool		player_found;
 
-	y = -1;
-	check = false;
-	while (++y < max_y)
+	coords.y = -1.0f;
+	player_found = false;
+	while ((int)++coords.y < max_y)
 	{
-		x = -1;
-		while (grid[y][++x] && x < max_x)
-			if (is_player(grid[y][x]))
+		coords.x = -1.0f;
+		while (grid[(int)coords.y][(int)++coords.x] && coords.x < max_x)
+		{
+			if (is_player(grid[(int)coords.y][(int)coords.x]))
 			{
-				if (!check)
-				{
-					check = true;
-					coords.x = x;
-					coords.y = y;
-				}
+				if (!player_found)
+					player_found = player_founded(&coords, &ret_coords);
 				else
-					find_player_error(grid);
+					find_player_error(grid, player_found);
 			}
+		}
 	}
-	return (coords);
+	if (!player_found)
+		find_player_error(grid, player_found);
+	return (ret_coords);
 }
 
-static bool validate_pos(char **grid, t_coords start, t_coords max)
+static bool	validate_pos(char **grid, t_coords start, t_coords max)
 {
 	int	y;
 	int	x;
@@ -70,9 +87,10 @@ static bool validate_pos(char **grid, t_coords start, t_coords max)
 	x = start.x;
 	if (!grid[y][x] || ft_isblank(grid[y][x]))
 		return (false);
-	if (( y == 0 && grid[y][x] == '0') || ( x == 0 && grid[y][x] == '0'))
+	if ((y == 0 && grid[y][x] == '0') || (x == 0 && grid[y][x] == '0'))
 		return (false);
-	if (( y == (max.y - 1) && grid[y][x] == '0') || ( x == (max.x - 1) && grid[y][x] == '0'))
+	if ((y == (max.y - 1) && grid[y][x] == '0') || (x == (max.x - 1)
+			&& grid[y][x] == '0'))
 		return (false);
 	return (true);
 }
@@ -105,17 +123,62 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 	if (x < max.x)
 		flood_fill(grid, (t_coords){start.y, start.x + 1}, max);
 }
+
+static bool	validate_corner(char **grid, int x, int y)
+{
+	if (y > 0 && x > 0)
+		if (grid[y -1][x -1] == '0')
+			return (false);
+	if (grid[y + 1] && x > 0)
+		if (grid[y + 1][x - 1] == '0')
+			return (false);
+	if (!grid[y][x] || grid[y][x + 1] == ' ')
+		return (true);
+	if (y > 0 && grid[y][x + 1])
+		if (grid[y -1][x + 1] == '0')
+			return (false);
+	if (grid[y + 1] && grid[y][x + 1])
+		if (grid[y + 1][x + 1] == '0')
+			return (false);
+	return (true);
+}
+
+
+void	check_corners(char **grid)
+{
+	int		y;
+	int		x;
+
+	y = -1;
+	while (grid[++y])
+	{
+		x = -1;
+		while (grid[y][++x])
+		{
+			if (ft_isblank(grid[y][x]))
+			{
+				if (!validate_corner(grid, x, y))
+					error_handle(ERR_GRID_BAD_ITEM, "bad corner",
+						__FILE__, __LINE__);
+				while (ft_isblank(grid[y][x + 2]))
+					x++;
+			}
+		}
+		if (!validate_corner(grid, x, y))
+			error_handle(ERR_GRID_BAD_ITEM, "bad corner", __FILE__, __LINE__);
+	}
+}
 /* also returns player position */
 t_coords	valid_grid(char **grid, int y, int x)
 {
-	t_coords player_coords;
-	t_coords max;
+	t_coords	player_coords;
+	t_coords	max;
 
 	max.y = y;
 	max.x = x;
 	player_coords = find_player(grid, y, x);
 	flood_fill(grid, player_coords, max);
-	return player_coords;
+	return (player_coords);
 }
 
 

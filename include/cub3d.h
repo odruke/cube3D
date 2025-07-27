@@ -191,6 +191,7 @@ bool	is_grid_char(char c);
 bool	line_is_grid(char *line);
 bool	line_is_only_spaces(char *line);
 int		check_grid(t_fd fd);
+void	check_corners(char **grid);
 bool	valid_ext(char *filemap);
 char	*skip_until_grid(t_fd fd);
 bool	get_texture_paths(t_elements *elements, t_fd fd);
