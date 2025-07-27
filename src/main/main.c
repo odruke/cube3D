@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/25 19:46:32 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/26 13:45:29 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	init_data(t_data *data, char *filemap)
 	data->map->elements->textures = (t_texture *)safe_calloc(sizeof(t_texture), 1,
 		__FILE__, __LINE__);
 	data->player = (t_camera *)safe_calloc(sizeof(t_camera), 1, __FILE__, __LINE__);
-	data->mouse = (t_coords *)safe_calloc(sizeof(t_coords), 1, __FILE__, __LINE__);
+	data->mouse = (t_mouse *)safe_calloc(sizeof(t_mouse), 1, __FILE__, __LINE__);
 	//memory assigment
 	init_elements(data->map->elements);
 	init_map(data->player, data->map, filemap);
@@ -80,9 +80,9 @@ void	init_data(t_data *data, char *filemap)
 		data->mlx.w, data->mlx.h);
 	if (!data->mlx.mlx_img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
+	mlx_mouse_get_pos(data->mlx.mlx_tunnel, data->mlx.window, &data->mouse->x, &data->mouse->y);
 	init_texture(data, data->map->elements);
 	//mlx init
-	// mlx_mouse_hide(data->mlx.mlx_tunnel, data->mlx.window);
 	recover_data_address(data);
 }
 
@@ -99,10 +99,10 @@ int	main(int ac, char **av)
 	printf("\033[1;32m✅ window created \033[0m\n");
 	if (DEBUG)
 		print_debug_data(data);
-	generate_world(data);
-	mlx_hook(data->mlx.window, 2, (1L << 0), handle_keypress, data);
+	init_world(data);
+	mlx_hook(data->mlx.window, 2, (1L<<0), handle_keypress, data);
 	mlx_hook(data->mlx.window, 3, (1L<<1), handle_keyrelease, data);
-	mlx_hook(data->mlx.window, 6, (1L << 6), mouse_move, data);
+	mlx_hook(data->mlx.window, 6, (1L<<6), mouse_move, data);
 	mlx_loop_hook(data->mlx.mlx_tunnel, loop_hook, data);
 	mlx_hook(data->mlx.window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx.mlx_tunnel);

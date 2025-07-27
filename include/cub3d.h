@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/25 23:32:37 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/26 13:33:43 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # include <sys/stat.h>
 # ifndef DEBUG
 #  define DEBUG 0
+# endif
+# ifndef M_PI
+# define M_PI 3.14159265358979323846
 # endif
 # define WIN_WIDTH 1601
 # define WIN_HEIGHT 801
@@ -87,6 +90,12 @@ typedef struct s_camera
     bool		left_rotate;
     bool		right_rotate;
 }	t_camera;
+
+typedef struct s_mouse
+{
+	int	x;
+	int	y;
+}	t_mouse;
 
 typedef	struct s_color
 {
@@ -156,7 +165,7 @@ typedef struct s_data
 	t_mlx		mlx;
 	t_camera	*player;
 	t_map		*map;
-	t_coords	*mouse;
+	t_mouse		*mouse;
 }	t_data;
 
 typedef struct s_fd
@@ -225,9 +234,10 @@ void	fill_display(t_data *data, int color);
 void	draw_square(t_data *data, int x, int y, int color);
 void	put_pixel(t_data *data, int x, int y, int color);
 int		loop_hook(t_data *data);
-void	generate_world(t_data *data);
+void	init_world(t_data *data);
 bool	touch(float x, float y, char **grid);
 int		get_hexa(t_color *color);
+void	draw_pov(t_data *data);
 
 /* debug functions */
 

@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/25 23:37:59 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/26 13:23:35 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ int	mouse_move(int x, int y, t_data *data)
 	int dx;
 
     (void)y;
-	dx = data->mouse->x - x;
+	dx = (int)data->mouse->x - x;
 	if (dx > 0)
+	{
 		data->player->angle += torad(3);
+	}
 	else if (dx < 0)
+	{
 		data->player->angle -= torad(3);
+	}
 	data->mouse->x = x;
 	return (0);
 }

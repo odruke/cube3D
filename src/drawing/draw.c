@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/25 16:54:15 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/26 13:39:15 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 double	torad(int x)
 {
-	return (x / (180.0 / M_PI));//OLD. is this the correct formula [degree to radian] ?
-	// return ((x * M_PI) / 180.0);
+	return (x * (M_PI / 180));
 }
 
 int	toangle(double x)
 {
-	return (x * (180.0 / M_PI));//OLD. is this the correct formula [radian to degree] ?
-	// return ((x / M_PI) /180.0);
+	return (x * (180.0 / M_PI));
 }
 
 void	draw_player(t_data *data, int x, int y, int color)
@@ -119,8 +117,8 @@ void	draw_ray(t_data *data, float x_pos, float y_pos, float angle)
 
 	ray_y = y_pos;
 	ray_x = x_pos;
-	cos_angle = cos(angle);//make it to calculate at each loop iteration outside functions
-	sin_angle = -sin(angle);//and pass to all functions to improve performance
+	cos_angle = cos(angle);
+	sin_angle = -sin(angle);
 	while (!touch(ray_x, ray_y, data->map->grid))
 	{
 		put_pixel(data, ray_x, ray_y, GREEN);
@@ -155,11 +153,12 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	float		height;
 	int			start_y;
 	int			end_y;
+	int			u;
 
 	ray.x = x_pos;
 	ray.y = y_pos;
-	cos_angle = cos(angle);//make it to calculate at each loop iteration outside functions
-	sin_angle = -sin(angle);//and pass to all functions to improve performance
+	cos_angle = cos(angle);
+	sin_angle = -sin(angle);
 	while (!touch(ray.x, ray.y, data->map->grid))
 	{
 		ray.y += sin_angle;
@@ -174,15 +173,22 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 		height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
-	while (start_y < end_y && start_y <= WIN_HEIGHT)
+	u = start_y;
+	while (u >= 0)//might need ot check for u = 0;
+	{
+		u--;
+		put_pixel (data, i, u, get_hexa(data->map->elements->c_color));
+	}
+	while (start_y < end_y)
 	{
 		put_pixel(data, i, start_y, BLUE);
 		start_y++;
 	}
-	while (start_y <= WIN_HEIGHT)
+	u = end_y; //might need to check for u = WIN_HEIGHT
+	while (u <= WIN_HEIGHT)
 	{
-		put_pixel(data, i, start_y, get_hexa(data->map->elements->c_color));
-		start_y++;
+		put_pixel(data, i, u, get_hexa(data->map->elements->f_color));
+		u++;
 	}
 }
 
@@ -193,8 +199,7 @@ void	draw_pov(t_data *data)
 	int		i;
 
 	fov_slice = torad(60) / WIN_WIDTH;
-	// Center the field of view on the player's angle
-	start = data->player->angle + torad(60) / 2;  // Start at left edge of 60° FOV
+	start = data->player->angle + torad(60) / 2;
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
@@ -211,8 +216,7 @@ void cone_of_view(t_data *data)
 	int		i;
 
 	fraction = M_PI / 3 / WIN_WIDTH;
-	// Center the field of view on the player's angle
-	start = data->player->angle - (M_PI / 3) / 2;  // Start at left edge of 60° FOV
+	start = data->player->angle - (M_PI / 3) / 2;
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
@@ -225,7 +229,6 @@ void cone_of_view(t_data *data)
 int	loop_hook(t_data *data)
 {
 	player_movement(data);
-	fill_display(data, get_hexa(data->map->elements->f_color));
 	if (DEBUG)
 	{
 		draw_map(data);
@@ -238,14 +241,11 @@ int	loop_hook(t_data *data)
 	return (0);
 }
 
-void	generate_world(t_data *data)
+void	init_world(t_data *data)
 {
 	data->player->pos.x *= SQUARE_WIDTH;
 	data->player->pos.y *= SQUARE_HEIGHT;
 	data->mlx.mlx_img.pixel_arr = mlx_get_data_addr(data->mlx.mlx_img.img, &data->mlx.mlx_img.bpp
 		, &data->mlx.mlx_img.line, &data->mlx.mlx_img.endian);
-	draw_map(data);
-	draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
-	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 }
 
