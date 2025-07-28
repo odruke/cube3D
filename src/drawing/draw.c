@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/28 16:24:58 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:50:18 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,22 @@ void	draw_map(t_data *data)
 	}
 }
 
-void	draw_ray(t_data *data, float x_pos, float y_pos, float angle)
+void	draw_ray(t_mlx_img img, float x_pos, float y_pos, float angle)// change to t_img
 {
+	t_data	*data;
 	float	ray_y;
 	float	ray_x;
 	float	cos_angle;
     float	sin_angle;
 
+	data = recover_data_address(NULL);
 	ray_y = y_pos;
 	ray_x = x_pos;
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
 	while (!touch(ray_x, ray_y, data->map->grid))
 	{
-		put_pixel(data->mini_map->img, ray_x, ray_y, GREEN);
+		put_pixel(img, ray_x, ray_y, GREEN);
 		ray_y += sin_angle;
 		ray_x += cos_angle;
 	}
@@ -153,7 +155,7 @@ void cone_of_view(t_data *data)
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
-		draw_ray(data, data->player->pos.x, data->player->pos.y, start);
+		draw_ray(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, start);
 		start += fraction;
 		i++;
 	}
@@ -164,6 +166,7 @@ void	draw_mini_map(t_data *data, float x, float y)
 	t_coords	p_coord;
 	t_coords	start_p;
 
+	fill_display(data->mini_map->img, BLACK);
 	p_coord.x = data->player->pos.x / SQUARE;
 	p_coord.y = data->player->pos.y / SQUARE;
 	//find player position in x y mode
@@ -176,8 +179,7 @@ void	draw_mini_map(t_data *data, float x, float y)
 		start_p.x += data->mini_map->width / data->mini_map->FOV;
 		start_p.y += data->mini_map->height / data->mini_map->FOV;
 	}
-	(void)x;
-	(void)y;
+	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mini_map->img.img, x, y);
 }
 
 int	loop_hook(t_data *data)
@@ -191,11 +193,9 @@ int	loop_hook(t_data *data)
 		cone_of_view(data);
 	}
 	else
-	{
 		draw_pov(data);
-		draw_mini_map(data, data->mlx.w - data->mini_map->width, 0);
-	}
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
+	// draw_mini_map(data, data->mlx.w - data->mini_map->width, 0);
 	return (0);
 }
 
