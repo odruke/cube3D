@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/28 14:05:44 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/28 15:58:24 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@
 # endif
 # define WIN_WIDTH 1601
 # define WIN_HEIGHT 801
-# define SQUARE_WIDTH 30
-# define SQUARE_HEIGHT 30
+# define SQUARE 30
 # define BUFFER_SIZE 50
 # define RESET 1
 # define CONTINUE 0
@@ -249,9 +248,9 @@ int		enter_win(t_data *data);
 
 double	torad(int x);
 int		toangle(double x);
-void	fill_display(t_data *data, int color);
-void	draw_square(t_data *data, int x, int y, int color);
-void	put_pixel(t_data *data, int x, int y, int color);
+void	fill_display(t_mlx_img img, int color);
+void	draw_square(t_mlx_img img, int x, int y, int size, int color);
+void	put_pixel(t_mlx_img img, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	init_world(t_data *data);
 bool	touch(float x, float y, char **grid);

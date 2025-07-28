@@ -6,19 +6,18 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 09:38:08 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/28 14:25:49 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:28:50 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	put_pixel(t_data *data, int x, int y, int color)
+void	put_pixel(t_mlx_img img, int x, int y, int color)
 {
 	char	*pos;
     if(x >= WIN_WIDTH || y >= WIN_HEIGHT || x < 0 || y < 0)
         return;
-    pos = data->mlx.mlx_img.pixel_arr + y * data->mlx.mlx_img.line
-		+ x * (data->mlx.mlx_img.bpp / 8);
+    pos = img.pixel_arr + y * img.line + x * (img.bpp / 8);
     *(int *)pos = color;
 }
 
@@ -27,7 +26,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
 	
 // }
 
-void	fill_display(t_data *data, int color)
+void	fill_display(t_mlx_img img, int color)
 {
 	int	i;
 	int	u;
@@ -38,36 +37,36 @@ void	fill_display(t_data *data, int color)
 		i = 0;
 		while (i < WIN_WIDTH)
 		{
-			put_pixel(data, i, u, color);
+			put_pixel(img, i, u, color);
 			i++;
 		}
 		u++;
 	}
 }
 
-void	draw_square(t_data *data, int x, int y, int color)
+void	draw_square(t_mlx_img img, int x, int y, int size, int color)
 {
 	int	i;
 	int	u;
 
 	u = y;
-	while (u - y <= SQUARE_HEIGHT)
+	while (u - y <= size)
 	{
 		i = x;
-		if ((u - y) % SQUARE_HEIGHT == 0)
+		if ((u - y) % size == 0)
 		{
-			while (i - x <= SQUARE_WIDTH)
+			while (i - x <= size)
 			{
-				put_pixel(data, i, u, color);
+				put_pixel(img, i, u, color);
 				i++;
 			}
 		}
 		else
 		{
-			while (i - x <= SQUARE_WIDTH)
+			while (i - x <= size)
 			{
-				if (i - x == 0 || i - x == SQUARE_WIDTH)
-					put_pixel(data, i, u, color);
+				if (i - x == 0 || i - x == size)
+					put_pixel(img, i, u, color);
 				i++;
 			}
 		}
@@ -85,8 +84,8 @@ bool	touch(float x, float y, char **grid)
 	int	ymap;
 	int	xmap;
 
-	ymap = y / SQUARE_HEIGHT;
-	xmap = x / SQUARE_WIDTH;
+	ymap = y / SQUARE;
+	xmap = x / SQUARE;
 	if (grid[ymap][xmap] == '1')
 		return (true);
 	return (false);

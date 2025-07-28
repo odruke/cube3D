@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/28 14:05:20 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:27:26 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	init_data(t_data *data, char *filemap)
 	data->mouse->sens = 0.5;
 	data->mini_map->FOV = 10;
 	data->mini_map->width = data->mlx.w / 8;
-	data->mini_map->height = data->mlx.w / 8;//test to see square map or we don't care
+	data->mini_map->height = data->mlx.w / 8;
 	//variable assigment
 	data->mlx.mlx_tunnel = mlx_init();
 	if (!data->mlx.mlx_tunnel)
@@ -92,7 +92,7 @@ void	init_data(t_data *data, char *filemap)
 	data->mini_map->img.pixel_arr = mlx_get_data_addr(data->mini_map->img.img, &data->mini_map->img.bpp,
 		&data->mini_map->img.line, &data->mini_map->img.endian);
 	mlx_mouse_get_pos(data->mlx.mlx_tunnel, data->mlx.window, &data->mouse->x, &data->mouse->y);
-	init_texture(data, data->map->elements);
+	//init_texture(data, data->map->elements);
 	//mlx init
 	recover_data_address(data);
 }

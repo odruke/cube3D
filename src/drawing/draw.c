@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/28 15:34:19 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:24:58 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,36 +22,6 @@ int	toangle(double x)
 	return (x * (180.0 / M_PI));
 }
 
-void	draw_player(t_data *data, int x, int y, int color)
-{
-	int	i;
-	int	u;
-
-	u = y;
-	while (u - y <= 5)
-	{
-		i = x;
-		if ((u - y) % 5 == 0)
-		{
-			while (i - x <= 5)
-			{
-				put_pixel(data, i, u, color);
-				i++;
-			}
-		}
-		else
-		{
-			while (i - x <= 5)
-			{
-				if (i - x == 0 || i - x == 5)
-					put_pixel(data, i, u, color);
-				i++;
-			}
-		}
-		u++;
-	}
-}
-
 void	draw_map(t_data *data)
 {
 	int	i;
@@ -64,7 +34,7 @@ void	draw_map(t_data *data)
 		while (i < data->map->width && data->map->grid[u][i])
 		{
 			if ((data->map->grid)[u][i] == '1')
-				draw_square(data, i * SQUARE_WIDTH, u * SQUARE_HEIGHT, WHITE);
+				draw_square(data->mlx.mlx_img, i * SQUARE, u * SQUARE, SQUARE, WHITE);
 			i++;
 		}
 		u++;
@@ -84,7 +54,7 @@ void	draw_ray(t_data *data, float x_pos, float y_pos, float angle)
 	sin_angle = -sin(angle);
 	while (!touch(ray_x, ray_y, data->map->grid))
 	{
-		put_pixel(data, ray_x, ray_y, GREEN);
+		put_pixel(data->mini_map->img, ray_x, ray_y, GREEN);
 		ray_y += sin_angle;
 		ray_x += cos_angle;
 	}
@@ -131,7 +101,7 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
 	else
-		height = (SQUARE_HEIGHT / dist) * (WIN_WIDTH / 2);
+		height = (SQUARE / dist) * (WIN_WIDTH / 2);
 	if (height > WIN_HEIGHT)//temporary fix
 		height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
@@ -140,17 +110,17 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	while (u >= 0)//might need ot check for u = 0;
 	{
 		u--;
-		put_pixel (data, i, u, get_hexa(data->map->elements->c_color));
+		put_pixel(data->mlx.mlx_img, i, u, get_hexa(data->map->elements->c_color));
 	}
 	while (start_y < end_y)
 	{
-		put_pixel(data, i, start_y, BLUE);
+		put_pixel(data->mlx.mlx_img, i, start_y, BLUE);
 		start_y++;
 	}
 	u = end_y; //might need to check for u = WIN_HEIGHT
 	while (u <= WIN_HEIGHT)
 	{
-		put_pixel(data, i, u, get_hexa(data->map->elements->f_color));
+		put_pixel(data->mlx.mlx_img, i, u, get_hexa(data->map->elements->f_color));
 		u++;
 	}
 }
@@ -189,30 +159,41 @@ void cone_of_view(t_data *data)
 	}
 }
 
-// void	draw_mini_map(t_data *data, float x, float y)
-// {
-// 	t_coords	p_coord;
-// 	t_coords	
+void	draw_mini_map(t_data *data, float x, float y)
+{
+	t_coords	p_coord;
+	t_coords	start_p;
 
-// 	p_coord.x = data->player->pos.x / SQUARE_WIDTH;
-// 	p_coord.y = data->player->pos.y / SQUARE_HEIGHT;
-	
-// }
+	p_coord.x = data->player->pos.x / SQUARE;
+	p_coord.y = data->player->pos.y / SQUARE;
+	//find player position in x y mode
+	start_p.x = p_coord.x - data->mini_map->FOV / 2;//idk how it works for uneven numbers
+	start_p.y = p_coord.y - data->mini_map->FOV / 2;//same here
+	//find how far we should draw based on FOV
+	while (start_p.x < data->mini_map->width && start_p.y < data->mini_map->height)
+	{
+		draw_square(data->mini_map->img, start_p.x, start_p.y, data->mini_map->width / data->mini_map->FOV, RED);
+		start_p.x += data->mini_map->width / data->mini_map->FOV;
+		start_p.y += data->mini_map->height / data->mini_map->FOV;
+	}
+	(void)x;
+	(void)y;
+}
 
 int	loop_hook(t_data *data)
 {
 	player_movement(data);
 	if (DEBUG)
 	{
-		fill_display(data, BLACK);
+		fill_display(data->mlx.mlx_img, BLACK);
 		draw_map(data);
-		draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
+		draw_square(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, 5, YELLOW);
 		cone_of_view(data);
 	}
 	else
 	{
 		draw_pov(data);
-		// draw_mini_map(data, data->mlx.w - data->mini_map->width, 0);
+		draw_mini_map(data, data->mlx.w - data->mini_map->width, 0);
 	}
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 	return (0);
@@ -220,8 +201,8 @@ int	loop_hook(t_data *data)
 
 void	init_world(t_data *data)
 {
-	data->player->pos.x *= SQUARE_WIDTH;
-	data->player->pos.y *= SQUARE_HEIGHT;
+	data->player->pos.x *= SQUARE;
+	data->player->pos.y *= SQUARE;
 	data->mlx.mlx_img.pixel_arr = mlx_get_data_addr(data->mlx.mlx_img.img, &data->mlx.mlx_img.bpp
 		, &data->mlx.mlx_img.line, &data->mlx.mlx_img.endian);
 }
