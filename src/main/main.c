@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/26 13:45:29 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/28 14:05:20 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,17 @@ void	init_data(t_data *data, char *filemap)
 		__FILE__, __LINE__);
 	data->player = (t_camera *)safe_calloc(sizeof(t_camera), 1, __FILE__, __LINE__);
 	data->mouse = (t_mouse *)safe_calloc(sizeof(t_mouse), 1, __FILE__, __LINE__);
+	data->mini_map = (t_mini_map *)safe_calloc(sizeof(t_mini_map), 1, __FILE__, __LINE__);
 	//memory assigment
 	init_elements(data->map->elements);
 	init_map(data->player, data->map, filemap);
 	//different element init
 	data->mlx.w = WIN_WIDTH;
 	data->mlx.h = WIN_HEIGHT;
+	data->mouse->sens = 0.5;
+	data->mini_map->FOV = 10;
+	data->mini_map->width = data->mlx.w / 8;
+	data->mini_map->height = data->mlx.w / 8;//test to see square map or we don't care
 	//variable assigment
 	data->mlx.mlx_tunnel = mlx_init();
 	if (!data->mlx.mlx_tunnel)
@@ -80,6 +85,12 @@ void	init_data(t_data *data, char *filemap)
 		data->mlx.w, data->mlx.h);
 	if (!data->mlx.mlx_img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
+	data->mini_map->img.img = mlx_new_image(data->mlx.mlx_tunnel,
+		data->mini_map->width, data->mini_map->height);
+	if (!data->mini_map->img.img)
+		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
+	data->mini_map->img.pixel_arr = mlx_get_data_addr(data->mini_map->img.img, &data->mini_map->img.bpp,
+		&data->mini_map->img.line, &data->mini_map->img.endian);
 	mlx_mouse_get_pos(data->mlx.mlx_tunnel, data->mlx.window, &data->mouse->x, &data->mouse->y);
 	init_texture(data, data->map->elements);
 	//mlx init
@@ -100,9 +111,11 @@ int	main(int ac, char **av)
 	if (DEBUG)
 		print_debug_data(data);
 	init_world(data);
+	mlx_mouse_hide(data->mlx.mlx_tunnel, data->mlx.window);
 	mlx_hook(data->mlx.window, 2, (1L<<0), handle_keypress, data);
 	mlx_hook(data->mlx.window, 3, (1L<<1), handle_keyrelease, data);
 	mlx_hook(data->mlx.window, 6, (1L<<6), mouse_move, data);
+	mlx_hook(data->mlx.window, 7, (1L<<4), enter_win, data);
 	mlx_loop_hook(data->mlx.mlx_tunnel, loop_hook, data);
 	mlx_hook(data->mlx.window, 17, 0, free_and_exit, data);
 	mlx_loop(data->mlx.mlx_tunnel);

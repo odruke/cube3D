@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/26 13:39:15 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/28 15:34:19 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,7 @@ void	draw_player(t_data *data, int x, int y, int color)
 {
 	int	i;
 	int	u;
-	int	arrow_x;
-	int	arrow_y;
-	float	cos_angle;
-	float	sin_angle;
-	int	arrow_length;
 
-	// Draw player square
 	u = y;
 	while (u - y <= 5)
 	{
@@ -55,37 +49,6 @@ void	draw_player(t_data *data, int x, int y, int color)
 			}
 		}
 		u++;
-	}
-
-	// Draw direction arrow
-	arrow_length = 12;
-	// 90° points up, 0° points right, 180° points left, 270° points down
-	cos_angle = cos(data->player->angle);  // Subtract 90° to make 90° point up
-	sin_angle = -sin(data->player->angle);
-
-	// Calculate arrow tip position
-	arrow_x = x + 2 + (int)(cos_angle * arrow_length);
-	arrow_y = y + 2 + (int)(sin_angle * arrow_length);
-
-	// Draw arrow line from center to tip
-	i = 0;
-	while (i <= arrow_length)
-	{
-		int line_x = x + 2 + (int)(cos_angle * i);
-		int line_y = y + 2 + (int)(sin_angle * i);
-		put_pixel(data, line_x, line_y, RED);
-		i++;
-	}
-
-	// Draw arrow head (two small lines)
-	for (i = 1; i <= 5; i++)
-	{
-		int head_x1 = arrow_x - (int)(cos_angle * i) + (int)(sin_angle * i);
-		int head_y1 = arrow_y - (int)(sin_angle * i) - (int)(cos_angle * i);
-		int head_x2 = arrow_x - (int)(cos_angle * i) - (int)(sin_angle * i);
-		int head_y2 = arrow_y - (int)(sin_angle * i) + (int)(cos_angle * i);
-		put_pixel(data, head_x1, head_y1, RED);
-		put_pixel(data, head_x2, head_y2, RED);
 	}
 }
 
@@ -215,8 +178,8 @@ void cone_of_view(t_data *data)
 	float	fraction;
 	int		i;
 
-	fraction = M_PI / 3 / WIN_WIDTH;
-	start = data->player->angle - (M_PI / 3) / 2;
+	fraction = torad(60) / WIN_WIDTH;
+	start = data->player->angle - torad(60) / 2;
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
@@ -226,17 +189,31 @@ void cone_of_view(t_data *data)
 	}
 }
 
+// void	draw_mini_map(t_data *data, float x, float y)
+// {
+// 	t_coords	p_coord;
+// 	t_coords	
+
+// 	p_coord.x = data->player->pos.x / SQUARE_WIDTH;
+// 	p_coord.y = data->player->pos.y / SQUARE_HEIGHT;
+	
+// }
+
 int	loop_hook(t_data *data)
 {
 	player_movement(data);
 	if (DEBUG)
 	{
+		fill_display(data, BLACK);
 		draw_map(data);
 		draw_player(data, data->player->pos.x, data->player->pos.y, YELLOW);
 		cone_of_view(data);
 	}
 	else
+	{
 		draw_pov(data);
+		// draw_mini_map(data, data->mlx.w - data->mini_map->width, 0);
+	}
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
 	return (0);
 }

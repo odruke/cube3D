@@ -20,21 +20,10 @@ bool	valid_move(t_map *map, int x, int y)
 	return (false);
 }
 
-int	is_stopped(t_data *data, t_mouse *mouse)
-{
-	int	x;
-	int	y;
-	mlx_mouse_get_pos(data->mlx.mlx_tunnel, data->mlx.window, &x, &y);
-	if (mouse->x - x == 0)
-		return (1);
-	mouse->x = x;
-	return (0);
-}
-
 void	calc_pos(t_move move, t_coords *coords,
 	const float *cos_angle, const float *sin_angle)
 {
-	int		speed;
+	float	speed;
 
 	speed = 1;
 	if (move == UP)

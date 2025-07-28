@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 09:38:08 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/27 12:54:33 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/28 14:25:49 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
     *(int *)pos = color;
 }
 
-// void	put_texture(t_data data, int x, int y, int text)
+// void	put_texture(t_data data, 	 x, int y, int text)
 // {
 	
 // }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/26 13:23:35 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/28 13:21:14 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,27 @@
 
 int	mouse_move(int x, int y, t_data *data)
 {
-	int dx;
+	float dx;
 
     (void)y;
-	dx = (int)data->mouse->x - x;
+	dx = data->mouse->x - x;
 	if (dx > 0)
 	{
-		data->player->angle += torad(3);
+		data->player->angle += torad(dx) * data->mouse->sens;
 	}
 	else if (dx < 0)
 	{
-		data->player->angle -= torad(3);
+		data->player->angle += torad(dx) * data->mouse->sens;//+ because it would be negative
 	}
 	data->mouse->x = x;
+	return (0);
+}
+
+int	enter_win(t_data *data)
+{
+	data->mouse->x = data->mlx.w / 2;
+	data->mouse->y = data->mlx.h / 2;
+	mlx_mouse_move(data->mlx.mlx_tunnel, data->mlx.window, data->mouse->x, data->mouse->y);
 	return (0);
 }
 
@@ -46,8 +54,16 @@ int	handle_keypress(int keycode, t_data *data)
 		data->player->left_rotate = true;
 	else if (keycode == RIGHT_ARROW)
 		data->player->right_rotate = true;
-	else if (keycode == 105)
-		printf("X Y is equal to %f %f and Angle is equal to %i\n",data->player->pos.x, data->player->pos.y, toangle(data->player->angle));
+	else if (keycode == UP_ARROW)
+	{
+		if (data->mouse->sens < 2)
+			data->mouse->sens += 0.1;
+	}
+	else if (keycode == DOWN_ARROW)
+	{
+		if (data->mouse->sens > 0.2)
+			data->mouse->sens -= 0.1;
+	}
 	return (0);
 }
 

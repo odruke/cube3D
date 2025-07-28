@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/26 13:33:43 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/28 14:05:44 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # endif
 # define WIN_WIDTH 1601
 # define WIN_HEIGHT 801
-# define SQUARE_WIDTH 20
-# define SQUARE_HEIGHT 20
+# define SQUARE_WIDTH 30
+# define SQUARE_HEIGHT 30
 # define BUFFER_SIZE 50
 # define RESET 1
 # define CONTINUE 0
@@ -79,6 +79,26 @@ typedef struct s_coords
 	float	x;
 }	t_coords;
 
+typedef struct s_fd
+{
+	int		fd;
+	char	*filename;
+}	t_fd;
+
+typedef	struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+typedef struct s_mouse
+{
+	int		x;
+	int		y;
+	float	sens;
+}	t_mouse;
+
 typedef struct s_camera
 {
 	t_coords	pos;
@@ -90,19 +110,6 @@ typedef struct s_camera
     bool		left_rotate;
     bool		right_rotate;
 }	t_camera;
-
-typedef struct s_mouse
-{
-	int	x;
-	int	y;
-}	t_mouse;
-
-typedef	struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
 
 typedef struct s_mlx_img
 {
@@ -151,6 +158,14 @@ typedef struct s_map
 	t_elements	*elements;
 }	t_map;
 
+typedef struct s_mini_map
+{
+	int			width;
+	int			height;
+	float		FOV;
+	t_mlx_img	img;
+}	t_mini_map;
+
 typedef struct s_mlx
 {
 	void		*mlx_tunnel;
@@ -166,13 +181,8 @@ typedef struct s_data
 	t_camera	*player;
 	t_map		*map;
 	t_mouse		*mouse;
+	t_mini_map	*mini_map;
 }	t_data;
-
-typedef struct s_fd
-{
-	int		fd;
-	char	*filename;
-}	t_fd;
 
 
 char	*get_next_line(t_fd fd, int reset);
@@ -232,6 +242,7 @@ int		handle_keypress(int keycode, t_data *data);
 int		handle_keyrelease(int keycode, t_data *data);
 int		mouse_move(int x, int y, t_data *data);
 void	player_movement(t_data *data);
+int		enter_win(t_data *data);
 
 
 /*on-screen printing functions*/

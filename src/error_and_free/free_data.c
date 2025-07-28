@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:49 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/25 19:43:37 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/28 14:01:45 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void	free_data(t_data *data)
 	if (data)
 	{
 		if (data->mlx.mlx_img.img)
-		{
 			mlx_destroy_image(data->mlx.mlx_tunnel, data->mlx.mlx_img.img);
-		}
+		if (data->mini_map->img.img)
+			mlx_destroy_image(data->mlx.mlx_tunnel, data->mini_map->img.img);
 		if (data->map->elements->textures)
 			free_textures(data);
 		if (data->mlx.window)
@@ -94,6 +94,8 @@ void	free_data(t_data *data)
 			free(data->player);
 		if (data->mouse)
 			free(data->mouse);
+		if (data->mini_map)
+			free(data->mini_map);
 		free(data);
 	}
 	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");
