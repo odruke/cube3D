@@ -9,7 +9,7 @@ bool	valid_move(t_map *map, int x, int y)
 	x = x / SQUARE_WIDTH;
 	if (y < 0 || y > map->height || x < 0 || x > map->width)
 		return (false);
-	valid_pos = "NSWE0";//maybe we should change the NSWE to 0 when we parse ?
+	valid_pos = "NSWE0";
 	pos = map->grid[y][x];
 	while (*valid_pos)
 	{

@@ -24,7 +24,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
 
 // void	put_texture(t_data data, 	 x, int y, int text)
 // {
-	
+
 // }
 
 void	fill_display(t_data *data, int color)

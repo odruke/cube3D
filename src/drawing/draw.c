@@ -176,7 +176,7 @@ void cone_of_view(t_data *data)
 {
 	float	start;
 	float	fraction;
-	int		i;
+	int	i;
 
 	fraction = torad(60) / WIN_WIDTH;
 	start = data->player->angle - torad(60) / 2;
@@ -192,11 +192,11 @@ void cone_of_view(t_data *data)
 // void	draw_mini_map(t_data *data, float x, float y)
 // {
 // 	t_coords	p_coord;
-// 	t_coords	
+// 	t_coords
 
 // 	p_coord.x = data->player->pos.x / SQUARE_WIDTH;
 // 	p_coord.y = data->player->pos.y / SQUARE_HEIGHT;
-	
+
 // }
 
 int	loop_hook(t_data *data)
