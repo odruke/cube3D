@@ -15,7 +15,6 @@
 # include "libft.h"
 # include "mlx.h"
 # include <stdio.h>
-# include <unistd.h>
 # include <limits.h>
 # include <sys/types.h>
 # include <math.h>
@@ -70,9 +69,6 @@ typedef enum e_error
 	ERR_MAP_EXT,
 	ERR_MAP_ELEM,
 	ERR_GRID_BAD_ITEM,
-	ERR_TXTUR_OPEN,
-	ERR_TXTUR_EXT,
-	ERR_TXTUR_DIR,
 	ERR_UNKNOWN
 }	t_error;
 
@@ -194,7 +190,7 @@ t_data	*recover_data_address(t_data *data);
 
 /* map handeling functions */
 
-void	init_map(t_data *data, t_camera *player, t_map *map, char *filemap);
+void	init_map(t_camera *player, t_map *map, char *filemap);
 
 /* parsing helpers and validation functions */
 
@@ -218,7 +214,6 @@ int			str_append_mem(char **s1, char *s2, size_t size2);
 t_coords	valid_grid(char **grid, int y, int x);
 int		get_map_height(char **grid);
 int		get_map_width(char **grid);
-void	get_textures(t_data *data, t_elements *elements);
 
 /* flood fill and helpers */
 
@@ -237,7 +232,6 @@ void	free_list(t_list **list, void (*del)(void *));//?
 
 void	*safe_malloc(size_t bytes, char *file, int line);
 void	*safe_calloc(size_t bytes, size_t size, char *file, int line);
-void	*safe_xpm_to_img(t_data *data, char *path, int *width, int *height);
 
 /*game control functions*/
 

@@ -1,4 +1,4 @@
-SO ./src
+SO ./path_to_the_south_texture./path_to_the_south_texture
 NO ./textures/NO.xpm
 WE         ./path_to_the_west_texture
 EA ./path_to_the_east_texture

@@ -40,13 +40,13 @@ void	init_elements(t_elements *elements)
 
 void	init_texture(t_data *data, t_elements *elements)
 {
-	elements->textures->N_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1,
+	elements->textures->N_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1, 
 		__FILE__, __LINE__);
 	elements->textures->N_Wall->img = mlx_xpm_file_to_image(data->mlx.mlx_tunnel, elements->path_texture_no,
 		&elements->textures->N_Wall->img_w, &elements->textures->N_Wall->img_h);
 	if (!elements->textures->N_Wall->img)
 		error_handle(ERR_MLX, "Couldnt load texture", __FILE__, __LINE__);
-	elements->textures->N_Wall->pixel_arr = mlx_get_data_addr(elements->textures->N_Wall->img, &elements->textures->N_Wall->bpp,
+	elements->textures->N_Wall->pixel_arr = mlx_get_data_addr(elements->textures->N_Wall->img, &elements->textures->N_Wall->bpp, 
 		&elements->textures->N_Wall->line, &elements->textures->N_Wall->endian);
 	if (!elements->textures->N_Wall->pixel_arr)
 		error_handle(ERR_MLX, "error with get data adrr", __FILE__, __LINE__);
@@ -65,7 +65,7 @@ void	init_data(t_data *data, char *filemap)
 	data->mini_map = (t_mini_map *)safe_calloc(sizeof(t_mini_map), 1, __FILE__, __LINE__);
 	//memory assigment
 	init_elements(data->map->elements);
-	init_map(data, data->player, data->map, filemap);
+	init_map(data->player, data->map, filemap);
 	//different element init
 	data->mlx.mlx_img.img_w = WIN_WIDTH;
 	data->mlx.mlx_img.img_h = WIN_HEIGHT;

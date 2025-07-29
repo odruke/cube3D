@@ -23,9 +23,6 @@ const char	*err_str_format(t_error error)
 	errstr_tab[ERR_MAP_EXT] = "Error:\n%s is not a .cub file.\n";
 	errstr_tab[ERR_MAP_ELEM] = "Error:\nCan't find element %s on map file.\n";
 	errstr_tab[ERR_GRID_BAD_ITEM] = "Error:\nBad items on grid: %s.\n";
-	errstr_tab[ERR_TXTUR_OPEN] = "Error:\nCant open texture: %s.\n";
-	errstr_tab[ERR_TXTUR_EXT] = "Error:\n%s is not a .xpm file.\n";
-	errstr_tab[ERR_TXTUR_DIR] = "Error:\n%s is a directory!!.\n";
 	errstr_tab[ERR_UNKNOWN] = "%s\n";
 	return (errstr_tab[error]);
 }
@@ -45,12 +42,6 @@ Bad input. Usage:\n./cub3D maps/[mapname]\n";
 Can't find element %s on map file. Failed at: %s:%i\n";
 	errstr_tab[ERR_GRID_BAD_ITEM] = "Error:\n\
 Bad items on grid: %s. Failed at: %s:%i\n";
-	errstr_tab[ERR_TXTUR_OPEN] = "Error:\nCant open texture: %s.\
-Failed at: %s:%i\n";
-	errstr_tab[ERR_TXTUR_EXT] = "Error:\n%s is not a .xpm file.\
-Failed at: %s:%i\n";
-	errstr_tab[ERR_TXTUR_DIR] = "Error:\n%s is a directory!!.\
-Failed at: %s:%i\n";
 	errstr_tab[ERR_UNKNOWN] = "%s\n";
 	return (errstr_tab[error]);
 }
