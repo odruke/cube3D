@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/29 11:32:53 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:09:48 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	init_data(t_data *data, char *filemap)
 	data->mlx.mlx_img.img_w = WIN_WIDTH;
 	data->mlx.mlx_img.img_h = WIN_HEIGHT;
 	data->mouse->sens = 0.5;
-	data->mini_map->FOV = 10;
+	data->mini_map->FOV = 20;
 	data->mini_map->img.img_w = data->mlx.mlx_img.img_w / 8;
 	data->mini_map->img.img_h = data->mlx.mlx_img.img_w / 8;
 	//variable assigment

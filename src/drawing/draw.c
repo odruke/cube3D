@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/29 11:32:00 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:25:31 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	draw_map(t_data *data)
 	}
 }
 
-void	draw_ray(t_mlx_img img, float x_pos, float y_pos, float angle)// change to t_img
+void	draw_ray(t_mlx_img img, float x_pos, float y_pos, float angle, int square)
 {
 	t_data	*data;
 	float	ray_y;
@@ -54,9 +54,9 @@ void	draw_ray(t_mlx_img img, float x_pos, float y_pos, float angle)// change to 
 	ray_x = x_pos;
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
-	while (!touch(ray_x, ray_y, data->map->grid))
+	while (!touch(ray_x, ray_y, data->map->grid, square))
 	{
-		put_pixel(img, ray_x, ray_y, GREEN);
+		put_pixel(img, ray_x - (data->player->pos.x / square), ray_y - (data->player->pos.y / square), GREEN);
 		ray_y += sin_angle;
 		ray_x += cos_angle;
 	}
@@ -94,7 +94,7 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	ray.y = y_pos;
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
-	while (!touch(ray.x, ray.y, data->map->grid))
+	while (!touch(ray.x, ray.y, data->map->grid, SQUARE))
 	{
 		ray.y += sin_angle;
 		ray.x += cos_angle;
@@ -155,13 +155,30 @@ void cone_of_view(t_data *data)
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
-		draw_ray(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, start);
+		draw_ray(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, start, SQUARE);
 		start += fraction;
 		i++;
 	}
 }
 
-void	draw_mini_map(t_data *data, float x, float y)
+void cone_of_view_mini(t_data *data, float px, float py)
+{
+	float	start;
+	float	fraction;
+	int		i;
+
+	fraction = torad(60) / data->mini_map->img.img_w;
+	start = data->player->angle - torad(60) / 2;
+	i = 0;
+	while (i < data->mini_map->img.img_w)
+	{
+		draw_ray(data->mini_map->img, px, py, start, data->mini_map->img.img_w / data->mini_map->FOV);
+		start += fraction;
+		i++;
+	}
+}
+
+void	draw_mini_map(t_data *data, float x, float y)//N W bug
 {
 	t_coords	p_coord;
 	t_coords	start_p;
@@ -169,31 +186,31 @@ void	draw_mini_map(t_data *data, float x, float y)
 	int			u;
 
 	fill_display(data->mini_map->img, data->mini_map->img.img_w, data->mini_map->img.img_h, BLACK);
-	p_coord.x = data->player->pos.x / SQUARE;
-	p_coord.y = data->player->pos.y / SQUARE;
-	//find player position in x y mode
-	start_p.x = p_coord.x - data->mini_map->FOV / 2;//idk how it works for uneven numbers also needs to add a check that w edon't go bellow 0
-	start_p.y = p_coord.y - data->mini_map->FOV / 2;//same here
-	//find how far we should draw based on FOV
+	p_coord.x = roundf(data->player->pos.x / SQUARE);//might need changes
+	p_coord.y = roundf(data->player->pos.y / SQUARE);
 	i = 0;
 	u = 0;
+	start_p.x = p_coord.x - data->mini_map->FOV / 2;
+	start_p.y = p_coord.y - data->mini_map->FOV / 2;
 	while (u < data->mini_map->FOV)
 	{
 		while (i < data->mini_map->FOV)
 		{
-			printf("%c", data->map->grid[(int)start_p.y + u][(int)start_p.x + i]);
-			// if (data->map->grid[(int)start_p.y + u][(int)start_p.x + i] == '1')
-			// {
-			// 	draw_square(data->mini_map->img, (start_p.x + i) * (data->mini_map->img.img_w / data->mini_map->FOV),
-			// 		(start_p.y + u) * (data->mini_map->img.img_h / data->mini_map->FOV),
-			// 		data->mini_map->img.img_w / data->mini_map->FOV, RED);
-			// }
+			if (((start_p.x + i < data->map->width && start_p.y + u < data->map->height)
+				&& (start_p.x + i >= 0 && start_p.y + u >= 0))
+				&& (data->map->grid[(int)start_p.y + u][(int)start_p.x + i] == '1'))
+			{
+				draw_full_square(data->mini_map->img, i * (data->mini_map->img.img_w / data->mini_map->FOV),
+					u * (data->mini_map->img.img_h / data->mini_map->FOV),
+					data->mini_map->img.img_w / data->mini_map->FOV, RED);	
+			}
 			i++;
 		}
-		printf("\n");
 		i = 0;
 		u++;
 	}
+	draw_square(data->mini_map->img, data->mini_map->img.img_w / 2, data->mini_map->img.img_h / 2, 3, GREEN);//might want to draw the player in the middle middle for accuracy purpose
+	cone_of_view_mini(data, data->mini_map->img.img_w / 2, data->mini_map->img.img_h / 2);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mini_map->img.img, x, y);
 }
 
