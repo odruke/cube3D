@@ -80,27 +80,6 @@ float	fixed_dist(t_data *data, float x, float y, t_coords p2)
 	return (ret_val);
 }
 
-void	get_distance(char ** grid, t_coords *ray, const float cos_angle, const float sin_angle)
-{
-	float	fast;
-	float	precise;
-
-	fast = 1.0f;
-	precise = 0.2f;
-	while (!touch(ray->x, ray->y, grid))
-	{
-		ray->y += sin_angle * fast;
-		ray->x += cos_angle * fast;
-	}
-	ray->y -= sin_angle * fast;
-	ray->x -= cos_angle * fast;
-	while (!touch(ray->x, ray->y, grid))
-	{
-		ray->y += sin_angle * precise;
-		ray->x += cos_angle * precise;
-	}
-}
-
 float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle)
 {
 	/*store original ray position*/
