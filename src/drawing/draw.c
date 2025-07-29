@@ -75,7 +75,7 @@ float	fixed_dist(t_data *data, float x, float y, t_coords p2)
 
 	delta.x = p2.x - x;
 	delta.y = p2.y - y;
-	fixed_angl = (atan2(delta.y, delta.x) + data->player->angle);
+	fixed_angl = (atan2(delta.y, delta.x) - data->player->angle);
 	ret_val = distance(delta.x, delta.y) * cos(fixed_angl);
 	return (ret_val);
 }
@@ -101,89 +101,87 @@ void	get_distance(char ** grid, t_coords *ray, const float cos_angle, const floa
 	}
 }
 
-float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle)
+float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle)
 {
+	/*store original ray position*/
+	float orig_x = ray->x / SQUARE;  // Convert to grid coordinates
+	float orig_y = ray->y / SQUARE;  // Convert to grid coordinates
+
 	/*player pos for the grid*/
 	int map_x = (int)(ray->x / SQUARE);
 	int map_y = (int)(ray->y / SQUARE);
 
 	/*direction of the vector*/
-	float ray_dir_x = cos_angle;
-	float ray_dir_y = sin_angle;
+	// float ray_dir_x = cos_angle;
+	// float ray_dir_y = sin_angle;
 
 
-	float delta_dist_x = fabs(1.0f / ray_dir_x);
-	float delta_dist_y = fabs(1.0f / ray_dir_y);
+	float delta_dist_x = fabs(1.0f / cos_angle);
+	float delta_dist_y = fabs(1.0f / sin_angle);
 
 	int step_x, step_y;
 	float side_dist_x, side_dist_y;
 
-	/*direction and step for the grid. if we go up, y-1, right x+1 and so on*/
-	if (ray_dir_x < 0)
+	/*direction and step for the grid. if we go up, y-1, right x+1 and so on || also gives the delta distance for x and y*/
+	if (cos_angle < 0)
 	{
 		step_x = -1;
-		side_dist_x = ((ray->x / SQUARE) - map_x) * delta_dist_x;
+		side_dist_x = (orig_x - map_x) * delta_dist_x;
 	}
 	else
 	{
 		step_x = 1;
-		side_dist_x = ((map_x + 1.0f) - (ray->x / SQUARE)) * delta_dist_x;
+		side_dist_x = ((map_x + 1.0f) - orig_x) * delta_dist_x;
 	}
-	if (ray_dir_y < 0)
+	if (sin_angle < 0)
 	{
 		step_y = -1;
-		side_dist_y = ((ray->y / SQUARE) - map_y) * delta_dist_y;
+		side_dist_y = (orig_y - map_y) * delta_dist_y;
 	}
 	else
 	{
 		step_y = 1;
-		side_dist_y = ((map_y + 1.0f) - (ray->y / SQUARE)) * delta_dist_y;
+		side_dist_y = ((map_y + 1.0f) - orig_y) * delta_dist_y;
 	}
 
 	/*we chose the shortest distance, meaning the closest intersection*/
 	int hit = 0;
-	while (!hit)
+	int side = 0; // 0 for vertical, 1 for horizontal
+	/*while we haven't hit a wall*/
+	/*we use the side distance to determine which side we hit first*/
+	/*if we hit a wall, we set hit to 1*/
+	/*we also update the ray coordinates for texture mapping if needed*/
+	/*we also update the map_x and map_y for the grid*/
+	/*we also update the ray coordinates for texture mapping if needed*/
+	while (!hit)//?
 	{
 		if (side_dist_x < side_dist_y)
 		{
 			side_dist_x += delta_dist_x;
 			map_x += step_x;
+			side = 0; // vertical hit
 		}
 		else
 		{
 			side_dist_y += delta_dist_y;
 			map_y += step_y;
+			side = 1; // horizontal hit
 		}
 		if (grid[map_y][map_x] == '1')
 			hit = 1;
 	}
-
-// 	if (side_dist_x < side_dist_y)
-// {
-//     // Hit a vertical wall
-//     ray->x = map_x * SQUARE;
-//     if (step_x > 0)
-//         ray->x += SQUARE;
-//     ray->y = ray->y + ((ray->x - ray->x) / cos_angle) * sin_angle;
-// }
-// else
-// {
-//     // Hit a horizontal wall
-//     ray->y = map_y * SQUARE;
-//     if (step_y > 0)
-//         ray->y += SQUARE;
-//     ray->x = ray->x + ((ray->y - ray->y) / sin_angle) * cos_angle;
-// }
-
-	/*once the previous step reaches a wall, this will give the exact distance of the vector*/
-	float perp_wall_dist;
-	if (side_dist_x < side_dist_y)
-		perp_wall_dist = side_dist_x - delta_dist_x;
+	float dist;
+	if (side == 0)
+	{
+		dist = (map_x - orig_x + (1 - step_x) / 2) / cos_angle;
+	}
 	else
-		perp_wall_dist = side_dist_y - delta_dist_y;
-	ray->x = ray->x + (cos_angle * perp_wall_dist);
-	ray->y = ray->y + (sin_angle * perp_wall_dist);
-	return (perp_wall_dist);
+	{
+		dist = (map_y - orig_y + (1 - step_y) / 2) / sin_angle;
+	}
+	// Fish-eye correction: use relative angle
+	dist = dist * cos(angle - data->player->angle) * SQUARE;
+	return (dist);
 }
 
 void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
@@ -201,8 +199,8 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	ray.y = y_pos;
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
-	get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle);
-	dist = fixed_dist(data, x_pos, y_pos, ray);//issue here where sometimes we get a distance bigger than win height
+	dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
+	// dist = fixed_dist(data, x_pos, y_pos, ray);
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
 	else

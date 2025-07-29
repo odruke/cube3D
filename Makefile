@@ -10,7 +10,7 @@ DEBUG ?= 0
 
 # compilator and compilation flags
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g3
 INCLUDES = -I ./include
 LDFLAGS = -L ./libft -L ./mlx
 LDLIBS = -lmlx -lft -lXext -lX11 -lm -lz
