@@ -31,3 +31,13 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line)
 		error_handle(ERR_MALLOC, NULL, file, line);
 	return (res);
 }
+
+void	*safe_xpm_to_img(t_data *data, char *path, int *width, int *height)
+{
+	void	*ret;
+
+	ret = mlx_xpm_file_to_image(data->mlx.mlx_tunnel, path, width, height);
+	if (!ret)
+		error_handle(ERR_TXTUR_OPEN, path, __FILE__, __LINE__);
+	return ret;
+}

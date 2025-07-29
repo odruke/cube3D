@@ -71,7 +71,7 @@ float	get_player_angle(char **grid, t_coords coords)
 	return (-1);
 }
 
-void	init_map(t_camera *player, t_map *map, char *filemap)
+void	init_map(t_data *data, t_camera *player, t_map *map, char *filemap)
 {
 	t_fd	fd;
 	char	**ff_grid;
@@ -84,6 +84,7 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 		error_handle(ERR_LOAD_MAP, filemap, __FILE__, __LINE__);
 	fd.filename = filemap;
 	get_elements(map->elements, fd);
+	get_textures(data, map->elements);
 	map->grid = get_grid(fd);
 	map->height = get_map_height(map->grid);
 	map->width = get_map_width(map->grid);
