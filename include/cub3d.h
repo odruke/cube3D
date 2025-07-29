@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/28 15:58:24 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:21:14 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ typedef struct s_mlx_img
 	int		bpp;
 	int		line;
 	int		endian;
+	int		img_w;
+	int		img_h;
 }	t_mlx_img;
 
 typedef struct s_texture_img
@@ -126,8 +128,8 @@ typedef struct s_texture_img
 	int		bpp;
 	int		line;
 	int		endian;
-	int		height;
-	int		width;
+	int		img_w;
+	int		img_h;
 }	t_texture_img;
 
 typedef struct s_texture
@@ -159,8 +161,6 @@ typedef struct s_map
 
 typedef struct s_mini_map
 {
-	int			width;
-	int			height;
 	float		FOV;
 	t_mlx_img	img;
 }	t_mini_map;
@@ -170,8 +170,6 @@ typedef struct s_mlx
 	void		*mlx_tunnel;
 	void		*window;
 	t_mlx_img	mlx_img;
-	int			w;
-	int			h;
 }	t_mlx;
 
 typedef struct s_data
@@ -248,12 +246,13 @@ int		enter_win(t_data *data);
 
 double	torad(int x);
 int		toangle(double x);
-void	fill_display(t_mlx_img img, int color);
+void	fill_display(t_mlx_img img, int width, int height, int color);
 void	draw_square(t_mlx_img img, int x, int y, int size, int color);
+void	draw_full_square(t_mlx_img img, int x, int y, int size, int color);
 void	put_pixel(t_mlx_img img, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	init_world(t_data *data);
-bool	touch(float x, float y, char **grid);
+bool	touch(float x, float y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
 

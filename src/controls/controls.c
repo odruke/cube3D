@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/28 13:21:14 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/29 11:19:09 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	mouse_move(int x, int y, t_data *data)
 
 int	enter_win(t_data *data)
 {
-	data->mouse->x = data->mlx.w / 2;
-	data->mouse->y = data->mlx.h / 2;
+	data->mouse->x = data->mlx.mlx_img.img_w / 2;
+	data->mouse->y = data->mlx.mlx_img.img_h / 2;
 	mlx_mouse_move(data->mlx.mlx_tunnel, data->mlx.window, data->mouse->x, data->mouse->y);
 	return (0);
 }

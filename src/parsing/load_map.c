@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 17:08:53 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/27 17:08:55 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/07/29 16:05:36 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	init_map(t_camera *player, t_map *map, char *filemap)
 	if (fd.fd < 0)
 		error_handle(ERR_LOAD_MAP, filemap, __FILE__, __LINE__);
 	fd.filename = filemap;
-	//add a function here that checks that any line without elements or grid is \n or space
 	get_elements(map->elements, fd);
 	map->grid = get_grid(fd);
 	map->height = get_map_height(map->grid);

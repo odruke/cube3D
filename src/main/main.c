@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/28 16:27:26 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:09:48 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_texture(t_data *data, t_elements *elements)
 	elements->textures->N_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1, 
 		__FILE__, __LINE__);
 	elements->textures->N_Wall->img = mlx_xpm_file_to_image(data->mlx.mlx_tunnel, elements->path_texture_no,
-		&elements->textures->N_Wall->width, &elements->textures->N_Wall->height);
+		&elements->textures->N_Wall->img_w, &elements->textures->N_Wall->img_h);
 	if (!elements->textures->N_Wall->img)
 		error_handle(ERR_MLX, "Couldnt load texture", __FILE__, __LINE__);
 	elements->textures->N_Wall->pixel_arr = mlx_get_data_addr(elements->textures->N_Wall->img, &elements->textures->N_Wall->bpp, 
@@ -67,26 +67,26 @@ void	init_data(t_data *data, char *filemap)
 	init_elements(data->map->elements);
 	init_map(data->player, data->map, filemap);
 	//different element init
-	data->mlx.w = WIN_WIDTH;
-	data->mlx.h = WIN_HEIGHT;
+	data->mlx.mlx_img.img_w = WIN_WIDTH;
+	data->mlx.mlx_img.img_h = WIN_HEIGHT;
 	data->mouse->sens = 0.5;
-	data->mini_map->FOV = 10;
-	data->mini_map->width = data->mlx.w / 8;
-	data->mini_map->height = data->mlx.w / 8;
+	data->mini_map->FOV = 20;
+	data->mini_map->img.img_w = data->mlx.mlx_img.img_w / 8;
+	data->mini_map->img.img_h = data->mlx.mlx_img.img_w / 8;
 	//variable assigment
 	data->mlx.mlx_tunnel = mlx_init();
 	if (!data->mlx.mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
 	data->mlx.window = mlx_new_window(data->mlx.mlx_tunnel,
-			data->mlx.w, data->mlx.h, "cub3D");
+			data->mlx.mlx_img.img_w, data->mlx.mlx_img.img_h, "cub3D");
 	if (!data->mlx.window)
 		error_handle(ERR_MLX, "new window", __FILE__, __LINE__);
 	data->mlx.mlx_img.img = mlx_new_image(data->mlx.mlx_tunnel,
-		data->mlx.w, data->mlx.h);
+		data->mlx.mlx_img.img_w, data->mlx.mlx_img.img_h);
 	if (!data->mlx.mlx_img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
 	data->mini_map->img.img = mlx_new_image(data->mlx.mlx_tunnel,
-		data->mini_map->width, data->mini_map->height);
+		data->mini_map->img.img_w, data->mini_map->img.img_h);
 	if (!data->mini_map->img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
 	data->mini_map->img.pixel_arr = mlx_get_data_addr(data->mini_map->img.img, &data->mini_map->img.bpp,
