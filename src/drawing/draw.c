@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/28 16:50:18 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/29 11:32:00 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,19 +165,34 @@ void	draw_mini_map(t_data *data, float x, float y)
 {
 	t_coords	p_coord;
 	t_coords	start_p;
+	int			i;
+	int			u;
 
-	fill_display(data->mini_map->img, BLACK);
+	fill_display(data->mini_map->img, data->mini_map->img.img_w, data->mini_map->img.img_h, BLACK);
 	p_coord.x = data->player->pos.x / SQUARE;
 	p_coord.y = data->player->pos.y / SQUARE;
 	//find player position in x y mode
-	start_p.x = p_coord.x - data->mini_map->FOV / 2;//idk how it works for uneven numbers
+	start_p.x = p_coord.x - data->mini_map->FOV / 2;//idk how it works for uneven numbers also needs to add a check that w edon't go bellow 0
 	start_p.y = p_coord.y - data->mini_map->FOV / 2;//same here
 	//find how far we should draw based on FOV
-	while (start_p.x < data->mini_map->width && start_p.y < data->mini_map->height)
+	i = 0;
+	u = 0;
+	while (u < data->mini_map->FOV)
 	{
-		draw_square(data->mini_map->img, start_p.x, start_p.y, data->mini_map->width / data->mini_map->FOV, RED);
-		start_p.x += data->mini_map->width / data->mini_map->FOV;
-		start_p.y += data->mini_map->height / data->mini_map->FOV;
+		while (i < data->mini_map->FOV)
+		{
+			printf("%c", data->map->grid[(int)start_p.y + u][(int)start_p.x + i]);
+			// if (data->map->grid[(int)start_p.y + u][(int)start_p.x + i] == '1')
+			// {
+			// 	draw_square(data->mini_map->img, (start_p.x + i) * (data->mini_map->img.img_w / data->mini_map->FOV),
+			// 		(start_p.y + u) * (data->mini_map->img.img_h / data->mini_map->FOV),
+			// 		data->mini_map->img.img_w / data->mini_map->FOV, RED);
+			// }
+			i++;
+		}
+		printf("\n");
+		i = 0;
+		u++;
 	}
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mini_map->img.img, x, y);
 }
@@ -187,7 +202,7 @@ int	loop_hook(t_data *data)
 	player_movement(data);
 	if (DEBUG)
 	{
-		fill_display(data->mlx.mlx_img, BLACK);
+		fill_display(data->mlx.mlx_img, data->mlx.mlx_img.img_w, data->mlx.mlx_img.img_h, BLACK);
 		draw_map(data);
 		draw_square(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, 5, YELLOW);
 		cone_of_view(data);
@@ -195,7 +210,7 @@ int	loop_hook(t_data *data)
 	else
 		draw_pov(data);
 	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
-	// draw_mini_map(data, data->mlx.w - data->mini_map->width, 0);
+	draw_mini_map(data, data->mlx.mlx_img.img_w - data->mini_map->img.img_w, 0);
 	return (0);
 }
 
