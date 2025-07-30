@@ -69,6 +69,9 @@ typedef enum e_error
 	ERR_MAP_EXT,
 	ERR_MAP_ELEM,
 	ERR_GRID_BAD_ITEM,
+	ERR_TXTUR_OPEN,
+	ERR_TXTUR_EXT,
+	ERR_TXTUR_DIR,
 	ERR_UNKNOWN
 }	t_error;
 
