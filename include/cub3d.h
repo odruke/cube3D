@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/30 17:10:35 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:51:22 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ typedef enum e_error
 
 typedef struct s_coords
 {
-	double	x;
 	double	y;
+	double	x;
 }	t_coords;
 
 typedef struct s_fd
