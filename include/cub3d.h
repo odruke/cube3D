@@ -23,12 +23,16 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <time.h>
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
 # ifndef M_PI
-# define M_PI 3.14159265358979323846
+#  define M_PI 3.14159265358979323846
 # endif
+# define HALF_PI 1.5707963267948966f
+# define THREE_HALF_PI 4.7123889803846899f
+# define TWO_PI 6.2831853071795865f
 # define WIN_WIDTH 1601
 # define WIN_HEIGHT 801
 # define SQUARE 30
@@ -51,6 +55,14 @@
 # define BLACK 0x000000
 # define YELLOW 0xFFFF00
 # define SPEED 1
+
+typedef struct s_fps
+{
+    int         frame_count;
+    clock_t     last_time;
+    float       fps;
+    char        fps_text[32];
+}   t_fps;
 
 typedef enum e_move
 {
@@ -184,6 +196,7 @@ typedef struct s_data
 	t_map		*map;
 	t_mouse		*mouse;
 	t_mini_map	*mini_map;
+	t_fps		*fps;
 }	t_data;
 
 
@@ -273,6 +286,12 @@ void	debug_print_grid(char **grid);
 void	debug_print_texture_path(t_elements *elements);
 void	debug_print_colors(t_elements *elements);
 void	debug_print_player(char **grid, t_camera *player);
+
+/* fps functions */
+
+void	init_fps(t_fps *fps);
+void	update_fps(t_fps *fps);
+void	draw_fps(t_data *data);
 
 
 #endif

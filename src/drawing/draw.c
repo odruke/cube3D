@@ -177,6 +177,8 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	int			end_y;
 	int			u;
 	int			pixel;
+	int			wall_start;
+	int			wall_end;
 
 	ray.x = x_pos;
 	ray.y = y_pos;
@@ -193,17 +195,30 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
 	// u = start_y;
+	// wall_start = (start_y < 0) ? 0 : start_y;
+	if (start_y < 0)
+		wall_start = 0;
+	else
+		wall_start = start_y;
+
+
+	// wall_end = (end_y > WIN_HEIGHT) ? WIN_HEIGHT : end_y;
+	if (end_y > WIN_HEIGHT)
+		wall_end = WIN_HEIGHT;
+	else
+		wall_end = end_y;
+
 	u = 0;
 	while (u <= start_y)//might need ot check for u = 0;
 	{
 		u++;
 		put_pixel(data->mlx->mlx_img, i, u, get_hexa(data->map->elements->c_color));
 	}
-	while (start_y < end_y)
+	while (wall_start < wall_end)
 	{
-		pixel = set_pixel_texture(data->map->elements->textures, height, start_y, angle);
-		put_pixel(data->mlx->mlx_img, i, start_y, pixel);
-		start_y++;
+		pixel = set_pixel_texture(data->map->elements->textures, height, wall_start, angle);
+		put_pixel(data->mlx->mlx_img, i, wall_start, pixel);
+		wall_start++;
 	}
 	u = end_y; //might need to check for u = WIN_HEIGHT
 	while (u <= WIN_HEIGHT)
@@ -302,6 +317,7 @@ void	draw_mini_map(t_data *data, float x, float y)//N W bug
 
 int	loop_hook(t_data *data)
 {
+	update_fps(data->fps);//DELETE THIS BEFORE FINISHING THIS PROJECT
 	player_movement(data);
 	if (DEBUG)
 	{
@@ -314,6 +330,7 @@ int	loop_hook(t_data *data)
 		draw_pov(data);
 	mlx_put_image_to_window(data->mlx->mlx_tunnel, data->mlx->window, data->mlx->mlx_img->img, 0, 0);
 	draw_mini_map(data, data->mlx->mlx_img->img_w - data->mini_map->img.img_w, 0);
+	draw_fps(data);//DELETE THIS FILE BEFORE FINISHING THIS PROJECT
 	return (0);
 }
 

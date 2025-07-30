@@ -70,6 +70,7 @@ void	init_data(t_data *data, char *filemap)
 	data->player = (t_camera *)safe_calloc(sizeof(t_camera), 1, __FILE__, __LINE__);
 	data->mouse = (t_mouse *)safe_calloc(sizeof(t_mouse), 1, __FILE__, __LINE__);
 	data->mini_map = (t_mini_map *)safe_calloc(sizeof(t_mini_map), 1, __FILE__, __LINE__);
+	data->fps = (t_fps *)safe_calloc(sizeof(t_fps), 1, __FILE__, __LINE__);
 	data->mlx = (t_mlx *)safe_calloc(sizeof(t_mlx), 1, __FILE__, __LINE__);
 	data->mlx->mlx_img = (t_mlx_img *)safe_calloc(sizeof(t_mlx_img), 1, __FILE__, __LINE__);
 	data->mlx->mlx_tunnel = mlx_init();
@@ -103,6 +104,7 @@ void	init_data(t_data *data, char *filemap)
 		&data->mini_map->img.line, &data->mini_map->img.endian);
 	mlx_mouse_get_pos(data->mlx->mlx_tunnel, data->mlx->window, &data->mouse->x, &data->mouse->y);
 	set_textures(data, data->map->elements);
+	init_fps(data->fps);
 	//mlx init
 	recover_data_address(data);
 }

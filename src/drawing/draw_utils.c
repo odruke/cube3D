@@ -12,28 +12,47 @@
 
 #include "cub3d.h"
 
-t_texture_img	*get_face(t_texture *textures, float angle, int side)//angle gets to be negative needs to reset
+t_texture_img	*get_face(t_texture *textures, float angle, int side)
 {
+	/*resets the angle after 0 or PI * 2*/
 	while (angle < 0)
-		angle += 2 * M_PI;
-	while (angle >= 2 * M_PI)
-		angle -= 2 * M_PI;
-	if (angle < M_PI && angle > (M_PI / 2) && side)//face south
-		return (textures->s_Wall);
-	else if (angle < M_PI && angle > (M_PI / 2) && !side)//face east
-		return (textures->e_Wall);
-	else if (angle < (M_PI / 2) && angle > 0 && side)//face south
-		return (textures->s_Wall);
-	else if (angle < (M_PI / 2) && angle > 0 && !side)//face west
-		return (textures->w_Wall);
-	else if (angle < (M_PI * 2) && angle > ((3 * M_PI) / 2) && side)//face north
-		return (textures->n_Wall);
-	else if (angle < (M_PI * 2) && angle > ((3 * M_PI) / 2) && !side)//face west
-		return (textures->w_Wall);
-	else if (angle < ((3 * M_PI) / 2) && angle > M_PI && side)//face north
-		return (textures->n_Wall);
-	else if (angle < ((3 * M_PI) / 2) && angle > M_PI && !side)//face east
-		return (textures->e_Wall);
+		angle += TWO_PI;
+	while (angle >= TWO_PI)
+		angle -= TWO_PI;
+	if (side)
+	{
+		if ((angle <= TWO_PI && angle > THREE_HALF_PI)
+			|| (angle <= THREE_HALF_PI && angle > M_PI))//face north
+			return (textures->n_Wall);
+		if ((angle <= M_PI && angle > HALF_PI)
+			|| (angle <= HALF_PI && angle >= 0))//face south
+			return (textures->s_Wall);
+	}
+	else
+	{
+		if ((angle <= M_PI && angle > HALF_PI)
+			|| (angle <= THREE_HALF_PI && angle > M_PI))//face east
+			return (textures->e_Wall);
+		else if ((angle <= HALF_PI && angle >= 0)
+			|| (angle <= TWO_PI && angle > THREE_HALF_PI))//face west
+			return (textures->w_Wall);
+	}
+
+
+	// if (side)  // Vertical walls (NS)
+	// {
+	// 	if (angle >= THREE_HALF_PI || angle < HALF_PI)  // North quadrants
+	// 		return (textures->n_Wall);
+	// 	else  // South quadrants
+	// 		return (textures->s_Wall);
+	// }
+	// else  // Horizontal walls (EW)
+	// {
+	// 	if (angle >= 0 && angle < M_PI)  // East quadrants
+	// 		return (textures->e_Wall);
+	// 	else  // West quadrants
+	// 		return (textures->w_Wall);
+	// }
 	return (NULL);
 }
 

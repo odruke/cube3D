@@ -30,20 +30,20 @@ void	free_textures(t_data *data, t_texture *textures)
 	}
 	if (data->map->elements->textures->s_Wall)
 	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->s_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->s_Wall->img);
 		free(data->map->elements->textures->s_Wall);
 	}
 	if (data->map->elements->textures->e_Wall)
 	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->e_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->e_Wall->img);
 		free(data->map->elements->textures->e_Wall);
 	}
 	if (data->map->elements->textures->w_Wall)
 	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->w_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->w_Wall->img);
 		free(data->map->elements->textures->w_Wall);
 	}
 }
@@ -112,6 +112,8 @@ void	free_data(t_data *data)//CONFIRM THE CORRECT ORDER OF STRUCTURES TO FREE
 			free(data->player);
 		if (data->mouse)
 			free(data->mouse);
+		if (data->fps)
+			free(data->fps);
 		if (data->mini_map)
 			free_minimap(data);
 		if (data->mlx)
