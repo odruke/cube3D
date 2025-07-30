@@ -1,63 +1,103 @@
 #include "cub3d.h"
 
-bool	valid_move(t_map *map, int x, int y)
+bool	valid_move(t_data *data, float x1, float y1, float x2, float y2)
 {
-	char	*valid_pos;
-	char	pos;
+	t_coords	p1;
+	t_coords	d_dist;
+	t_coords	step;
+	t_coords	side_d;
+	float		cos_a;
+	float		sin_a;
+	int			xp1;
+	int			yp1;
 
-	y = y / SQUARE;
-	x = x / SQUARE;
-	if (y < 0 || y > map->height || x < 0 || x > map->width)
-		return (false);
-	valid_pos = "NSWE0";
-	pos = map->grid[y][x];
-	while (*valid_pos)
+	/*store original ray position*/
+	p1.x = x1 / SQUARE;  // Convert to grid coordinates
+	p1.y = y1 / SQUARE;  // Convert to grid coordinates
+	xp1 = (int)(x1 / SQUARE);
+	yp1 = (int)(y1 / SQUARE);
+	cos_a = cos(data->player->angle);
+	sin_a = -sin(data->player->angle);
+	d_dist.x = fabs(1.0f / cos_a);
+	d_dist.y = fabs(1.0f / sin_a);
+
+	/*direction and step for the grid. if we go up, y-1, right x+1 and so on || also gives the delta distance for x and y*/
+	if (cos_a < 0)
 	{
-		if (*valid_pos == pos)
-			return (true);
-		valid_pos++;
+		step.x = -1;
+		side_d.x = (p1.x - xp1) * d_dist.x;
 	}
-	return (false);
+	else
+	{
+		step.x = 1;
+		side_d.x = ((xp1 + 1.0f) - p1.x) * d_dist.x;
+	}
+	if (sin_a < 0)
+	{
+		step.y = -1;
+		side_d.y = (p1.y - yp1) * d_dist.y;
+	}
+	else
+	{
+		step.y = 1;
+		side_d.y = ((yp1 + 1.0f) - p1.y) * d_dist.y;
+	}
+
+	while (xp1 <= x2 / SQUARE && yp1 <= y2 / SQUARE)
+	{
+		if (side_d.x < side_d.y)
+		{
+			side_d.x += d_dist.x;
+			xp1 += step.x;
+		}
+		else
+		{
+			side_d.y += d_dist.y;
+			yp1 += step.y;
+		}
+		if (data->map->grid[yp1][xp1] == '1')
+			return (false);
+	}
+	return (true);
 }
 
-void	calc_pos(t_move move, t_coords *coords,
-	const float *cos_angle, const float *sin_angle)
+void	next_move(t_move move, t_coords *coords,
+	const float cos_angle, const float sin_angle)
 {
 	float	speed;
 
 	speed = 1;
 	if (move == UP)
 	{
-		coords->x += *cos_angle * speed;
-		coords->y += *sin_angle * speed;
+		coords->x += cos_angle * speed;
+		coords->y += sin_angle * speed;
 	}
 	else if (move == DOWN)
 	{
-		coords->x -= *cos_angle * speed;
-		coords->y -= *sin_angle * speed;
+		coords->x -= cos_angle * speed;
+		coords->y -= sin_angle * speed;
 	}
 	else if (move == LEFT)
 	{
-		coords->x += *sin_angle * speed;
-		coords->y -= *cos_angle * speed;
+		coords->x += sin_angle * speed;
+		coords->y -= cos_angle * speed;
 	}
 	else if (move == RIGHT)
 	{
-		coords->x -= *sin_angle * speed;
-		coords->y += *cos_angle * speed;
+		coords->x -= sin_angle * speed;
+		coords->y += cos_angle * speed;
 	}
 }
 
-void	displace(t_move move, t_data *data,
-	const float cos_angle, const float sin_angle)
+void	displace(t_move move, t_data *data, const float cos_angle, const float sin_angle)
 {
 	t_coords	coords;
 
 	coords.x = data->player->pos.x;
 	coords.y = data->player->pos.y;
 
-	calc_pos(move, &coords, &cos_angle, &sin_angle);
-	if (valid_move(data->map, coords.x, coords.y))
+	next_move(move, &coords, cos_angle, sin_angle);
+	if (valid_move(data, data->player->pos.x, data->player->pos.y, coords.x, coords.y))
 	{
 		data->player->pos.x = coords.x;
 		data->player->pos.y = coords.y;

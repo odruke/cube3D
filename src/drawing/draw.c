@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/29 16:25:31 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:00:45 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,6 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
 	dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
-	// dist = fixed_dist(data, x_pos, y_pos, ray);
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
 	else
