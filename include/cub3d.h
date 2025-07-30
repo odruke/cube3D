@@ -141,6 +141,8 @@ typedef struct s_texture
 	t_texture_img	*s_Wall;
 	t_texture_img	*w_Wall;
 	t_texture_img	*e_Wall;
+	int				side;
+	float			wall_hit;
 }	t_texture;
 
 typedef struct s_elements
@@ -194,7 +196,8 @@ t_data	*recover_data_address(t_data *data);
 /* map handeling functions */
 
 void	init_map(t_camera *player, t_map *map, char *filemap);
-void	init_textures(t_data *data, t_elements *elements);
+void	set_textures(t_data *data, t_elements *elements);
+void	alloc_textures(t_texture *textures);
 
 /* parsing helpers and validation functions */
 
@@ -261,6 +264,7 @@ void	init_world(t_data *data);
 bool	touch(double x, double y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
+int		set_pixel_texture(t_texture *textures, float height, int y, float angle);
 
 /* debug functions */
 

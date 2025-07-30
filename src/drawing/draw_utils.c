@@ -12,19 +12,71 @@
 
 #include "cub3d.h"
 
+t_texture_img	*get_face(t_texture *textures, float angle, int side)//angle gets to be negative needs to reset
+{
+	while (angle < 0)
+		angle += 2 * M_PI;
+	while (angle >= 2 * M_PI)
+		angle -= 2 * M_PI;
+	if (angle < M_PI && angle > (M_PI / 2) && side)//face south
+		return (textures->s_Wall);
+	else if (angle < M_PI && angle > (M_PI / 2) && !side)//face east
+		return (textures->e_Wall);
+	else if (angle < (M_PI / 2) && angle > 0 && side)//face south
+		return (textures->s_Wall);
+	else if (angle < (M_PI / 2) && angle > 0 && !side)//face west
+		return (textures->w_Wall);
+	else if (angle < (M_PI * 2) && angle > ((3 * M_PI) / 2) && side)//face north
+		return (textures->n_Wall);
+	else if (angle < (M_PI * 2) && angle > ((3 * M_PI) / 2) && !side)//face west
+		return (textures->w_Wall);
+	else if (angle < ((3 * M_PI) / 2) && angle > M_PI && side)//face north
+		return (textures->n_Wall);
+	else if (angle < ((3 * M_PI) / 2) && angle > M_PI && !side)//face east
+		return (textures->e_Wall);
+	return (NULL);
+}
+
+int		set_pixel_texture(t_texture *textures, float height, int y, float angle)
+{
+	t_texture_img	*face;
+	char			*pos;
+	int				tex_x, tex_y;
+	int				wall_start;
+
+	face = get_face(textures, angle, textures->side);
+	if (!face)
+		error_handle(ERR_UNKNOWN, "Couldn't get face", __FILE__, __LINE__);
+	wall_start = (WIN_HEIGHT - height) / 2;
+
+	tex_x = (int)(textures->wall_hit * face->img_w);
+	if (tex_x >= face->img_w)
+		tex_x = face->img_w - 1;
+	/*this reverses N and E textures, otherwise will be draw sideways*/
+	if (face == textures->n_Wall || face == textures->e_Wall)
+		tex_x = face->img_w - 1 - tex_x;
+
+	// Texture Y coordinate based on wall position
+	tex_y = (y - wall_start) * face->img_h / height;
+
+	// Bounds checking
+	if (tex_y < 0)
+		tex_y = 0;
+	if (tex_y >= face->img_h)
+		tex_y = face->img_h - 1;
+	pos = face->pixel_arr + tex_y * face->line + tex_x * (face->bpp / 8);
+	return (*(int *)pos);
+}
+
 void	put_pixel(t_mlx_img *img, int x, int y, int color)
 {
 	char	*pos;
-    if(x >= img->img_w || y >= img->img_h || x < 0 || y < 0)
-        return;
-    pos = img->pixel_arr + y * img->line + x * (img->bpp / 8);
-    *(int *)pos = color;
+
+	if (x >= img->img_w || y >= img->img_h || x < 0 || y < 0)
+		return ;
+	pos = img->pixel_arr + y * img->line + x * (img->bpp / 8);
+	*(int *)pos = color;
 }
-
-// void	put_texture(t_data data, 	 x, int y, int text)
-// {
-
-// }
 
 void	fill_display(t_mlx_img *img, int width, int height, int color)
 {

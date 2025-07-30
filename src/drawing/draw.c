@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/30 17:14:28 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/30 22:54:01 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,26 +125,25 @@ double	get_distance_dda(char **grid, t_coords *ray, const double cos_angle, cons
 
 	/*we chose the shortest distance, meaning the closest intersection*/
 	int hit = 0;
-	int side = 0; // 0 for vertical, 1 for horizontal
+	//int side = 0;  0 for vertical, 1 for horizontal
 	/*while we haven't hit a wall*/
 	/*we use the side distance to determine which side we hit first*/
 	/*if we hit a wall, we set hit to 1*/
 	/*we also update the ray coordinates for texture mapping if needed*/
 	/*we also update the map_x and map_y for the grid*/
-	/*we also update the ray coordinates for texture mapping if needed*/
 	while (!hit)//?
 	{
 		if (side_dist_x < side_dist_y)
 		{
 			side_dist_x += delta_dist_x;
 			map_x += step_x;
-			side = 0; // vertical hit
+			data->map->elements->textures->side = 0; // vertical hit
 		}
 		else
 		{
 			side_dist_y += delta_dist_y;
 			map_y += step_y;
-			side = 1; // horizontal hit
+			data->map->elements->textures->side = 1; // horizontal hit
 		}
 		if (grid[map_y][map_x] == '1')
 			hit = 1;
@@ -152,10 +151,14 @@ double	get_distance_dda(char **grid, t_coords *ray, const double cos_angle, cons
 	double dist;
 	if (side == 0)
 	{
+		float hit_y = orig_y + ((map_x - orig_x + (1 - step_x) / 2) / cos_angle) * sin_angle;
+		data->map->elements->textures->wall_hit = hit_y - floor(hit_y);
 		dist = (map_x - orig_x + (1 - step_x) / 2) / cos_angle;
 	}
 	else
 	{
+		float hit_x = orig_x + ((map_y - orig_y + (1 - step_y) / 2) / sin_angle) * cos_angle;
+		data->map->elements->textures->wall_hit = hit_x - floor(hit_x);
 		dist = (map_y - orig_y + (1 - step_y) / 2) / sin_angle;
 	}
 	// Fish-eye correction: use relative angle
@@ -173,6 +176,7 @@ void	draw_wall_line(t_data *data, double x_pos, double y_pos, double angle, int 
 	int			start_y;
 	int			end_y;
 	int			u;
+	int			pixel;
 
 	ray.x = x_pos;
 	ray.y = y_pos;
@@ -183,19 +187,21 @@ void	draw_wall_line(t_data *data, double x_pos, double y_pos, double angle, int 
 		height = WIN_HEIGHT;
 	else
 		height = (SQUARE / dist) * (WIN_WIDTH / 2);
-	if (height > WIN_HEIGHT)//temporary fix
-		height = WIN_HEIGHT;
+	// if (height > WIN_HEIGHT)//temporary fix //this causes stretching when close
+	// 	height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
-	u = start_y;
-	while (u >= 0)//might need ot check for u = 0;
+	// u = start_y;
+	u = 0;
+	while (u <= start_y)//might need ot check for u = 0;
 	{
-		u--;
+		u++;
 		put_pixel(data->mlx->mlx_img, i, u, get_hexa(data->map->elements->c_color));
 	}
 	while (start_y < end_y)
 	{
-		put_pixel(data->mlx->mlx_img, i, start_y, BLUE);
+		pixel = set_pixel_texture(data->map->elements->textures, height, start_y, angle);
+		put_pixel(data->mlx->mlx_img, i, start_y, pixel);
 		start_y++;
 	}
 	u = end_y; //might need to check for u = WIN_HEIGHT
