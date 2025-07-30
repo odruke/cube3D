@@ -188,19 +188,20 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 		height = WIN_HEIGHT;
 	else
 		height = (SQUARE / dist) * (WIN_WIDTH / 2);
-	if (height > WIN_HEIGHT)//temporary fix
-		height = WIN_HEIGHT;
+	// if (height > WIN_HEIGHT)//temporary fix //this causes stretching when close
+	// 	height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
-	u = start_y;
-	while (u >= 0)//might need ot check for u = 0;
+	// u = start_y;
+	u = 0;
+	while (u <= start_y)//might need ot check for u = 0;
 	{
-		u--;
+		u++;
 		put_pixel(data->mlx->mlx_img, i, u, get_hexa(data->map->elements->c_color));
 	}
 	while (start_y < end_y)
 	{
-		pixel = set_pixel_texture(data->map->elements->textures, height, start_y,  dist, angle, data->map->elements->textures->side);
+		pixel = set_pixel_texture(data->map->elements->textures, height, start_y, angle);
 		put_pixel(data->mlx->mlx_img, i, start_y, pixel);
 		start_y++;
 	}

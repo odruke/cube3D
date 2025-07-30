@@ -37,19 +37,17 @@ t_texture_img	*get_face(t_texture *textures, float angle, int side)//angle gets 
 	return (NULL);
 }
 
-int		set_pixel_texture(t_texture *textures, float height, int y, float dist, float angle, int side)
+int		set_pixel_texture(t_texture *textures, float height, int y, float angle)
 {
 	t_texture_img	*face;
 	char			*pos;
 	int				tex_x, tex_y;
-	int				wall_height;
 	int				wall_start;
 
-	(void)x;
-	face = get_face(textures, angle, side);
+	face = get_face(textures, angle, textures->side);
 	if (!face)
 		error_handle(ERR_UNKNOWN, "Couldn't get face", __FILE__, __LINE__);
-	wall_start = (WIN_HEIGHT - wall_height) / 2;
+	wall_start = (WIN_HEIGHT - height) / 2;
 
 	tex_x = (int)(textures->wall_hit * face->img_w);
 	if (tex_x >= face->img_w)
@@ -59,7 +57,7 @@ int		set_pixel_texture(t_texture *textures, float height, int y, float dist, flo
 		tex_x = face->img_w - 1 - tex_x;
 
 	// Texture Y coordinate based on wall position
-	tex_y = (y - wall_start) * face->img_h / wall_height;
+	tex_y = (y - wall_start) * face->img_h / height;
 
 	// Bounds checking
 	if (tex_y < 0)

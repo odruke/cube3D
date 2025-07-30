@@ -264,7 +264,7 @@ void	init_world(t_data *data);
 bool	touch(float x, float y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
-int		set_pixel_texture(t_texture *textures, float height, int y, float dist, float angle, int side);
+int		set_pixel_texture(t_texture *textures, float height, int y, float angle);
 
 /* debug functions */
 
