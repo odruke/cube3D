@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/30 15:00:45 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:14:28 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	draw_map(t_data *data)
 	}
 }
 
-void	draw_ray(t_mlx_img *img, float x_pos, float y_pos, float angle, int square)
+void	draw_ray(t_mlx_img *img, double x_pos, double y_pos, double angle, int square)
 {
 	t_data	*data;
-	float	ray_y;
-	float	ray_x;
-	float	cos_angle;
-    float	sin_angle;
+	double	ray_y;
+	double	ray_x;
+	double	cos_angle;
+    double	sin_angle;
 
 	data = recover_data_address(NULL);
 	ray_y = y_pos;
@@ -62,16 +62,16 @@ void	draw_ray(t_mlx_img *img, float x_pos, float y_pos, float angle, int square)
 	}
 }
 
-float	distance(float x, float y)
+double	distance(double x, double y)
 {
 	return (sqrt(x * x + y * y));
 }
 
-float	fixed_dist(t_data *data, float x, float y, t_coords p2)
+double	fixed_dist(t_data *data, double x, double y, t_coords p2)
 {
 	t_coords	delta;
-	float		fixed_angl;
-	float		ret_val;
+	double		fixed_angl;
+	double		ret_val;
 
 	delta.x = p2.x - x;
 	delta.y = p2.y - y;
@@ -80,11 +80,11 @@ float	fixed_dist(t_data *data, float x, float y, t_coords p2)
 	return (ret_val);
 }
 
-float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle)
+double	get_distance_dda(char **grid, t_coords *ray, const double cos_angle, const double sin_angle, t_data *data, double angle)
 {
 	/*store original ray position*/
-	float orig_x = ray->x / SQUARE;  // Convert to grid coordinates
-	float orig_y = ray->y / SQUARE;  // Convert to grid coordinates
+	double orig_x = ray->x / SQUARE;  // Convert to grid coordinates
+	double orig_y = ray->y / SQUARE;  // Convert to grid coordinates
 
 	/*player pos for the grid*/
 	int map_x = (int)(ray->x / SQUARE);
@@ -95,11 +95,11 @@ float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const 
 	// float ray_dir_y = sin_angle;
 
 
-	float delta_dist_x = fabs(1.0f / cos_angle);
-	float delta_dist_y = fabs(1.0f / sin_angle);
+	double delta_dist_x = fabs(1.0f / cos_angle);
+	double delta_dist_y = fabs(1.0f / sin_angle);
 
 	int step_x, step_y;
-	float side_dist_x, side_dist_y;
+	double side_dist_x, side_dist_y;
 
 	/*direction and step for the grid. if we go up, y-1, right x+1 and so on || also gives the delta distance for x and y*/
 	if (cos_angle < 0)
@@ -149,7 +149,7 @@ float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const 
 		if (grid[map_y][map_x] == '1')
 			hit = 1;
 	}
-	float dist;
+	double dist;
 	if (side == 0)
 	{
 		dist = (map_x - orig_x + (1 - step_x) / 2) / cos_angle;
@@ -163,13 +163,13 @@ float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const 
 	return (dist);
 }
 
-void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
+void	draw_wall_line(t_data *data, double x_pos, double y_pos, double angle, int i)
 {
 	t_coords	ray;
-	float		cos_angle;
-    float		sin_angle;
-	float		dist;
-	float		height;
+	double		cos_angle;
+    double		sin_angle;
+	double		dist;
+	double		height;
 	int			start_y;
 	int			end_y;
 	int			u;
@@ -208,8 +208,8 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 
 void	draw_pov(t_data *data)
 {
-	float	start;
-	float	fov_slice;
+	double	start;
+	double	fov_slice;
 	int		i;
 
 	fov_slice = torad(60) / WIN_WIDTH;
@@ -225,8 +225,8 @@ void	draw_pov(t_data *data)
 
 void cone_of_view(t_data *data)
 {
-	float	start;
-	float	fraction;
+	double	start;
+	double	fraction;
 	int	i;
 
 	fraction = torad(60) / WIN_WIDTH;
@@ -240,10 +240,10 @@ void cone_of_view(t_data *data)
 	}
 }
 
-void cone_of_view_mini(t_data *data, float px, float py)
+void cone_of_view_mini(t_data *data, double px, double py)
 {
-	float	start;
-	float	fraction;
+	double	start;
+	double	fraction;
 	int		i;
 
 	fraction = torad(60) / data->mini_map->img.img_w;
@@ -257,7 +257,7 @@ void cone_of_view_mini(t_data *data, float px, float py)
 	}
 }
 
-void	draw_mini_map(t_data *data, float x, float y)//N W bug
+void	draw_mini_map(t_data *data, double x, double y)
 {
 	t_coords	p_coord;
 	t_coords	start_p;

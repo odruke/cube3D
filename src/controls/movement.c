@@ -1,13 +1,13 @@
 #include "cub3d.h"
 
-bool	valid_move(t_data *data, float x1, float y1, float x2, float y2)
+bool	valid_move(t_data *data, double x1, double y1, double x2, double y2)
 {
 	t_coords	p1;
 	t_coords	d_dist;
 	t_coords	step;
 	t_coords	side_d;
-	float		cos_a;
-	float		sin_a;
+	double		cos_a;
+	double		sin_a;
 	int			xp1;
 	int			yp1;
 
@@ -62,7 +62,7 @@ bool	valid_move(t_data *data, float x1, float y1, float x2, float y2)
 }
 
 void	next_move(t_move move, t_coords *coords,
-	const float cos_angle, const float sin_angle)
+	const double cos_angle, const double sin_angle)
 {
 	float	speed;
 
@@ -89,7 +89,7 @@ void	next_move(t_move move, t_coords *coords,
 	}
 }
 
-void	displace(t_move move, t_data *data, const float cos_angle, const float sin_angle)
+void	displace(t_move move, t_data *data, const double cos_angle, const double sin_angle)
 {
 	t_coords	coords;
 
@@ -107,8 +107,8 @@ void	displace(t_move move, t_data *data, const float cos_angle, const float sin_
 void	player_movement(t_data *data)
 {
 	double	angle_speed;
-	float	cos_angle;
-	float	sin_angle;
+	double	cos_angle;
+	double	sin_angle;
 
 	angle_speed = torad(1);
 	if (data->player->left_rotate)

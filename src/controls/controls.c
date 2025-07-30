@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/29 11:19:09 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:10:44 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	mouse_move(int x, int y, t_data *data)
 {
-	float dx;
+	double dx;
 
     (void)y;
 	dx = data->mouse->x - x;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/29 16:21:14 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:10:35 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ typedef enum e_error
 
 typedef struct s_coords
 {
-	float	y;
-	float	x;
+	double	x;
+	double	y;
 }	t_coords;
 
 typedef struct s_fd
@@ -164,7 +164,7 @@ typedef struct s_map
 
 typedef struct s_mini_map
 {
-	float		FOV;
+	int			FOV;
 	t_mlx_img	img;
 }	t_mini_map;
 
@@ -258,7 +258,7 @@ void	draw_full_square(t_mlx_img *img, int x, int y, int size, int color);
 void	put_pixel(t_mlx_img *img, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	init_world(t_data *data);
-bool	touch(float x, float y, char **grid, int square);
+bool	touch(double x, double y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
 

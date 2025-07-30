@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 09:38:08 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/29 16:20:57 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:11:59 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	get_hexa(t_color *color)
 	return ((color->r << 16) | (color->g << 8) | color->b);
 }
 
-bool	touch(float x, float y, char **grid, int square)
+bool	touch(double x, double y, char **grid, int square)
 {
 	int	ymap;
 	int	xmap;

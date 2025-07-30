@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 17:08:53 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/29 16:05:36 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:14:33 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	square_grid(char **grid, int max_x)
 	}
 }
 
-float	get_player_angle(char **grid, t_coords coords)
+double	get_player_angle(char **grid, t_coords coords)
 {
 	if (grid[(int)coords.y][(int)coords.x] == 'N')
 		return (90);
