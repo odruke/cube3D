@@ -34,14 +34,14 @@ void	draw_map(t_data *data)
 		while (i < data->map->width && data->map->grid[u][i])
 		{
 			if ((data->map->grid)[u][i] == '1')
-				draw_square(data->mlx.mlx_img, i * SQUARE, u * SQUARE, SQUARE, WHITE);
+				draw_square(data->mlx->mlx_img, i * SQUARE, u * SQUARE, SQUARE, WHITE);
 			i++;
 		}
 		u++;
 	}
 }
 
-void	draw_ray(t_mlx_img img, float x_pos, float y_pos, float angle, int square)
+void	draw_ray(t_mlx_img *img, float x_pos, float y_pos, float angle, int square)
 {
 	t_data	*data;
 	float	ray_y;
@@ -192,17 +192,17 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	while (u >= 0)//might need ot check for u = 0;
 	{
 		u--;
-		put_pixel(data->mlx.mlx_img, i, u, get_hexa(data->map->elements->c_color));
+		put_pixel(data->mlx->mlx_img, i, u, get_hexa(data->map->elements->c_color));
 	}
 	while (start_y < end_y)
 	{
-		put_pixel(data->mlx.mlx_img, i, start_y, BLUE);
+		put_pixel(data->mlx->mlx_img, i, start_y, BLUE);
 		start_y++;
 	}
 	u = end_y; //might need to check for u = WIN_HEIGHT
 	while (u <= WIN_HEIGHT)
 	{
-		put_pixel(data->mlx.mlx_img, i, u, get_hexa(data->map->elements->f_color));
+		put_pixel(data->mlx->mlx_img, i, u, get_hexa(data->map->elements->f_color));
 		u++;
 	}
 }
@@ -235,7 +235,7 @@ void cone_of_view(t_data *data)
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
-		draw_ray(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, start, SQUARE);
+		draw_ray(data->mlx->mlx_img, data->player->pos.x, data->player->pos.y, start, SQUARE);
 		start += fraction;
 		i++;
 	}
@@ -252,7 +252,7 @@ void cone_of_view_mini(t_data *data, float px, float py)
 	i = 0;
 	while (i < data->mini_map->img.img_w)
 	{
-		draw_ray(data->mini_map->img, px, py, start, data->mini_map->img.img_w / data->mini_map->FOV);
+		draw_ray(&data->mini_map->img, px, py, start, data->mini_map->img.img_w / data->mini_map->FOV);
 		start += fraction;
 		i++;
 	}
@@ -265,7 +265,7 @@ void	draw_mini_map(t_data *data, float x, float y)//N W bug
 	int			i;
 	int			u;
 
-	fill_display(data->mini_map->img, data->mini_map->img.img_w, data->mini_map->img.img_h, BLACK);
+	fill_display(&data->mini_map->img, data->mini_map->img.img_w, data->mini_map->img.img_h, BLACK);
 	p_coord.x = roundf(data->player->pos.x / SQUARE);//might need changes
 	p_coord.y = roundf(data->player->pos.y / SQUARE);
 	i = 0;
@@ -280,7 +280,7 @@ void	draw_mini_map(t_data *data, float x, float y)//N W bug
 				&& (start_p.x + i >= 0 && start_p.y + u >= 0))
 				&& (data->map->grid[(int)start_p.y + u][(int)start_p.x + i] == '1'))
 			{
-				draw_full_square(data->mini_map->img, i * (data->mini_map->img.img_w / data->mini_map->FOV),
+				draw_full_square(&data->mini_map->img, i * (data->mini_map->img.img_w / data->mini_map->FOV),
 					u * (data->mini_map->img.img_h / data->mini_map->FOV),
 					data->mini_map->img.img_w / data->mini_map->FOV, RED);
 			}
@@ -289,9 +289,9 @@ void	draw_mini_map(t_data *data, float x, float y)//N W bug
 		i = 0;
 		u++;
 	}
-	draw_square(data->mini_map->img, data->mini_map->img.img_w / 2, data->mini_map->img.img_h / 2, 3, GREEN);//might want to draw the player in the middle middle for accuracy purpose
+	draw_square(&data->mini_map->img, data->mini_map->img.img_w / 2, data->mini_map->img.img_h / 2, 3, GREEN);//might want to draw the player in the middle middle for accuracy purpose
 	cone_of_view_mini(data, data->mini_map->img.img_w / 2, data->mini_map->img.img_h / 2);
-	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mini_map->img.img, x, y);
+	mlx_put_image_to_window(data->mlx->mlx_tunnel, data->mlx->window, data->mini_map->img.img, x, y);
 }
 
 int	loop_hook(t_data *data)
@@ -299,15 +299,15 @@ int	loop_hook(t_data *data)
 	player_movement(data);
 	if (DEBUG)
 	{
-		fill_display(data->mlx.mlx_img, data->mlx.mlx_img.img_w, data->mlx.mlx_img.img_h, BLACK);
+		fill_display(data->mlx->mlx_img, data->mlx->mlx_img->img_w, data->mlx->mlx_img->img_h, BLACK);
 		draw_map(data);
-		draw_square(data->mlx.mlx_img, data->player->pos.x, data->player->pos.y, 5, YELLOW);
+		draw_square(data->mlx->mlx_img, data->player->pos.x, data->player->pos.y, 5, YELLOW);
 		cone_of_view(data);
 	}
 	else
 		draw_pov(data);
-	mlx_put_image_to_window(data->mlx.mlx_tunnel, data->mlx.window, data->mlx.mlx_img.img, 0, 0);
-	draw_mini_map(data, data->mlx.mlx_img.img_w - data->mini_map->img.img_w, 0);
+	mlx_put_image_to_window(data->mlx->mlx_tunnel, data->mlx->window, data->mlx->mlx_img->img, 0, 0);
+	draw_mini_map(data, data->mlx->mlx_img->img_w - data->mini_map->img.img_w, 0);
 	return (0);
 }
 
@@ -315,7 +315,7 @@ void	init_world(t_data *data)
 {
 	data->player->pos.x *= SQUARE;
 	data->player->pos.y *= SQUARE;
-	data->mlx.mlx_img.pixel_arr = mlx_get_data_addr(data->mlx.mlx_img.img, &data->mlx.mlx_img.bpp
-		, &data->mlx.mlx_img.line, &data->mlx.mlx_img.endian);
+	data->mlx->mlx_img->pixel_arr = mlx_get_data_addr(data->mlx->mlx_img->img, &data->mlx->mlx_img->bpp
+		, &data->mlx->mlx_img->line, &data->mlx->mlx_img->endian);
 }
 

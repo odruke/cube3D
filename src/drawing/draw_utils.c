@@ -12,12 +12,12 @@
 
 #include "cub3d.h"
 
-void	put_pixel(t_mlx_img img, int x, int y, int color)
+void	put_pixel(t_mlx_img *img, int x, int y, int color)
 {
 	char	*pos;
-    if(x >= img.img_w || y >= img.img_h || x < 0 || y < 0)
+    if(x >= img->img_w || y >= img->img_h || x < 0 || y < 0)
         return;
-    pos = img.pixel_arr + y * img.line + x * (img.bpp / 8);
+    pos = img->pixel_arr + y * img->line + x * (img->bpp / 8);
     *(int *)pos = color;
 }
 
@@ -26,7 +26,7 @@ void	put_pixel(t_mlx_img img, int x, int y, int color)
 
 // }
 
-void	fill_display(t_mlx_img img, int width, int height, int color)
+void	fill_display(t_mlx_img *img, int width, int height, int color)
 {
 	int	i;
 	int	u;
@@ -44,7 +44,7 @@ void	fill_display(t_mlx_img img, int width, int height, int color)
 	}
 }
 
-void	draw_full_square(t_mlx_img img, int x, int y, int size, int color)
+void	draw_full_square(t_mlx_img *img, int x, int y, int size, int color)
 {
 	int	i;
 	int	u;
@@ -62,7 +62,7 @@ void	draw_full_square(t_mlx_img img, int x, int y, int size, int color)
 	}
 }
 
-void	draw_square(t_mlx_img img, int x, int y, int size, int color)
+void	draw_square(t_mlx_img *img, int x, int y, int size, int color)
 {
 	int	i;
 	int	u;
