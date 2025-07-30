@@ -101,11 +101,10 @@ void	get_pixel_array(t_texture *textures)
 			&current->line, &current->endian);
 }
 
-void	init_textures(t_data *data, t_elements *elements)
+void	set_textures(t_data *data, t_elements *elements)
 {
 
 	valid_textures(elements);
-	alloc_textures(elements->textures);
 	get_texture_images(data, elements);
 	get_pixel_array(elements->textures);
 

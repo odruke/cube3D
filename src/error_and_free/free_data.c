@@ -24,22 +24,26 @@ void	free_textures(t_data *data, t_texture *textures)
 
 	if (data->map->elements->textures->n_Wall)
 	{
-		mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->n_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
 		free(data->map->elements->textures->n_Wall);
 	}
 	if (data->map->elements->textures->s_Wall)
 	{
-		mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->n_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
 		free(data->map->elements->textures->s_Wall);
 	}
 	if (data->map->elements->textures->e_Wall)
 	{
-		mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->n_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
 		free(data->map->elements->textures->e_Wall);
 	}
 	if (data->map->elements->textures->w_Wall)
 	{
-		mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->n_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
 		free(data->map->elements->textures->w_Wall);
 	}
 }

@@ -20,11 +20,33 @@ t_data	*recover_data_address(t_data *data)
 		stock_data = data;
 	return (stock_data);
 }
+void	init_face(t_texture_img *face_img)
+{
+	face_img->img = NULL;
+	face_img->pixel_arr = NULL;
+	face_img->line = 0;
+	face_img->bpp = 0;
+	face_img->endian = 0;
+	face_img->img_h = 0;
+	face_img->img_w = 0;
+}
+
+void	init_textures(t_texture *textures)
+{
+	alloc_textures(textures);
+	init_face(textures->n_Wall);
+	init_face(textures->s_Wall);
+	init_face(textures->e_Wall);
+	init_face(textures->w_Wall);
+	textures->side = 0;
+}
 void	init_elements(t_elements *elements)
 {
 	elements->c_color = (t_color *)safe_calloc(sizeof(t_color), 1,
 		__FILE__, __LINE__);
 	elements->f_color = (t_color *)safe_calloc(sizeof(t_color), 1,
+		__FILE__, __LINE__);
+	elements->textures = (t_texture *)safe_calloc(sizeof(t_texture), 1,
 		__FILE__, __LINE__);
 	elements->c_color->r = 0;
 	elements->c_color->g = 0;
@@ -36,6 +58,7 @@ void	init_elements(t_elements *elements)
 	elements->path_texture_no = NULL;
 	elements->path_texture_so = NULL;
 	elements->path_texture_we = NULL;
+	init_textures(elements->textures);
 }
 
 void	init_data(t_data *data, char *filemap)
@@ -43,8 +66,6 @@ void	init_data(t_data *data, char *filemap)
 	recover_data_address(data);
 	data->map = (t_map *)safe_calloc(sizeof(t_map), 1, __FILE__, __LINE__);
 	data->map->elements = (t_elements *)safe_calloc(sizeof(t_elements), 1,
-		__FILE__, __LINE__);
-	data->map->elements->textures = (t_texture *)safe_calloc(sizeof(t_texture), 1,
 		__FILE__, __LINE__);
 	data->player = (t_camera *)safe_calloc(sizeof(t_camera), 1, __FILE__, __LINE__);
 	data->mouse = (t_mouse *)safe_calloc(sizeof(t_mouse), 1, __FILE__, __LINE__);
@@ -81,7 +102,7 @@ void	init_data(t_data *data, char *filemap)
 	data->mini_map->img.pixel_arr = mlx_get_data_addr(data->mini_map->img.img, &data->mini_map->img.bpp,
 		&data->mini_map->img.line, &data->mini_map->img.endian);
 	mlx_mouse_get_pos(data->mlx->mlx_tunnel, data->mlx->window, &data->mouse->x, &data->mouse->y);
-	//init_texture(data, data->map->elements);
+	set_textures(data, data->map->elements);
 	//mlx init
 	recover_data_address(data);
 }

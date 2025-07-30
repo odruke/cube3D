@@ -125,37 +125,40 @@ float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const 
 
 	/*we chose the shortest distance, meaning the closest intersection*/
 	int hit = 0;
-	int side = 0; // 0 for vertical, 1 for horizontal
+	//int side = 0;  0 for vertical, 1 for horizontal
 	/*while we haven't hit a wall*/
 	/*we use the side distance to determine which side we hit first*/
 	/*if we hit a wall, we set hit to 1*/
 	/*we also update the ray coordinates for texture mapping if needed*/
 	/*we also update the map_x and map_y for the grid*/
-	/*we also update the ray coordinates for texture mapping if needed*/
 	while (!hit)//?
 	{
 		if (side_dist_x < side_dist_y)
 		{
 			side_dist_x += delta_dist_x;
 			map_x += step_x;
-			side = 0; // vertical hit
+			data->map->elements->textures->side = 0; // vertical hit
 		}
 		else
 		{
 			side_dist_y += delta_dist_y;
 			map_y += step_y;
-			side = 1; // horizontal hit
+			data->map->elements->textures->side = 1; // horizontal hit
 		}
 		if (grid[map_y][map_x] == '1')
 			hit = 1;
 	}
 	float dist;
-	if (side == 0)
+	if (data->map->elements->textures->side == 0)
 	{
+		float hit_y = orig_y + ((map_x - orig_x + (1 - step_x) / 2) / cos_angle) * sin_angle;
+		data->map->elements->textures->wall_hit = hit_y - floor(hit_y);
 		dist = (map_x - orig_x + (1 - step_x) / 2) / cos_angle;
 	}
 	else
 	{
+		float hit_x = orig_x + ((map_y - orig_y + (1 - step_y) / 2) / sin_angle) * cos_angle;
+		data->map->elements->textures->wall_hit = hit_x - floor(hit_x);
 		dist = (map_y - orig_y + (1 - step_y) / 2) / sin_angle;
 	}
 	// Fish-eye correction: use relative angle
@@ -173,6 +176,7 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	int			start_y;
 	int			end_y;
 	int			u;
+	int			pixel;
 
 	ray.x = x_pos;
 	ray.y = y_pos;
@@ -196,7 +200,8 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	}
 	while (start_y < end_y)
 	{
-		put_pixel(data->mlx->mlx_img, i, start_y, BLUE);
+		pixel = set_pixel_texture(data->map->elements->textures, height, start_y,  dist, angle, data->map->elements->textures->side);
+		put_pixel(data->mlx->mlx_img, i, start_y, pixel);
 		start_y++;
 	}
 	u = end_y; //might need to check for u = WIN_HEIGHT
