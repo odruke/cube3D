@@ -107,11 +107,11 @@ typedef struct s_camera
 	t_coords	pos;
 	double		angle;
 	bool		key_up;
-    bool		key_down;
-    bool		key_left;
-    bool		key_right;
-    bool		left_rotate;
-    bool		right_rotate;
+	bool		key_down;
+	bool		key_left;
+	bool		key_right;
+	bool		left_rotate;
+	bool		right_rotate;
 }	t_camera;
 
 typedef struct s_mlx_img
@@ -138,10 +138,10 @@ typedef struct s_texture_img
 
 typedef struct s_texture
 {
-	t_texture_img	*N_Wall;
-	t_texture_img	S_Wall;
-	t_texture_img	W_Wall;
-	t_texture_img	E_Wall;
+	t_texture_img	*n_Wall;
+	t_texture_img	*s_Wall;
+	t_texture_img	*w_Wall;
+	t_texture_img	*e_Wall;
 }	t_texture;
 
 typedef struct s_elements
@@ -173,12 +173,12 @@ typedef struct s_mlx
 {
 	void		*mlx_tunnel;
 	void		*window;
-	t_mlx_img	mlx_img;
+	t_mlx_img	*mlx_img;
 }	t_mlx;
 
 typedef struct s_data
 {
-	t_mlx		mlx;
+	t_mlx		*mlx;
 	t_camera	*player;
 	t_map		*map;
 	t_mouse		*mouse;
@@ -194,7 +194,8 @@ t_data	*recover_data_address(t_data *data);
 
 /* map handeling functions */
 
-void	init_map(t_data *data, t_camera *player, t_map *map, char *filemap);
+void	init_map(t_camera *player, t_map *map, char *filemap);
+void	init_textures(t_data *data, t_elements *elements);
 
 /* parsing helpers and validation functions */
 
@@ -218,7 +219,6 @@ int			str_append_mem(char **s1, char *s2, size_t size2);
 t_coords	valid_grid(char **grid, int y, int x);
 int		get_map_height(char **grid);
 int		get_map_width(char **grid);
-void	get_textures(t_data *data, t_elements *elements);
 
 /* flood fill and helpers */
 
@@ -231,13 +231,14 @@ int		error_handle(t_error error, char *msg, char *file, int line);
 void	free_table(char **table);
 void	free_data(t_data *data);
 int		free_and_exit(t_data *data);
-void	free_list(t_list **list, void (*del)(void *));//?
 
 /* error controled functions */
 
 void	*safe_malloc(size_t bytes, char *file, int line);
 void	*safe_calloc(size_t bytes, size_t size, char *file, int line);
 void	*safe_xpm_to_img(t_data *data, char *path, int *width, int *height);
+void	*safe_mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
+	int *size_line, int *endian);
 
 /*game control functions*/
 
@@ -252,10 +253,10 @@ int		enter_win(t_data *data);
 
 double	torad(int x);
 int		toangle(double x);
-void	fill_display(t_mlx_img img, int width, int height, int color);
-void	draw_square(t_mlx_img img, int x, int y, int size, int color);
-void	draw_full_square(t_mlx_img img, int x, int y, int size, int color);
-void	put_pixel(t_mlx_img img, int x, int y, int color);
+void	fill_display(t_mlx_img *img, int width, int height, int color);
+void	draw_square(t_mlx_img *img, int x, int y, int size, int color);
+void	draw_full_square(t_mlx_img *img, int x, int y, int size, int color);
+void	put_pixel(t_mlx_img *img, int x, int y, int color);
 int		loop_hook(t_data *data);
 void	init_world(t_data *data);
 bool	touch(float x, float y, char **grid, int square);
