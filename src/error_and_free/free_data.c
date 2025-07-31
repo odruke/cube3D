@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:49 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 17:34:41 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 17:44:56 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ static void	free_data(t_data *data)
 
 int	free_and_exit(t_data *data, int exit_code)
 {
+	if (!data)
+		exit(exit_code);
 	free_data(data);
 	if (data->player)
 		free(data->player);
