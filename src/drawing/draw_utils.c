@@ -37,22 +37,6 @@ t_texture_img	*get_face(t_texture *textures, float angle, int side)
 			|| (angle <= TWO_PI && angle > THREE_HALF_PI))//face west
 			return (textures->w_Wall);
 	}
-
-
-	// if (side)  // Vertical walls (NS)
-	// {
-	// 	if (angle >= THREE_HALF_PI || angle < HALF_PI)  // North quadrants
-	// 		return (textures->n_Wall);
-	// 	else  // South quadrants
-	// 		return (textures->s_Wall);
-	// }
-	// else  // Horizontal walls (EW)
-	// {
-	// 	if (angle >= 0 && angle < M_PI)  // East quadrants
-	// 		return (textures->e_Wall);
-	// 	else  // West quadrants
-	// 		return (textures->w_Wall);
-	// }
 	return (NULL);
 }
 

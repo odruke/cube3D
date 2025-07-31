@@ -62,12 +62,12 @@ void	draw_ray(t_mlx_img *img, float x_pos, float y_pos, float angle, int square)
 	}
 }
 
-float	distance(float x, float y)
+float	distance(float x, float y)//obsolete??
 {
 	return (sqrt(x * x + y * y));
 }
 
-float	fixed_dist(t_data *data, float x, float y, t_coords p2)//no more use for this function?
+float	fixed_dist(t_data *data, float x, float y, t_coords p2)//obsolete?
 {
 	t_coords	delta;
 	float		fixed_angl;
@@ -98,8 +98,12 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	ray.y = y_pos;
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
+	/*dda functions*/
+	init_dda_data();
+	set_dda();
+	perform_dda();
 	dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
-	// dist = fixed_dist(data, x_pos, y_pos, ray);
+	/*dda functions*/
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
 	else
@@ -108,15 +112,11 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	// 	height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
-	// u = start_y;
-	// wall_start = (start_y < 0) ? 0 : start_y;
 	if (start_y < 0)
 		wall_start = 0;
 	else
 		wall_start = start_y;
 
-
-	// wall_end = (end_y > WIN_HEIGHT) ? WIN_HEIGHT : end_y;
 	if (end_y > WIN_HEIGHT)
 		wall_end = WIN_HEIGHT;
 	else

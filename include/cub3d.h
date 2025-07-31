@@ -56,13 +56,15 @@
 # define YELLOW 0xFFFF00
 # define SPEED 1
 
+
+
 typedef struct s_fps
 {
-    int         frame_count;
-    clock_t     last_time;
-    float       fps;
-    char        fps_text[32];
-}   t_fps;
+	int			rame_count;
+	clock_t		last_time;
+	float		fps;
+	char		fps_text[32];
+}	t_fps;
 
 typedef enum e_move
 {
