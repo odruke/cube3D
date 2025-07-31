@@ -6,13 +6,13 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 23:39:55 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/31 14:25:54 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 17:32:11 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	init_face(t_data *data, t_texture_img *face_img, char *path)
+static void	init_face(t_data *data, t_mlx_img *face_img, char *path)
 {
 	face_img->img = NULL;
 	face_img->pixel_arr = NULL;
@@ -33,18 +33,18 @@ static void	init_textures(t_elements *elements, t_texture *textures)
 
 	data = recover_data_address(NULL);
 	valid_textures(elements);
-	textures->n_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1,
+	textures->n_wall = (t_mlx_img *)safe_calloc(sizeof(t_mlx_img), 1,
 			__FILE__, __LINE__);
-	textures->s_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1,
+	textures->s_wall = (t_mlx_img *)safe_calloc(sizeof(t_mlx_img), 1,
 			__FILE__, __LINE__);
-	textures->w_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1,
+	textures->w_wall = (t_mlx_img *)safe_calloc(sizeof(t_mlx_img), 1,
 			__FILE__, __LINE__);
-	textures->e_Wall = (t_texture_img *)safe_calloc(sizeof(t_texture_img), 1,
+	textures->e_wall = (t_mlx_img *)safe_calloc(sizeof(t_mlx_img), 1,
 			__FILE__, __LINE__);
-	init_face(data, textures->n_Wall, elements->path_texture_no);
-	init_face(data, textures->s_Wall, elements->path_texture_so);
-	init_face(data, textures->w_Wall, elements->path_texture_we);
-	init_face(data, textures->e_Wall, elements->path_texture_so);
+	init_face(data, textures->n_wall, elements->path_texture_no);
+	init_face(data, textures->s_wall, elements->path_texture_so);
+	init_face(data, textures->w_wall, elements->path_texture_we);
+	init_face(data, textures->e_wall, elements->path_texture_so);
 	textures->side = false;
 	textures->wall_hit = 0;
 }
@@ -78,13 +78,13 @@ void	init_data(t_data *data, char *filemap)
 	data->mlx->mlx_img->img_w = WIN_WIDTH;
 	data->mlx->mlx_img->img_h = WIN_HEIGHT;
 	data->mouse->sens = 0.5;
-	data->mini_map->FOV = 20;
+	data->mini_map->fov = 20;
 	data->mini_map->size = data->mlx->mlx_img->img_w / 8;
 	data->mlx->mlx_tunnel = mlx_init();
 	if (!data->mlx->mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
 	data->mlx->window = mlx_new_window(data->mlx->mlx_tunnel,
-			data->mlx->mlx_img->img_w, data->mlx->mlx_img->img_h, "cub3D");
+			WIN_WIDTH, WIN_HEIGHT, "cub3D");
 	if (!data->mlx->window)
 		error_handle(ERR_MLX, "new window", __FILE__, __LINE__);
 	init_map(data->player, data->map, filemap);

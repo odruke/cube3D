@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:49 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 11:39:21 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 17:34:41 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,29 @@
 static void	free_textures(t_data *data, t_texture *textures)
 {
 
-	if (data->map->elements->textures->n_Wall)
+	if (data->map->elements->textures->n_wall)
 	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
-		free(data->map->elements->textures->n_Wall);
+		if (textures->n_wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_wall->img);
+		free(data->map->elements->textures->n_wall);
 	}
-	if (data->map->elements->textures->s_Wall)
+	if (data->map->elements->textures->s_wall)
 	{
-		if (textures->s_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->s_Wall->img);
-		free(data->map->elements->textures->s_Wall);
+		if (textures->s_wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->s_wall->img);
+		free(data->map->elements->textures->s_wall);
 	}
-	if (data->map->elements->textures->w_Wall)
+	if (data->map->elements->textures->w_wall)
 	{
-		if (textures->w_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->w_Wall->img);
-		free(data->map->elements->textures->w_Wall);
+		if (textures->w_wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->w_wall->img);
+		free(data->map->elements->textures->w_wall);
 	}
-	if (data->map->elements->textures->e_Wall)
+	if (data->map->elements->textures->e_wall)
 	{
-		if (textures->e_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->e_Wall->img);
-		free(data->map->elements->textures->e_Wall);
+		if (textures->e_wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->e_wall->img);
+		free(data->map->elements->textures->e_wall);
 	}
 }
 

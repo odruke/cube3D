@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 14:16:03 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 17:29:31 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
-# define WIN_WIDTH 1601
-# define WIN_HEIGHT 801
+# define WIN_WIDTH 1600
+# define WIN_HEIGHT 800
 # define SQUARE 30
 # define BUFFER_SIZE 50
 # define ESC_KEY 65307
@@ -124,25 +124,14 @@ typedef struct s_mlx_img
 	int		img_h;
 }	t_mlx_img;
 
-typedef struct s_texture_img
-{
-	void	*img;
-	char	*pixel_arr;
-	int		bpp;
-	int		line;
-	int		endian;
-	int		img_w;
-	int		img_h;
-}	t_texture_img;
-
 typedef struct s_texture
 {
-	t_texture_img	*n_Wall;
-	t_texture_img	*s_Wall;
-	t_texture_img	*w_Wall;
-	t_texture_img	*e_Wall;
-	bool			side;
-	float			wall_hit;
+	t_mlx_img	*n_wall;
+	t_mlx_img	*s_wall;
+	t_mlx_img	*w_wall;
+	t_mlx_img	*e_wall;
+	bool		side;
+	float		wall_hit;
 }	t_texture;
 
 typedef struct s_elements
@@ -166,7 +155,7 @@ typedef struct s_map
 
 typedef struct s_mini_map
 {
-	int			FOV;
+	int			fov;
 	t_mlx_img	img;
 	int			size;
 }	t_mini_map;
