@@ -1,18 +1,18 @@
 #include "cub3d.h"
 
-void	init_dda(t_dda *dda, float cos_angle, float sin_angle)
+static void	init_dda(t_dda *dda, float angle)
 {
-	dda->delta_dist_x = fabs(1.0f / cos_angle);
-	dda->delta_dist_y = fabs(1.0f / sin_angle);
 	dda->step_x = 0;
 	dda->step_y = 0;
 	dda->side_dist_x = 0;
 	dda->side_dist_y = 0;
-	dda->cos_angle = cos_angle;
-	dda->sin_angle = sin_angle;
+	dda->cos_angle = cos(angle);
+	dda->sin_angle = -sin(angle);
+	dda->delta_dist_x = fabs(1.0f / dda->cos_angle);
+	dda->delta_dist_y = fabs(1.0f / dda->sin_angle);
 }
 
-void	set_dda(t_dda *dda, t_coords *ray)
+static void	set_dda(t_dda *dda, t_coords *ray)
 {
 	if (dda->cos_angle < 0)
 	{
@@ -41,63 +41,67 @@ void	set_dda(t_dda *dda, t_coords *ray)
 }
 
 
-void	perform_dda(t_data *data, t_dda *dda, t_coords *ray)
+static void	perform_dda(t_data *data, t_dda *dda, t_coords *ray)
 {
 	int	hit;
 
 	dda->map_x = (int)(ray->x / SQUARE);
 	dda->map_y = (int)(ray->y / SQUARE);
 	hit = 0;
-	//int side = 0;  0 for vertical, 1 for horizontal
-	/*while we haven't hit a wall*/
-	/*we use the side distance to determine which side we hit first*/
-	/*if we hit a wall, we set hit to 1*/
-	/*we also update the ray coordinates for texture mapping if needed*/
-	/*we also update the map_x and map_y for the grid*/
 	while (!hit)
 	{
 		if (dda->side_dist_x < dda->side_dist_y)
 		{
 			dda->side_dist_x += dda->delta_dist_x;
 			dda->map_x += dda->step_x;
-			data->map->elements->textures->side = 0; // vertical hit
+			data->map->elements->textures->side = 0;
 		}
 		else
 		{
 			dda->side_dist_y += dda->delta_dist_y;
 			dda->map_y += dda->step_y;
-			data->map->elements->textures->side = 1; // horizontal hit
+			data->map->elements->textures->side = 1;
 		}
 		if (data->map->grid[dda->map_y][dda->map_x] == '1')
 			hit = 1;
 	}
 }
 
-float	get_distance(t_data *data, t_dda *dda, t_coords *ray, float angle)
+float	set_distance(t_data *data, t_dda *dda, t_coords *ray, float angle)
 {
-	float dist;
-	float hit_y;
-	float hit_x;
-	float hit;
+	float	dist;
+	float	hit_y;
+	float	hit_x;
+	float	hit;
 
 
 	if (data->map->elements->textures->side == 0)
 	{
-		hit_y = (ray->y / SQUARE) + ((dda->map_x - (ray->x / SQUARE) + (1 - dda->step_x) / 2) / dda->cos_angle) * dda->sin_angle;
+		hit_y = (ray->y / SQUARE) + ((dda->map_x - (ray->x / SQUARE)
+					+ (1 - dda->step_x) / 2) / dda->cos_angle) * dda->sin_angle;
 		hit = hit_y - floor(hit_y);
-		dist = (dda->map_x - (ray->x / SQUARE) + (1 - dda->step_x) / 2) / dda->cos_angle;
+		dist = (dda->map_x - (ray->x / SQUARE)
+				+ (1 - dda->step_x) / 2) / dda->cos_angle;
 	}
 	else
 	{
-		hit_x = (ray->x / SQUARE) + ((dda->map_y - (ray->y / SQUARE) + (1 - dda->step_y) / 2) / dda->sin_angle) * dda->cos_angle;
+		hit_x = (ray->x / SQUARE) + ((dda->map_y - (ray->y / SQUARE)
+					+ (1 - dda->step_y) / 2) / dda->sin_angle) * dda->cos_angle;
 		hit = hit_x - floor(hit_x);
-		dist = (dda->map_y - (ray->y / SQUARE) + (1 - dda->step_y) / 2) / dda->sin_angle;
+		dist = (dda->map_y - (ray->y / SQUARE)
+				+ (1 - dda->step_y) / 2) / dda->sin_angle;
 	}
 	data->map->elements->textures->wall_hit = hit;
-
-	// Fish-eye correction: use relative angle
 	dist = dist * cos(angle - data->player->angle) * SQUARE;
 	return (dist);
+}
+
+float	get_distance(t_data *data, t_coords *ray, float angle)
+{
+	init_dda(data->dda, angle);
+	set_dda(data->dda, ray);
+	perform_dda(data, data->dda, ray);
+	return (set_distance(data, data->dda, ray, angle));
 }
 
 // float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle)

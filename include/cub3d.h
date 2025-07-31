@@ -293,11 +293,11 @@ bool	touch(float x, float y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
 int		set_pixel_texture(t_texture *textures, float height, int y, float angle);
-float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle);
-void	init_dda(t_dda *dda, float cos_angle, float sin_angle);
-void	set_dda(t_dda *dda, t_coords *ray);
-void	perform_dda(t_data *data, t_dda *dda, t_coords *ray);
-float	get_distance(t_data *data, t_dda *dda, t_coords *ray, float angle);
+// float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle);
+// void	init_dda(t_dda *dda, float angle);
+// void	set_dda(t_dda *dda, t_coords *ray);
+// void	perform_dda(t_data *data, t_dda *dda, t_coords *ray);
+float	get_distance(t_data *data, t_coords *ray, float angle);
 
 /* debug functions */
 

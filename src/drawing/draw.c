@@ -82,9 +82,6 @@ float	fixed_dist(t_data *data, float x, float y, t_coords p2)//obsolete?
 
 void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 {
-	t_coords	ray;
-	float		cos_angle;
-    float		sin_angle;
 	float		dist;
 	float		height;
 	int			start_y;
@@ -94,17 +91,7 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	int			wall_start;
 	int			wall_end;
 
-	ray.x = x_pos;
-	ray.y = y_pos;
-	cos_angle = cos(angle);
-	sin_angle = -sin(angle);
-	/*dda functions*/
-	init_dda(data->dda, cos_angle, sin_angle);
-	set_dda(data->dda, &ray);
-	perform_dda(data, data->dda, &ray);
-	dist = get_distance(data, data->dda, &ray, angle);
-	// dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
-	/*dda functions*/
+	dist = get_distance(data, &(t_coords){y_pos, x_pos}, angle);
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
 	else
@@ -154,7 +141,8 @@ void	draw_pov(t_data *data)
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
-		draw_wall_line(data, data->player->pos.x, data->player->pos.y, start, i);
+		draw_wall_line(data, data->player->pos.x,
+			data->player->pos.y, start, i);
 		start -= fov_slice;
 		i++;
 	}
@@ -164,14 +152,15 @@ void cone_of_view(t_data *data)
 {
 	float	start;
 	float	fraction;
-	int	i;
+	int		i;
 
 	fraction = torad(60) / WIN_WIDTH;
 	start = data->player->angle - torad(60) / 2;
 	i = 0;
 	while (i < WIN_WIDTH)
 	{
-		draw_ray(data->mlx->mlx_img, data->player->pos.x, data->player->pos.y, start, SQUARE);
+		draw_ray(data->mlx->mlx_img, data->player->pos.x,
+			data->player->pos.y, start, SQUARE);
 		start += fraction;
 		i++;
 	}
