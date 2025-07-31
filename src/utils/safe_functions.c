@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:39:43 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 16:45:18 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 22:31:06 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,21 @@ void	*safe_calloc(size_t bytes, size_t size, char *file, int line)
 	return (res);
 }
 
-void	*safe_xpm_to_img(t_data *data, char *path, int *width, int *height)
+void	*safe_xpm_to_img(t_data *data, char *path, t_mlx_img *img)
 {
 	void	*ret;
 
-	ret = mlx_xpm_file_to_image(data->mlx->mlx_tunnel, path, width, height);
+	ret = mlx_xpm_file_to_image(data->mlx->mlx_tunnel, path,
+			&img->img_w, &img->img_h);
 	if (!ret)
 		error_handle(ERR_TXTUR_OPEN, path, __FILE__, __LINE__);
 	return (ret);
 }
 
-void	*safe_mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
+char	*safe_mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
 	int *size_line, int *endian)
 {
-	void	*ret;
+	char	*ret;
 
 	ret = mlx_get_data_addr(img_ptr, bits_per_pixel, size_line,
 			endian);

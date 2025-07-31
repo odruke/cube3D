@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 00:49:52 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/31 17:33:18 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 22:32:40 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static t_mlx_img	*get_face(t_texture *textures, float angle, int side)//angle gets to be negative needs to reset
 {
 	while (angle < 0)
-		angle = torad(360);
+		angle += torad(360);
 	while (angle >= torad(360))
-		angle = 0;
+		angle -= torad(360);
 	if (angle < M_PI && angle > (M_PI / 2) && side)//face south
 		return (textures->s_wall);
 	else if (angle < M_PI && angle > (M_PI / 2) && !side)//face east

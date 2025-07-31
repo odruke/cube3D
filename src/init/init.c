@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 23:39:55 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/31 17:42:23 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 22:30:11 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ static void	init_face(t_data *data, t_mlx_img *face_img, char *path)
 	face_img->endian = 0;
 	face_img->img_h = 0;
 	face_img->img_w = 0;
-	face_img->img = safe_xpm_to_img(data, path,
-			&face_img->img_w, &face_img->img_h);
-	safe_mlx_get_data_addr(face_img->img, &face_img->bpp,
-		&face_img->line, &face_img->endian);
+	face_img->img = safe_xpm_to_img(data, path, face_img);
+	face_img->pixel_arr = safe_mlx_get_data_addr(face_img->img, &face_img->bpp,
+			&face_img->line, &face_img->endian);
 }
 
 static void	init_textures(t_elements *elements, t_texture *textures)
@@ -97,7 +96,7 @@ void	init_data(t_data *data, char *filemap)
 data->mlx->mlx_img->img, &data->mlx->mlx_img->bpp, &data->mlx->mlx_img->line,
 			&data->mlx->mlx_img->endian);
 	data->mini_map->img.img = mlx_new_image(data->mlx->mlx_tunnel,
-			data->mini_map->img.img_w, data->mini_map->img.img_h);
+			data->mini_map->size, data->mini_map->size);
 	if (!data->mini_map->img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
 	data->mini_map->img.pixel_arr = safe_mlx_get_data_addr(\

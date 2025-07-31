@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 17:29:31 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 22:31:32 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,8 +218,8 @@ int			free_and_exit(t_data *data, int exit_code);
 
 void		*safe_malloc(size_t bytes, char *file, int line);
 void		*safe_calloc(size_t bytes, size_t size, char *file, int line);
-void		*safe_xpm_to_img(t_data *data, char *path, int *width, int *height);
-void		*safe_mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
+void		*safe_xpm_to_img(t_data *data, char *path, t_mlx_img *img);
+char		*safe_mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
 				int *size_line, int *endian);
 
 /*game control functions*/
