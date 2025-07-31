@@ -56,11 +56,23 @@
 # define YELLOW 0xFFFF00
 # define SPEED 1
 
-
+typedef struct s_dda
+{
+	int		step_x;
+	int		step_y;
+	float	side_dist_x;
+	float	side_dist_y;
+	float	delta_dist_x;
+	float	delta_dist_y;
+	float	cos_angle;
+	float	sin_angle;
+	int		map_x;
+	int		map_y;
+}	t_dda;
 
 typedef struct s_fps
 {
-	int			rame_count;
+	int			frame_count;
 	clock_t		last_time;
 	float		fps;
 	char		fps_text[32];
@@ -199,6 +211,7 @@ typedef struct s_data
 	t_mouse		*mouse;
 	t_mini_map	*mini_map;
 	t_fps		*fps;
+	t_dda		*dda;
 }	t_data;
 
 
@@ -281,6 +294,10 @@ int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
 int		set_pixel_texture(t_texture *textures, float height, int y, float angle);
 float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle);
+void	init_dda(t_dda *dda, float cos_angle, float sin_angle);
+void	set_dda(t_dda *dda, t_coords *ray);
+void	perform_dda(t_data *data, t_dda *dda, t_coords *ray);
+float	get_distance(t_data *data, t_dda *dda, t_coords *ray, float angle);
 
 /* debug functions */
 

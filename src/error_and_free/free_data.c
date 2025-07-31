@@ -99,6 +99,8 @@ void	free_data(t_data *data)//CONFIRM THE CORRECT ORDER OF STRUCTURES TO FREE
 {
 	if (data)
 	{
+		if (data->dda)
+			free(data->dda);
 		if (data->map)
 		{
 			if (data->map->elements)

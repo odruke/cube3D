@@ -73,6 +73,7 @@ void	init_data(t_data *data, char *filemap)
 	data->fps = (t_fps *)safe_calloc(sizeof(t_fps), 1, __FILE__, __LINE__);
 	data->mlx = (t_mlx *)safe_calloc(sizeof(t_mlx), 1, __FILE__, __LINE__);
 	data->mlx->mlx_img = (t_mlx_img *)safe_calloc(sizeof(t_mlx_img), 1, __FILE__, __LINE__);
+	data->dda = (t_dda *)safe_calloc(sizeof(t_dda), 1, __FILE__, __LINE__);
 	data->mlx->mlx_tunnel = mlx_init();
 	if (!data->mlx->mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);

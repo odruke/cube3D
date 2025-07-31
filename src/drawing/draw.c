@@ -99,10 +99,11 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
 	/*dda functions*/
-	init_dda_data();
-	set_dda();
-	perform_dda();
-	dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
+	init_dda(data->dda, cos_angle, sin_angle);
+	set_dda(data->dda, &ray);
+	perform_dda(data, data->dda, &ray);
+	dist = get_distance(data, data->dda, &ray, angle);
+	// dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
 	/*dda functions*/
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
