@@ -278,6 +278,7 @@ bool	touch(float x, float y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
 int		set_pixel_texture(t_texture *textures, float height, int y, float angle);
+float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle);
 
 /* debug functions */
 
