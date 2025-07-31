@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movement.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/30 23:33:05 by tienshi           #+#    #+#             */
+/*   Updated: 2025/07/31 00:11:11 by tienshi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-bool	valid_move(t_data *data, double x1, double y1, double x2, double y2)
+static bool	is_valid_move(t_data *data, double x1, double y1, double x2, double y2)// not sure it works
 {
 	t_coords	p1;
 	t_coords	d_dist;
@@ -21,7 +33,6 @@ bool	valid_move(t_data *data, double x1, double y1, double x2, double y2)
 	d_dist.x = fabs(1.0f / cos_a);
 	d_dist.y = fabs(1.0f / sin_a);
 
-	/*direction and step for the grid. if we go up, y-1, right x+1 and so on || also gives the delta distance for x and y*/
 	if (cos_a < 0)
 	{
 		step.x = -1;
@@ -61,7 +72,7 @@ bool	valid_move(t_data *data, double x1, double y1, double x2, double y2)
 	return (true);
 }
 
-void	next_move(t_move move, t_coords *coords,
+static void	next_move(t_move move, t_coords *coords,
 	const double cos_angle, const double sin_angle)
 {
 	float	speed;
@@ -89,7 +100,7 @@ void	next_move(t_move move, t_coords *coords,
 	}
 }
 
-void	displace(t_move move, t_data *data, const double cos_angle, const double sin_angle)
+static void	move(t_move move, t_data *data, double cos_angle, double sin_angle)
 {
 	t_coords	coords;
 
@@ -97,7 +108,8 @@ void	displace(t_move move, t_data *data, const double cos_angle, const double si
 	coords.y = data->player->pos.y;
 
 	next_move(move, &coords, cos_angle, sin_angle);
-	if (valid_move(data, data->player->pos.x, data->player->pos.y, coords.x, coords.y))
+	if (is_valid_move(data, data->player->pos.x, data->player->pos.y,
+			coords.x, coords.y))
 	{
 		data->player->pos.x = coords.x;
 		data->player->pos.y = coords.y;
@@ -123,11 +135,11 @@ void	player_movement(t_data *data)
 	sin_angle = -sin(data->player->angle);
 
 	if (data->player->key_up)
-		displace(UP, data, cos_angle, sin_angle);
+		move(UP, data, cos_angle, sin_angle);
 	if (data->player->key_down)
-		displace(DOWN, data, cos_angle, sin_angle);
+		move(DOWN, data, cos_angle, sin_angle);
 	if (data->player->key_left)
-		displace(LEFT, data, cos_angle, sin_angle);
+		move(LEFT, data, cos_angle, sin_angle);
 	if (data->player->key_right)
-		displace(RIGHT, data, cos_angle, sin_angle);
+		move(RIGHT, data, cos_angle, sin_angle);
 }

@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:49 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/28 14:01:45 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:39:21 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	free_map(t_map *map)
-{
-	if (map->grid)
-		free_table(map->grid);
-	free(map);
-}
-
-void	free_textures(t_data *data, t_texture *textures)
+static void	free_textures(t_data *data, t_texture *textures)
 {
 
 	if (data->map->elements->textures->n_Wall)
@@ -30,25 +23,25 @@ void	free_textures(t_data *data, t_texture *textures)
 	}
 	if (data->map->elements->textures->s_Wall)
 	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->s_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->s_Wall->img);
 		free(data->map->elements->textures->s_Wall);
-	}
-	if (data->map->elements->textures->e_Wall)
-	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
-		free(data->map->elements->textures->e_Wall);
 	}
 	if (data->map->elements->textures->w_Wall)
 	{
-		if (textures->n_Wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->n_Wall->img);
+		if (textures->w_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->w_Wall->img);
 		free(data->map->elements->textures->w_Wall);
+	}
+	if (data->map->elements->textures->e_Wall)
+	{
+		if (textures->e_Wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->e_Wall->img);
+		free(data->map->elements->textures->e_Wall);
 	}
 }
 
-void	free_elements(t_data *data, t_elements *elements)
+static void	free_elements(t_data *data, t_elements *elements)
 {
 	if (elements->path_texture_ea)
 		free(elements->path_texture_ea);
@@ -69,16 +62,7 @@ void	free_elements(t_data *data, t_elements *elements)
 	}
 }
 
-
-
-void	free_minimap(t_data *data)
-{
-	if (data->mini_map->img.img)
-		mlx_destroy_image(data->mlx->mlx_tunnel, data->mini_map->img.img);
-	free(data->mini_map);
-}
-
-void	free_mlx(t_data *data)
+static void	free_mlx(t_data *data)
 {
 	if (data->mlx->mlx_img)
 	{
@@ -95,37 +79,41 @@ void	free_mlx(t_data *data)
 	}
 }
 
-void	free_data(t_data *data)//CONFIRM THE CORRECT ORDER OF STRUCTURES TO FREE
+static void	free_data(t_data *data)
 {
-	if (data)
+	if (data->map)
 	{
-		if (data->map)
+		if (data->map->elements)
 		{
-			if (data->map->elements)
-			{
-				free_elements(data, data->map->elements);
-				free(data->map->elements);
-			}
-			free_map(data->map);
+			free_elements(data, data->map->elements);
+			free(data->map->elements);
 		}
-		if (data->player)
-			free(data->player);
-		if (data->mouse)
-			free(data->mouse);
-		if (data->mini_map)
-			free_minimap(data);
-		if (data->mlx)
-		{
-			free_mlx(data);
-			free(data->mlx);
-		}
-		free(data);
+		if (data->map->grid)
+			free_table(data->map->grid);
+		free(data->map);
 	}
-	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");
+	if (data->mini_map)
+	{
+		if (data->mini_map->img.img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, data->mini_map->img.img);
+		free(data->mini_map);
+	}
+	if (data->mlx)
+	{
+		free_mlx(data);
+		free(data->mlx);
+	}
 }
 
-int	free_and_exit(t_data *data)
+
+int	free_and_exit(t_data *data, int exit_code)
 {
 	free_data(data);
-	exit(EXIT_SUCCESS);
+	if (data->player)
+		free(data->player);
+	if (data->mouse)
+		free(data->mouse);
+	free(data);
+	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");
+	exit(exit_code);
 }

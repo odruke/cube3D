@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/30 17:10:44 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/07/31 14:04:07 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int	mouse_move(int x, int y, t_data *data)
 {
-	double dx;
+	double	dx;
 
-    (void)y;
 	dx = data->mouse->x - x;
 	if (dx > 0)
 	{
@@ -24,9 +23,10 @@ int	mouse_move(int x, int y, t_data *data)
 	}
 	else if (dx < 0)
 	{
-		data->player->angle += torad(dx) * data->mouse->sens;//+ because it would be negative
+		data->player->angle += torad(dx) * data->mouse->sens;
 	}
 	data->mouse->x = x;
+	data->mouse->y = y;
 	return (0);
 }
 
@@ -34,14 +34,15 @@ int	enter_win(t_data *data)
 {
 	data->mouse->x = data->mlx->mlx_img->img_w / 2;
 	data->mouse->y = data->mlx->mlx_img->img_h / 2;
-	mlx_mouse_move(data->mlx->mlx_tunnel, data->mlx->window, data->mouse->x, data->mouse->y);
+	mlx_mouse_move(data->mlx->mlx_tunnel, data->mlx->window,
+		data->mouse->x, data->mouse->y);
 	return (0);
 }
 
 int	handle_keypress(int keycode, t_data *data)
 {
 	if (keycode == ESC_KEY)
-		free_and_exit(data);
+		free_and_exit(data, EXIT_SUCCESS);
 	else if (keycode == UP_KEY_W)
 		data->player->key_up = true;
 	else if (keycode == DOWN_KEY_S)

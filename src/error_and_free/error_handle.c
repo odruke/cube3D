@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   error_handle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:38:25 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/11 14:07:48 by stripet          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:40:23 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-const char	*err_str_format(t_error error)
+static const char	*err_str_format(t_error error)
 {
 	static char	*errstr_tab[ERR_UNKNOWN + 1];
 
@@ -30,7 +30,7 @@ const char	*err_str_format(t_error error)
 	return (errstr_tab[error]);
 }
 
-const char	*debug_err_str_format(t_error error)
+static const char	*debug_err_str_format(t_error error)
 {
 	static char	*errstr_tab[ERR_UNKNOWN + 1];
 
@@ -69,6 +69,6 @@ int	error_handle(t_error error, char *msg, char *file, int line)
 		printf(err_str, file, line);
 	else
 		printf(err_str, msg, file, line);
-	free_data(data);
-	exit(EXIT_FAILURE);
+	free_and_exit(data, EXIT_FAILURE);
+	return (-42);
 }
