@@ -165,6 +165,33 @@ void	calc_pos(t_move move, t_coords *coords,
 	}
 }
 
+void	sliding_move(t_data *data, t_coords *original_pos, t_coords *new_pos)
+{
+	t_coords	x_only;
+	t_coords	y_only;
+
+	if (fabs(new_pos->x - original_pos->x) > 0.1f && fabs(new_pos->y - original_pos->y) > 0.1f)
+	{
+		// Try X-only movement (wall sliding)
+		x_only = *original_pos;
+		x_only.x = new_pos->x;
+		if (validate_move_with_radius(data, x_only))
+		{
+			data->player->pos = x_only;
+			return;
+		}
+
+		// Try Y-only movement (wall sliding)
+		y_only = *original_pos;
+		y_only.y = new_pos->y;
+		if (validate_move_with_radius(data, y_only))
+		{
+			data->player->pos = y_only;
+			return;
+		}
+	}
+}
+
 /**
  * Enhanced movement with wall sliding using DDA collision detection
  */
@@ -173,36 +200,13 @@ void	enhanced_displace(t_move move, t_data *data,
 {
 	t_coords	new_pos;
 	t_coords	original_pos;
-	t_coords	x_only;
-	t_coords	y_only;
-	// float		speed;
-	float		dx, dy;
+	// t_coords	x_only;
+	// t_coords	y_only;
 
-	// speed = get_speed();
+
 	original_pos = data->player->pos;
 	new_pos = original_pos;
 
-	// Calculate intended movement
-	// if (move == UP)
-	// {
-	// 	new_pos.x += cos_angle * speed;
-	// 	new_pos.y += sin_angle * speed;
-	// }
-	// else if (move == DOWN)
-	// {
-	// 	new_pos.x -= cos_angle * speed;
-	// 	new_pos.y -= sin_angle * speed;
-	// }
-	// else if (move == LEFT)
-	// {
-	// 	new_pos.x += sin_angle * speed;
-	// 	new_pos.y -= cos_angle * speed;
-	// }
-	// else if (move == RIGHT)
-	// {
-	// 	new_pos.x -= sin_angle * speed;
-	// 	new_pos.y += cos_angle * speed;
-	// }
 	calc_pos(move, &new_pos, &cos_angle, &sin_angle);
 	// Try full movement first
 	if (validate_move_with_radius(data, new_pos))
@@ -212,31 +216,12 @@ void	enhanced_displace(t_move move, t_data *data,
 	}
 
 	// Calculate movement deltas
-	dx = new_pos.x - original_pos.x;
-	dy = new_pos.y - original_pos.y;
+
 
 	// Only try sliding if there's significant movement in both directions
 	// This prevents unwanted sliding when moving directly into a wall
-	if (fabs(dx) > 0.1f && fabs(dy) > 0.1f)
-	{
-		// Try X-only movement (wall sliding)
-		x_only = original_pos;
-		x_only.x = new_pos.x;
-		if (validate_move_with_radius(data, x_only))
-		{
-			data->player->pos = x_only;
-			return;
-		}
+	sliding_move(data, &original_pos, &new_pos);
 
-		// Try Y-only movement (wall sliding)
-		y_only = original_pos;
-		y_only.y = new_pos.y;
-		if (validate_move_with_radius(data, y_only))
-		{
-			data->player->pos = y_only;
-			return;
-		}
-	}
 
 	// No movement possible - stay in place
 }
@@ -303,34 +288,6 @@ float	get_speed(void)
 		return (RUN);
 	return (WALK);
 }
-
-// void	calc_pos(t_move move, t_coords *coords,
-// 	const float *cos_angle, const float *sin_angle)
-// {
-// 	float	speed;
-
-// 	speed = get_speed();
-// 	if (move == UP)
-// 	{
-// 		coords->x += *cos_angle * speed;
-// 		coords->y += *sin_angle * speed;
-// 	}
-// 	else if (move == DOWN)
-// 	{
-// 		coords->x -= *cos_angle * speed;
-// 		coords->y -= *sin_angle * speed;
-// 	}
-// 	else if (move == LEFT)
-// 	{
-// 		coords->x += *sin_angle * speed;
-// 		coords->y -= *cos_angle * speed;
-// 	}
-// 	else if (move == RIGHT)
-// 	{
-// 		coords->x -= *sin_angle * speed;
-// 		coords->y += *cos_angle * speed;
-// 	}
-// }
 
 void	displace(t_move move, t_data *data,
 	const float cos_angle, const float sin_angle)
