@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 23:39:55 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/31 22:30:11 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/01 09:21:52 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void	init_textures(t_elements *elements, t_texture *textures)
 	init_face(data, textures->n_wall, elements->path_texture_no);
 	init_face(data, textures->s_wall, elements->path_texture_so);
 	init_face(data, textures->w_wall, elements->path_texture_we);
-	init_face(data, textures->e_wall, elements->path_texture_so);
-	textures->side = false;
+	init_face(data, textures->e_wall, elements->path_texture_ea);
+	textures->side = 0;
 	textures->wall_hit = 0;
 }
 
@@ -78,7 +78,8 @@ void	init_data(t_data *data, char *filemap)
 	data->mlx->mlx_img->img_h = WIN_HEIGHT;
 	data->mouse->sens = 0.5;
 	data->mini_map->fov = 20;
-	data->mini_map->size = data->mlx->mlx_img->img_w / 8;
+	data->mini_map->img.img_w = data->mlx->mlx_img->img_w / 6;
+	data->mini_map->img.img_h = data->mini_map->img.img_w;
 	data->mlx->mlx_tunnel = mlx_init();
 	if (!data->mlx->mlx_tunnel)
 		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
@@ -96,7 +97,7 @@ void	init_data(t_data *data, char *filemap)
 data->mlx->mlx_img->img, &data->mlx->mlx_img->bpp, &data->mlx->mlx_img->line,
 			&data->mlx->mlx_img->endian);
 	data->mini_map->img.img = mlx_new_image(data->mlx->mlx_tunnel,
-			data->mini_map->size, data->mini_map->size);
+			data->mini_map->img.img_w, data->mini_map->img.img_h);
 	if (!data->mini_map->img.img)
 		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
 	data->mini_map->img.pixel_arr = safe_mlx_get_data_addr(\

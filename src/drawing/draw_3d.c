@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/31 22:24:00 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/01 09:07:27 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ int	loop_hook(t_data *data)
 		draw_pov(data);
 	mlx_put_image_to_window(data->mlx->mlx_tunnel,
 		data->mlx->window, data->mlx->mlx_img->img, 0, 0);
-	draw_mini_map(data, data->mlx->mlx_img->img_w -\
-data->mini_map->size, 0);
+	draw_mini_map(data, data->mlx->mlx_img->img_w - \
+data->mini_map->img.img_w, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 01:07:11 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/31 17:32:48 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/01 09:01:21 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	draw_mini_map(t_data *data, double x, double y)
 	start_p.x = p_coord.x - data->mini_map->fov / 2;
 	start_p.y = p_coord.y - data->mini_map->fov / 2;
 	draw_walls(data, &start_p);
-	draw_square(&data->mini_map->img, (data->mini_map->img.img_w / 2) - 2
-		, (data->mini_map->img.img_h / 2) - 2, 2);
+	draw_square(&data->mini_map->img, (data->mini_map->img.img_w / 2) - 1,
+		(data->mini_map->img.img_h / 2) - 1, 2);
 	mlx_put_image_to_window(data->mlx->mlx_tunnel, data->mlx->window,
 		data->mini_map->img.img, x, y);
 }

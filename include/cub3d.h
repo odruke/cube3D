@@ -6,7 +6,7 @@
 /*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 22:31:32 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/01 08:34:58 by tienshi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ typedef struct s_mini_map
 {
 	int			fov;
 	t_mlx_img	img;
-	int			size;
 }	t_mini_map;
 
 typedef struct s_mlx
