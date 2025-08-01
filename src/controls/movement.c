@@ -20,12 +20,22 @@ bool	valid_move(t_map *map, int x, int y)
 	return (false);
 }
 
+float	get_speed(void)
+{
+	t_data	*data;
+
+	data = recover_data_address(NULL);
+	if (data->player->boost)
+		return (RUN);
+	return (WALK);
+}
+
 void	calc_pos(t_move move, t_coords *coords,
 	const float *cos_angle, const float *sin_angle)
 {
 	float	speed;
 
-	speed = 1;
+	speed = get_speed();
 	if (move == UP)
 	{
 		coords->x += *cos_angle * speed;

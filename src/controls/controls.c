@@ -54,6 +54,8 @@ int	handle_keypress(int keycode, t_data *data)
 		data->player->left_rotate = true;
 	else if (keycode == RIGHT_ARROW)
 		data->player->right_rotate = true;
+	else if (keycode == LEFT_SHIFT)
+		data->player->boost = true;
 	else if (keycode == UP_ARROW)
 	{
 		if (data->mouse->sens < 2)
@@ -81,5 +83,7 @@ int	handle_keyrelease(int keycode, t_data *data)
 		data->player->left_rotate = false;
 	else if (keycode == RIGHT_ARROW)
 		data->player->right_rotate = false;
+	else if (keycode == LEFT_SHIFT)
+		data->player->boost = false;
 	return (0);
 }

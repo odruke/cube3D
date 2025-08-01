@@ -48,13 +48,15 @@
 # define DOWN_ARROW 65364
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
+# define LEFT_SHIFT   65505
 # define RED 0xFF0000
 # define GREEN 0x00FF00
 # define BLUE 0x0000FF
 # define WHITE 0xFFFFFF
 # define BLACK 0x000000
 # define YELLOW 0xFFFF00
-# define SPEED 1
+# define WALK 1
+# define RUN 2.5
 
 typedef struct s_dda
 {
@@ -137,6 +139,7 @@ typedef struct s_camera
 	bool		key_right;
 	bool		left_rotate;
 	bool		right_rotate;
+	bool		boost;
 }	t_camera;
 
 typedef struct s_mlx_img
@@ -293,10 +296,6 @@ bool	touch(float x, float y, char **grid, int square);
 int		get_hexa(t_color *color);
 void	draw_pov(t_data *data);
 int		set_pixel_texture(t_texture *textures, float height, int y, float angle);
-// float	get_distance_dda(char **grid, t_coords *ray, const float cos_angle, const float sin_angle, t_data *data, float angle);
-// void	init_dda(t_dda *dda, float angle);
-// void	set_dda(t_dda *dda, t_coords *ray);
-// void	perform_dda(t_data *data, t_dda *dda, t_coords *ray);
 float	get_distance(t_data *data, t_coords *ray, float angle);
 
 /* debug functions */
