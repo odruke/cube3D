@@ -1,6 +1,5 @@
 #include "cub3d.h"
-
-static void	init_dda(t_dda *dda, float angle)
+void	init_dda(t_dda *dda, float angle)
 {
 	dda->step_x = 0;
 	dda->step_y = 0;
@@ -12,7 +11,7 @@ static void	init_dda(t_dda *dda, float angle)
 	dda->delta_dist_y = fabs(1.0f / dda->sin_angle);
 }
 
-static void	set_dda(t_dda *dda, t_coords *ray)
+void	set_dda(t_dda *dda, t_coords *ray)
 {
 	if (dda->cos_angle < 0)
 	{
