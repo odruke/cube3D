@@ -284,12 +284,8 @@ int		enter_win(t_data *data);
 /* movement helper functions */
 
 float	get_speed(void);
-bool	dda_point_valid(t_map *map, t_coords point);
-float	perform_dda_with_distance(t_map *map, t_dda *dda, t_coords *ray, float max_distance);
-bool	dda_valid_move(t_map *map, t_coords from, t_coords to);
+bool	point_valid(t_map *map, t_coords point);
 bool	validate_move_with_radius(t_data *data, t_coords new_pos);
-void	enhanced_displace(t_move move, t_data *data, const float cos_angle, const float sin_angle);
-void	enhanced_player_movement(t_data *data);
 
 
 /*on-screen printing functions*/
