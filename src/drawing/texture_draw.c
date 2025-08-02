@@ -12,32 +12,34 @@
 
 #include "cub3d.h"
 
-static t_mlx_img	*get_face(t_texture *textures, float angle, int side)//angle gets to be negative needs to reset
+static t_mlx_img	*get_face(t_texture *textures, float angle, int side)//import new version from original file
 {
 	while (angle < 0)
-		angle += torad(360);
-	while (angle >= torad(360))
-		angle -= torad(360);
-	if (angle < M_PI && angle > (M_PI / 2) && side)//face south
-		return (textures->s_wall);
-	else if (angle < M_PI && angle > (M_PI / 2) && !side)//face east
-		return (textures->e_wall);
-	else if (angle < (M_PI / 2) && angle > 0 && side)//face south
-		return (textures->s_wall);
-	else if (angle < (M_PI / 2) && angle > 0 && !side)//face west
-		return (textures->w_wall);
-	else if (angle < (M_PI * 2) && angle > ((3 * M_PI) / 2) && side)//face north
-		return (textures->n_wall);
-	else if (angle < (M_PI * 2) && angle > ((3 * M_PI) / 2) && !side)//face west
-		return (textures->w_wall);
-	else if (angle < ((3 * M_PI) / 2) && angle > M_PI && side)//face north
-		return (textures->n_wall);
-	else if (angle < ((3 * M_PI) / 2) && angle > M_PI && !side)//face east
-		return (textures->e_wall);
+		angle += TWO_PI;
+	while (angle >= TWO_PI)
+		angle -= TWO_PI;
+	if (side)
+	{
+		if ((angle <= TWO_PI && angle > THREE_HALF_PI)
+			|| (angle <= THREE_HALF_PI && angle > M_PI))
+			return (textures->n_wall);
+		if ((angle <= M_PI && angle > HALF_PI)
+			|| (angle <= HALF_PI && angle >= 0))
+			return (textures->s_wall);
+	}
+	else
+	{
+		if ((angle <= M_PI && angle > HALF_PI)
+			|| (angle <= THREE_HALF_PI && angle > M_PI))
+			return (textures->e_wall);
+		else if ((angle <= HALF_PI && angle >= 0)
+			|| (angle <= TWO_PI && angle > THREE_HALF_PI))
+			return (textures->w_wall);
+	}
 	return (NULL);
 }
 
-int	set_pixel_texture(t_texture *textures, float height, int y, float angle)
+int	set_pixel_texture(t_texture *textures, float height, int y, float angle)//erase this from original file
 {
 	t_mlx_img	*face;
 	char			*pos;

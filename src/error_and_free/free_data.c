@@ -29,15 +29,15 @@ static void	free_textures(t_data *data, t_texture *textures)
 	}
 	if (data->map->elements->textures->w_wall)
 	{
-		if (textures->w_wall->img)
-			mlx_destroy_image(data->mlx->mlx_tunnel, textures->w_wall->img);
-		free(data->map->elements->textures->w_wall);
-	}
-	if (data->map->elements->textures->e_wall)
-	{
 		if (textures->e_wall->img)
 			mlx_destroy_image(data->mlx->mlx_tunnel, textures->e_wall->img);
 		free(data->map->elements->textures->e_wall);
+	}
+	if (data->map->elements->textures->e_wall)
+	{
+		if (textures->w_wall->img)
+			mlx_destroy_image(data->mlx->mlx_tunnel, textures->w_wall->img);
+		free(data->map->elements->textures->w_wall);
 	}
 }
 

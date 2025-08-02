@@ -157,23 +157,26 @@ double	get_distance_dda(char **grid, t_coords *ray, const double cos_angle, cons
 	return (dist);
 }
 
-void	draw_wall_line(t_data *data, double x_pos, double y_pos, double angle, int i)
+void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 {
 	t_coords	ray;
-	double		cos_angle;
-    double		sin_angle;
-	double		dist;
-	double		height;
+	float		cos_angle;
+    float		sin_angle;
+	float		dist;
+	float		height;
 	int			start_y;
 	int			end_y;
 	int			u;
 	int			pixel;
+	int			wall_start;
+	int			wall_end;
 
 	ray.x = x_pos;
 	ray.y = y_pos;
 	cos_angle = cos(angle);
 	sin_angle = -sin(angle);
 	dist = get_distance_dda(data->map->grid, &ray, cos_angle, sin_angle, data, angle);
+	// dist = fixed_dist(data, x_pos, y_pos, ray);
 	if (dist == 0)//temp fix as well
 		height = WIN_HEIGHT;
 	else
@@ -183,17 +186,30 @@ void	draw_wall_line(t_data *data, double x_pos, double y_pos, double angle, int 
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
 	// u = start_y;
+	// wall_start = (start_y < 0) ? 0 : start_y;
+	if (start_y < 0)
+		wall_start = 0;
+	else
+		wall_start = start_y;
+
+
+	// wall_end = (end_y > WIN_HEIGHT) ? WIN_HEIGHT : end_y;
+	if (end_y > WIN_HEIGHT)
+		wall_end = WIN_HEIGHT;
+	else
+		wall_end = end_y;
+
 	u = 0;
 	while (u <= start_y)//might need ot check for u = 0;
 	{
 		u++;
 		put_pixel(data->mlx->mlx_img, i, u, get_hexa(data->map->elements->c_color));
 	}
-	while (start_y < end_y)
+	while (wall_start < wall_end)
 	{
-		pixel = set_pixel_texture(data->map->elements->textures, height, start_y, angle);
-		put_pixel(data->mlx->mlx_img, i, start_y, pixel);
-		start_y++;
+		pixel = set_pixel_texture(data->map->elements->textures, height, wall_start, angle);
+		put_pixel(data->mlx->mlx_img, i, wall_start, pixel);
+		wall_start++;
 	}
 	u = end_y; //might need to check for u = WIN_HEIGHT
 	while (u <= WIN_HEIGHT)
