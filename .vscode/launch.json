@@ -9,9 +9,9 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/cub3D",
-			"args": ["~/Documents/42stripet/cube3d/map/example.cub"],
+			"args": ["${workspaceFolder}/map/example.cub"],
 			"stopAtEntry": false,
-			"cwd": "${fileDirname}",
+			"cwd": "/home/tienshi/Documents/cub3d_git",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "gdb"

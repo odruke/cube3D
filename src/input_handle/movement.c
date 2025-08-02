@@ -128,4 +128,3 @@ void	player_movement(t_data *data)
 	if (data->player->key_right)
 		displace(RIGHT, data, cos_angle, sin_angle);
 }
-
