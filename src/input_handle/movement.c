@@ -19,7 +19,7 @@ bool	validate_move_with_radius(t_data *data, t_coords new_pos)
 	int			i;
 	float		angle;
 
-	player_radius = SQUARE * 0.15f;
+	player_radius = SQUARE * 0.03f;
 	i = -1;
 	while (++i < 8)
 	{
