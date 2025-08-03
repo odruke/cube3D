@@ -118,6 +118,6 @@ int	free_and_exit(t_data *data, int exit_code)
 	if (data->mouse)
 		free(data->mouse);
 	free(data);
-	printf("\033[1;35m✨Memory freed successfully🚀\n🚪Exiting game👋\033[0m\n");
+	printf("\033[1;35m🚪Exiting game\033[0m\n");
 	exit(exit_code);
 }

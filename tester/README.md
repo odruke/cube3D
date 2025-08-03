@@ -1,59 +1,106 @@
-# cub3D Automatic Tester
+# cub3D Automatic Tester - Alpha v0.1
 
-This is an automatic testing program for the cub3D project that validates your parser against good and bad input files.
+🚧 **This is a first alpha version of the tester that awaits future updates to include additional tests and improved ESC key management.**
+
+An automated testing program for the cub3D project that validates your parser and basic functionality against good and bad input files.
 
 ## Features
 
-- **Automated Testing**: Tests all files in `map/good/` and `map/bad/` directories
-- **Error Detection**: Detects if your program correctly rejects invalid files
-- **Success Validation**: Ensures valid files are accepted and the program runs
-- **Colored Output**: Clear visual feedback with colored pass/fail indicators
+- **Parser Validation**: Tests error detection for invalid `.cub` files
+- **Basic Functionality**: Verifies that valid files can start the game loop
+- **Colored Output**: Clear visual feedback with pass/fail indicators
 - **Timeout Protection**: Prevents hanging on problematic files
 - **Comprehensive Reporting**: Detailed summary of test results
 
+## Prerequisites
+
+### Required cub3D Output Messages
+
+Your cub3D program **must** output these exact messages for the tester to work correctly:
+
+1. **Error Messages** (for parsing errors):
+   ```
+   Error:\n
+   [your custom error message]
+   ```
+   **Important**: Must start with exactly `"Error:\n"` followed by your description.
+
+2. **Game Loop Start** (when successfully entering the main loop):
+   ```
+   \033[1;32m✅ Game loop starded \033[0m\n
+   ```
+
+3. **Clean Exit** (when exiting normally):
+   ```
+   \033[1;35m🚪Exiting game\033[0m\n
+   ```
+
+### Required Directory Structure
+
+```
+cub3D/
+├── cub3D                 # Your compiled executable
+├── map/
+│   ├── good/             # Valid .cub files (should be accepted)
+│   │   ├── valid_basic.cub
+│   │   ├── minimal_valid.cub
+│   │   └── ...
+│   └── bad/              # Invalid .cub files (should be rejected)
+│       ├── missing_texture.cub
+│       ├── wrong_format.cub
+│       └── ...
+└── tester/
+    ├── cube_tester       # The tester executable
+    └── ...
+```
+
 ## How It Works
 
-### Bad Files Testing
+### Bad Files Testing (Automatic)
 1. Runs `./cub3D` with each bad file
-2. Captures stdout/stderr output
-3. Looks for "Error" in the output
-4. **PASS**: If error is found (file correctly rejected)
-5. **FAIL**: If no error found (file wrongfully accepted)
+2. Captures program output
+3. Looks for `"Error:\n"` in the output
+4. Program exits automatically after error detection
+5. **PASS**: If error message found (file correctly rejected)
+6. **FAIL**: If no error found (file wrongfully accepted)
 
-### Good Files Testing
+### Good Files Testing (Semi-Manual)
 1. Runs `./cub3D` with each good file
-2. Waits 1 second for program to initialize
-3. Checks if program is still running
-4. **PASS**: If program runs successfully (file accepted)
-5. **FAIL**: If program exits immediately (file wrongfully rejected)
+2. Waits for game initialization
+3. Looks for the game loop confirmation message
+4. **User Interaction Required**: Press ESC within 3 seconds to exit normally
+5. If no ESC pressed, program force-closes after timeout
+6. **PASS**: If game starts and exits properly
+7. **FAIL**: If game crashes or fails to start
+
+⚠️ **Note**: Good file testing requires user interaction (ESC key) for optimal results. Future versions will automate this process.
 
 ## Usage
 
-1. **Compile the tester**:
-   ```bash
-   cd tester
-   make
-   ```
+### 1. Compile the Tester
+```bash
+cd tester
+make
+```
 
-2. **Run from the main cub3D directory**:
-   ```bash
-   cd ..
-   ./tester/test_cub3d
-   ```
+### 2. Run the Tests
+From the main cub3D directory:
+```bash
+./tester/cube_tester
+```
 
-   Or run from tester directory:
-   ```bash
-   cd tester
-   ../test_cub3d
-   ```
+Or from the tester directory:
+```bash
+cd tester
+./cube_tester
+```
 
-## Requirements
+### 3. During Good File Tests
+- Watch for the game window to appear
+- Press **ESC** within 3 seconds when prompted
+- The tester will capture the exit message and continue
 
-- Your `cub3D` executable must be compiled and present in the main directory
-- Test files must be in `map/good/` and `map/bad/` directories
-- Your program should output "Error" (case-sensitive) when rejecting invalid files
-
-## Output Format
+## Example Output
 
 ```
 cub3D Automatic Tester
@@ -64,8 +111,8 @@ cub3D Automatic Tester
 ================================
 Found 16 bad test files
 
-✓ PASS - Error correctly detected: wrong_extension.txt
 ✓ PASS - Error correctly detected: missing_north_texture.cub
+✓ PASS - Error correctly detected: wrong_extension.txt
 ✗ FAIL - ERROR: File was accepted!: some_file.cub
 
 ================================
@@ -88,21 +135,37 @@ Total:      24/25 tests passed
 
 ## Troubleshooting
 
-- **"./cub3D executable not found"**: Make sure to compile your main project first
-- **Tests hanging**: The tester has a 3-second timeout protection
-- **False positives**: Ensure your error messages contain the word "Error"
+- **"./cub3D executable not found"**: Compile your main project first with `make`
+- **No error messages detected**: Ensure your program outputs `"Error:\n"` exactly
+- **Good file tests fail**: Check that your program outputs the required confirmation messages
+- **Window doesn't appear**: Verify you have a working X11 display environment
+- **ESC not working**: Try clicking the game window first, then press ESC
 
-## Files Tested
+## Known Limitations (Alpha Version)
 
-The tester automatically discovers and tests all `.cub` files in:
-- `map/good/` - Valid files that should be accepted
-- `map/bad/` - Invalid files that should be rejected
+- ⚠️ Requires manual ESC key press for good file tests
+- ⚠️ Basic timeout handling (may be inconclusive in some cases)
+- ⚠️ Limited error message format checking
+- ⚠️ No advanced validation of game mechanics
+
+## Future Updates
+
+- 🔄 Automatic ESC key simulation
+- 🔄 Better error message validation
+- 🔄 Program input validation
+- 🔄 Memory leak detection
 
 ## Compilation
 
 ```bash
 make        # Compile the tester
 make clean  # Remove object files
-make fclean # Remove executable
-make re     # Recompile everything
+make fclean # Remove executable and clean
+make re     # Full recompilation
 ```
+
+---
+
+**Version**: Alpha 0.1
+**Status**: Basic functionality testing only
+**Next Update**: Improved automation and additional test cases

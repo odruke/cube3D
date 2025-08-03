@@ -142,8 +142,16 @@ void	draw_pov(t_data *data)
 
 int	loop_hook(t_data *data)
 {
+	static bool started;
+
+	if (!started)
+	{
+		printf("\033[1;32m✅ Game loop starded \033[0m\n");
+		started = true;
+	}
+
 	player_movement(data);
-	if (DEBUG)
+	if (DEBUG == 2)
 	{
 		fill_display(data->mlx->mlx_img, data->mlx->mlx_img->img_w,
 			data->mlx->mlx_img->img_h);

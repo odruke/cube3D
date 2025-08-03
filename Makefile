@@ -26,6 +26,9 @@ all: $(NAME)
 debug: fclean
 	@$(MAKE) DEBUG=1
 
+debug2: fclean
+	@$(MAKE) DEBUG=2
+
 $(NAME): libft/libft.a mlx/libmlx.a $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 

@@ -10,6 +10,12 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <errno.h>
+#include <sys/select.h>
+#include <limits.h>
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+#include <X11/Xatom.h>
+// #include <X11/extensions/XTest.h>
 
 #define MAX_FILES 100
 #define MAX_PATH 512
@@ -40,13 +46,17 @@ typedef struct s_fd
 extern pid_t child_pid;
 
 // Function declarations
-void signal_handler(int sig);
-int scan_directory(const char *dir_path, file_list_t *files);
-int test_bad_file(const char *filepath);
-int test_good_file(const char *filepath);
-void print_header(const char *title);
-void print_test_result(const char *filename, int passed, const char *type);
+void	signal_handler(int sig);
+int		scan_directory(const char *dir_path, file_list_t *files);
+int		test_bad_file(const char *filepath);
+int		test_good_file(const char *filepath);
+void	print_header(const char *title);
+void	print_test_result(const char *filename, int passed, const char *type);
 char	*get_next_line(t_fd fd, int reset);
+int		test_bad_input(void);
+void	launch_game(char *full_path, int *pipefd);
+int		send_scp(pid_t pid);
+int		send_escape_key_x11(pid_t pid);
 
 // Memory management functions
 file_list_t* allocate_file_list(void);

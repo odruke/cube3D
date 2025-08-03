@@ -6,7 +6,7 @@ NAME = cube_tester
 
 # compilator and compilation flags
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -lX11 -lXtst -g
 
 
 # directories
@@ -15,7 +15,7 @@ OBJ_DIR = $(SRC_DIR)target/
 INC_DIR = ./inc/
 
 # files
-FILES = utils.c main.c get_next_line.c
+FILES = utils.c main.c get_next_line.c tests.c #send_scape.c
 INC_FILES = cube_test.h
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))

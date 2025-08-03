@@ -107,10 +107,10 @@ int main()
 			print_test_result(bad_files->files[i], 0, "Test execution failed");
 		}
 	}
-
+	sleep(1);
 	// Test good files
 	print_header("TESTING GOOD FILES (Should run without errors)");
-
+	sleep(3);
 	if (scan_directory("../map/good", good_files) < 0)
 	{
 		printf(RED "Error: Cannot scan good files directory\n" RESET);
@@ -130,7 +130,9 @@ int main()
 			print_test_result(good_files->files[i], 1, "Program started successfully");
 		} else if (result == 0) {
 			print_test_result(good_files->files[i], 0, "ERROR: File was rejected!");
-		} else {
+		} else if (result == -2) {
+			print_test_result(good_files->files[i], 0, "ERROR: Program was ended unexpectedly");
+		}else {
 			print_test_result(good_files->files[i], 0, "Test execution failed");
 		}
 	}

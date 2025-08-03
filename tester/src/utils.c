@@ -13,6 +13,23 @@ void signal_handler(int sig)
 	}
 }
 
+void	launch_game(char *full_path, int *pipefd)
+{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+
+		if (chdir("..") != 0)
+		{
+			perror("chdir");
+			exit(1);
+		}
+		execl("/usr/bin/stdbuf", "stdbuf", "-o0", "-e0", "./cub3D", full_path, NULL);
+		execl("./cub3D", "cub3D", full_path, NULL);
+		perror("execl");
+		exit(1);
+}
+
 void free_files(file_list_t *filestruct)
 {
 	for (int i = 0; i < filestruct->count; i++)
@@ -67,126 +84,6 @@ int scan_directory(const char *dir_path, file_list_t *files)
 
 	closedir(dir);
 	return files->count;
-}
-
-int test_bad_file(const char *filepath)
-{
-	int pipefd[2];
-	pid_t pid;
-	char *buffer;
-	t_fd fd;
-	int status;
-	char *full_path;
-
-
-	full_path = calloc(sizeof(char), strlen("map/bad/") + strlen(filepath) + 1);
-	full_path = strcat(full_path, "map/bad/");
-	full_path = strcat(full_path, filepath);
-	if (pipe(pipefd) == -1) {
-		perror("pipe");
-		return -1;
-	}
-
-	pid = fork();
-	if (pid == -1) {
-		perror("fork");
-		return -1;
-	}
-
-	if (pid == 0)
-	{
-		// Child process
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-
-		if (chdir("..") != 0)
-		{
-			perror("chdir");
-			exit(1);
-		}
-
-		execl("cub3D", "cub3D", full_path, NULL);
-		perror("execl");
-		exit(1);
-	}
-	else
-	{
-		// Parent process
-		close(pipefd[1]);
-		child_pid = pid;
-		fd.fd = pipefd[0];
-		// Set up alarm for timeout
-		signal(SIGALRM, signal_handler);
-		alarm(TEST_TIMEOUT);
-		sleep(1);
-		free(full_path);
-		full_path = NULL;
-		buffer = NULL;
-		buffer = get_next_line(fd, CONTINUE);
-		while (buffer)
-		{
-
-			// if (!strncmp(buffer, "✅ Mlx connection establised", strlen(buffer)))
-			if (!strncmp(buffer, "Error:\n", strlen(buffer)))
-			{
-				// while (buffer)
-				// {
-				// 	printf("%s\n", buffer);
-				// 	buffer = get_next_line(fd, CONTINUE);
-				// }
-				get_next_line(fd, RESET_GNL);
-				kill(pid, SIGTERM);
-				waitpid(pid, &status, 0);
-				child_pid = -1;
-				return 1; // Test passed - error detected
-			}
-			free(buffer);
-			buffer = NULL;
-			buffer = get_next_line(fd, CONTINUE);
-
-		}
-		// Read output
-		// ssize_t bytes_read = read(pipefd[0], buffer, BUFFER_SIZE - 1);
-		alarm(0); // Cancel alarm
-
-		// if (bytes_read > 0)
-		// {
-		// 	buffer[bytes_read] = '\0';
-
-		// 	// Check if "Error" is in the output
-		// 	if (strstr(buffer, "Error") != NULL)
-		// 	{
-		// 		close(pipefd[0]);
-		// 		waitpid(pid, &status, 0);
-		// 		child_pid = -1;
-		// 		return 1; // Test passed - error detected
-		// 	}
-		// }
-
-		// If we reach here, no error was found, so we need to kill the process
-		kill(pid, SIGTERM);
-		waitpid(pid, &status, 0);
-		close(pipefd[0]);
-		child_pid = -1;
-
-		return 0; // Test failed - no error detected
-	}
-}
-
-int test_good_file(const char *filepath)
-{
-	char command[1024];
-	snprintf(command, sizeof(command), "cd .. && timeout 2s ./cub3D '%s' >/dev/null 2>&1", filepath);
-
-	int result = system(command);
-	int exit_code = WEXITSTATUS(result);
-
-	// If exit code is 124, it's a timeout (good for good files - means program started)
-	if (exit_code == 124) {
-		return 1; // PASS - program started and was killed by timeout
-	}
-	return 0; // FAIL - program exited immediately (probably error)
 }
 
 void print_header(const char *title)
