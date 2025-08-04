@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:41:39 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/07/31 22:16:13 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/04 16:35:14 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	main(int ac, char **av)
 	if (DEBUG)
 		print_debug_data(data);
 	data->player->pos.x *= SQUARE;
+	data->player->pos.x += SQUARE / 2;
 	data->player->pos.y *= SQUARE;
+	data->player->pos.y += SQUARE / 2;
 	mlx_hook_start(data);
 }
