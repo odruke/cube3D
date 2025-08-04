@@ -30,5 +30,7 @@ bool	fordward_next_color_code(char *code, int *i, int *comas)
 		}
 		*i += 1;
 	}
+	if (!found_coma)
+		return (false);
 	return (true);
 }
