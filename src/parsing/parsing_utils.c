@@ -26,7 +26,7 @@ char	*skip_until_grid(t_fd fd)
 	char	*line;
 
 	line = get_next_line(fd, CONTINUE);
-	while (!line_is_grid(line) || line[0] == '\n')
+	while (line && (!line_is_grid(line) || line[0] == '\n'))
 	{
 		free (line);
 		line = get_next_line(fd, CONTINUE);

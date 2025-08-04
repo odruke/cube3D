@@ -21,7 +21,7 @@ static char	**get_grid(t_fd fd)
 	i = 0;
 	size = check_grid(fd);
 	if (!size)
-		error_handle(ERR_LOAD_MAP, "grid", __FILE__, __LINE__);
+		error_handle(ERR_MAP_ELEM, "grid", __FILE__, __LINE__);
 	map = (char **)safe_calloc(sizeof(char *), size + 1, __FILE__, __LINE__);
 	map[0] = skip_until_grid(fd);
 	while (map[i])
