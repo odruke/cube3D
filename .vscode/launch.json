@@ -8,10 +8,10 @@
 			"name": "(gdb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/cub3D",
-			"args": ["${workspaceFolder}/map/example.cub"],
+			"program": "/home/stripet/Documents/42stripet/cube3d/cub3D",
+			"args": ["/home/stripet/Documents/42stripet/cube3d/map/bad/weird_header2.cub"],
 			"stopAtEntry": false,
-			"cwd": "/home/tienshi/Documents/cub3d_git",
+			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "gdb"
