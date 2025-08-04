@@ -17,7 +17,8 @@ void	zeroing_endstring(char **str)
 	size_t	len;
 
 	len = ft_strlen(*str);
-	str[0][len - 1] = '\0';
+	if (str[0][len - 1] == '\n')
+		str[0][len - 1] = '\0';
 }
 
 char	*skip_until_grid(t_fd fd)
