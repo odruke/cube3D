@@ -15,26 +15,27 @@
 static void	assign_texture_path(t_elements *elements,
 	char *line, int i, int ide)
 {
+	char	*assign;
+	int 	len;
+
+	len = ft_strlen(line);
+	if (ft_isblank(line[len -1]) && ft_isblank(line[len -1]))
+	{
+		while (len > 2 && ft_isblank(line[len -1]))
+			len--;
+		if (line[len] == ' ')
+			line[len] = '\0';
+	}
+	assign = ft_strndup(line + i, len);
+	zeroing_endstring(&assign);
 	if (ide == 0)
-	{
-		elements->path_texture_no = ft_strdup(line + i);
-		zeroing_endstring(&elements->path_texture_no);
-	}
+		elements->path_texture_no = assign;
 	else if (ide == 1)
-	{
-		elements->path_texture_so = ft_strdup(line + i);
-		zeroing_endstring(&elements->path_texture_so);
-	}
+		elements->path_texture_so = assign;
 	else if (ide == 2)
-	{
-		elements->path_texture_we = ft_strdup(line + i);
-		zeroing_endstring(&elements->path_texture_we);
-	}
+		elements->path_texture_we = assign;
 	else if (ide == 3)
-	{
-		elements->path_texture_ea = ft_strdup(line + i);
-		zeroing_endstring(&elements->path_texture_ea);
-	}
+		elements->path_texture_ea = assign;
 }
 
 static	int	check_ide_and_format(char *line, int *i)
