@@ -26,7 +26,7 @@ static void	assign_texture_path(t_elements *elements,
 		if (line[len] == ' ')
 			line[len] = '\0';
 	}
-	assign = ft_strndup(line + i, len);
+	assign = ft_strndup(line + i, len - 1);
 	zeroing_endstring(&assign);
 	if (ide == 0)
 		elements->path_texture_no = assign;
