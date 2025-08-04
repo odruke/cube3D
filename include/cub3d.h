@@ -233,6 +233,7 @@ t_coords	valid_grid(char **grid, int y, int x);
 int			get_map_height(char **grid);
 int			get_map_width(char **grid);
 void		init_map(t_camera *player, t_map *map, char *filemap);
+bool		fordward_next_color_code(char *code, int *i, int *comas);
 
 /* flood fill and helpers */
 

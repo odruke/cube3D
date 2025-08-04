@@ -45,19 +45,21 @@ static bool	is_valid_color_code(char *code)
 	comas = 0;
 	if (!code || !code[0] || !ft_isdigit(code[0]))
 		return (false);
-	while (code[++i] && comas < 3)
+	while (code[++i] && !line_is_only_spaces(code + i) && comas < 2)
 	{
+
 		j = 0;
 		while (code[i + j] && ft_isdigit(code[i + j]))
 			j++;
-		if (comas < 2 && (code[i + j] != ',' || j > 3))
+		if ((comas < 2 && (code[i + j] != ',' && code[i + j] != ' ')) || j > 3)
 			return (false);
 		else if (comas >= 2 && (!line_is_only_spaces(code + (i + j)) || j > 3))
 			return (false);
-		comas++;
 		if (!color_is_in_range(code, i, j))
 			return (false);
 		i += j;
+		if (!fordward_next_color_code(code, &i, &comas) && comas < 2)
+			return (false);
 	}
 	return (true);
 }
