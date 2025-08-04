@@ -110,7 +110,7 @@ void	check_corners(char **grid)
 			error_handle(ERR_GRID_BAD_ITEM, "bad corner", __FILE__, __LINE__);
 	}
 }
-/* also returns player position *///this is done this way to relieve weight on the init_map function.
+
 t_coords	valid_grid(char **grid, int y, int x)
 {
 	t_coords	player_coords;
@@ -118,8 +118,9 @@ t_coords	valid_grid(char **grid, int y, int x)
 
 	max.y = y;
 	max.x = x;
+	walled(grid, x, y);
 	check_corners(grid);
-	player_coords = find_player(grid, y, x);// this is calculated here just once and passed both to the player structure via return and the flood_fill function.
-	flood_fill(grid, player_coords, max);//flood fill function needs to have max_whidth and max_height passed in the correct format
+	player_coords = find_player(grid, y, x);
+	flood_fill(grid, player_coords, max);
 	return (player_coords);
 }
