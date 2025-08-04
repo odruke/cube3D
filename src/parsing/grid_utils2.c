@@ -25,18 +25,33 @@ bool	is_open_wall(char **grid, int pos_x, int pos_y, t_coords limits)
 	return (false);
 }
 
-void	walled(char **grid, int width, int heigh)
+static char	get_player_char(char **grid, t_coords player)
 {
-	int	y;
-	int	x;
+	char	*chars;
+
+	chars = "NSEW";
+	while (*chars)
+	{
+		if (*chars == grid[(int)player.y][(int)player.x])
+			return (*chars);
+		chars++;
+	}
+	return (*chars);
+}
+void	walled(char **grid, int width, int heigh, t_coords player)
+{
+	int		y;
+	int		x;
+	char	player_char;
 
 	y = -1;
+	player_char = get_player_char(grid, player);
 	while (grid[++y])
 	{
 		x = -1;
 		while (grid[y][++x])
 		{
-			if (grid[y][x] == '0')
+			if (grid[y][x] == '0' || grid[y][x] == player_char)
 				if (is_open_wall(grid, x, y, (t_coords){heigh, width}))
 					error_handle(ERR_GRID_BAD_ITEM, "open wall", __FILE__, __LINE__);
 		}

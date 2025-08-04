@@ -234,9 +234,8 @@ int			get_map_height(char **grid);
 int			get_map_width(char **grid);
 void		init_map(t_camera *player, t_map *map, char *filemap);
 bool		fordward_next_color_code(char *code, int *i, int *comas);
-void		walled(char **grid, int width, int heigh);
+void		walled(char **grid, int width, int heigh, t_coords player);
 bool		is_open_wall(char **grid, int pos_x, int pos_y, t_coords limits);
-
 
 /* flood fill and helpers */
 

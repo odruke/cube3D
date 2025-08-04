@@ -118,9 +118,9 @@ t_coords	valid_grid(char **grid, int y, int x)
 
 	max.y = y;
 	max.x = x;
-	walled(grid, x, y);
 	check_corners(grid);
 	player_coords = find_player(grid, y, x);
+	walled(grid, x, y, player_coords);
 	flood_fill(grid, player_coords, max);
 	return (player_coords);
 }
