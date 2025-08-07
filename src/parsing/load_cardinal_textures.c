@@ -16,7 +16,7 @@ static void	assign_texture_path(t_elements *elements,
 	char *line, int i, int ide)
 {
 	char	*assign;
-	int 	len;
+	int		len;
 
 	len = ft_strlen(line);
 	if (ft_isblank(line[len -1]) && ft_isblank(line[len -1]))
@@ -62,7 +62,14 @@ static	int	check_ide_and_format(char *line, int *i)
 		return (-1);
 	ide[id] = '\0';
 	return (id);
+}
 
+bool	return_get_elements(t_fd fd, int all_elements)
+{
+	get_next_line(fd, RESET);
+	if (all_elements != 0)
+		return (false);
+	return (true);
 }
 
 bool	get_texture_paths(t_elements *elements, t_fd fd)
@@ -71,7 +78,9 @@ bool	get_texture_paths(t_elements *elements, t_fd fd)
 	int		ide;
 	int		all_paths;
 	int		i;
+	int		line_pos;
 
+	line_pos = 0;
 	all_paths = 4;
 	line = ft_strdup("");
 	while (line)
@@ -79,14 +88,15 @@ bool	get_texture_paths(t_elements *elements, t_fd fd)
 		free(line);
 		line = get_next_line(fd, CONTINUE);
 		if (line)
+		{
+			line_pos++;
 			ide = check_ide_and_format(line, &i);
+		}
 		if (!line || ide < 0)
 			continue ;
 		assign_texture_path(elements, line, i, ide);
 		all_paths--;
+		set_element_position(elements, line_pos);
 	}
-	get_next_line(fd, RESET);
-	if (all_paths != 0)
-		return (false);
-	return (true);
+	return (return_get_elements(fd, all_paths));
 }

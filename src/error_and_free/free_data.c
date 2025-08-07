@@ -60,6 +60,12 @@ static void	free_elements(t_data *data, t_elements *elements)
 		free_textures(data, elements->textures);
 		free(elements->textures);
 	}
+	if (elements->positions)
+	{
+		if (elements->positions->pos)
+			free(elements->positions->pos);
+		free(elements->positions);
+	}
 }
 
 static void	free_mlx(t_data *data)
@@ -81,8 +87,8 @@ static void	free_mlx(t_data *data)
 
 static void	free_data(t_data *data)
 {
-		if (data->dda)
-			free(data->dda);
+	if (data->dda)
+		free(data->dda);
 	if (data->map)
 	{
 		if (data->map->elements)
@@ -106,7 +112,6 @@ static void	free_data(t_data *data)
 		free(data->mlx);
 	}
 }
-
 
 int	free_and_exit(t_data *data, int exit_code)
 {

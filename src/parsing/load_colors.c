@@ -105,13 +105,15 @@ static void	assign_colors(t_elements *elements, char *line, int i, int ide)
 
 }
 
-bool	get_colours(t_elements *elements, t_fd fd)//rename function
+bool	get_colours(t_elements *elements, t_fd fd)
 {
 	char	*line;
 	int		ide;
 	int		all_colors;
 	int		i;
+	int		line_pos;
 
+	line_pos = 0;
 	all_colors = 2;
 	line = ft_strdup("");
 	while (line)
@@ -119,14 +121,15 @@ bool	get_colours(t_elements *elements, t_fd fd)//rename function
 		free(line);
 		line = get_next_line(fd, CONTINUE);
 		if (line)
+		{
+			line_pos++;
 			ide = check_ide_and_format_c(line, &i);
+		}
 		if (!line || ide < 0)
 			continue ;
 		assign_colors(elements, line, i, ide);
 		all_colors--;
+		set_element_position(elements, line_pos);
 	}
-	get_next_line(fd, RESET);
-	if (all_colors != 0)
-		return (false);
-	return (true);
+	return (return_get_elements(fd, all_colors));
 }

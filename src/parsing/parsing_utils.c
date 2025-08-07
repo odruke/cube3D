@@ -24,12 +24,24 @@ void	zeroing_endstring(char **str)
 char	*skip_until_grid(t_fd fd)
 {
 	char	*line;
+	int		line_pos;
 
+	line_pos = 1;
 	line = get_next_line(fd, CONTINUE);
 	while (line && (!line_is_grid(line) || line[0] == '\n'))
 	{
+		if (!is_element_line_position(line_pos))
+		{
+			if (!line_is_only_spaces(line))
+			{
+				free(line);
+				error_handle(ERR_MAP_LINE, NULL,
+					__FILE__, __LINE__);
+			}
+		}
 		free (line);
 		line = get_next_line(fd, CONTINUE);
+		line_pos++;
 	}
 	return (line);
 }

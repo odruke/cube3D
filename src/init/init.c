@@ -56,6 +56,8 @@ static void	alloc_mem(t_data *data)
 	data->map = (t_map *)safe_calloc(sizeof(t_map), 1, __FILE__, __LINE__);
 	data->map->elements = (t_elements *)safe_calloc(sizeof(t_elements), 1,
 			__FILE__, __LINE__);
+	data->map->elements->positions = (t_positions *)safe_calloc(sizeof(\
+t_positions), 1, __FILE__, __LINE__);
 	data->map->elements->textures = (t_texture *)safe_calloc(sizeof(t_texture),
 			1, __FILE__, __LINE__);
 	data->map->elements->c_color = (t_color *)safe_calloc(sizeof(t_color),

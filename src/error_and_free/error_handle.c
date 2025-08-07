@@ -23,6 +23,7 @@ static const char	*err_str_format(t_error error)
 	errstr_tab[ERR_MAP_EXT] = "Error:\n%s is not a .cub file.\n";
 	errstr_tab[ERR_MAP_ELEM] = "Error:\nBad map element: %s missing or \
 duplicated.\n";
+	errstr_tab[ERR_MAP_LINE] = "Error:\nUnknown item on map file.\n";
 	errstr_tab[ERR_GRID_BAD_ITEM] = "Error:\nBad items on grid: %s.\n";
 	errstr_tab[ERR_TXTUR_OPEN] = "Error:\nCant open texture: %s.\n";
 	errstr_tab[ERR_TXTUR_EXT] = "Error:\n%s is not a .xpm file.\n";
@@ -44,6 +45,8 @@ Bad input. Usage:\n./cub3D maps/[mapname]\n";
 %s is not a .cub file. Failed at: %s:%i\n";
 	errstr_tab[ERR_MAP_ELEM] = "Error:\n\
 Bad map element: %s missing or duplicated. Failed at: %s:%i\n";
+	errstr_tab[ERR_MAP_LINE] = "Error:\n\
+Unknown item on map file. Failed at: %s:%i\n";
 	errstr_tab[ERR_GRID_BAD_ITEM] = "Error:\n\
 Bad items on grid: %s. Failed at: %s:%i\n";
 	errstr_tab[ERR_TXTUR_OPEN] = "Error:\nCant open texture: %s.\

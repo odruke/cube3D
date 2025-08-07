@@ -97,6 +97,7 @@ typedef enum e_error
 	ERR_LOAD_MAP,
 	ERR_MAP_EXT,
 	ERR_MAP_ELEM,
+	ERR_MAP_LINE,
 	ERR_GRID_BAD_ITEM,
 	ERR_TXTUR_OPEN,
 	ERR_TXTUR_EXT,
@@ -164,13 +165,19 @@ typedef struct s_texture
 	float		wall_hit;
 }	t_texture;
 
+typedef struct s_positions
+{
+	int	len;
+	int	*pos;
+}	t_positions;
+
 typedef struct s_elements
 {
 	char		*path_texture_no;
 	char		*path_texture_so;
 	char		*path_texture_we;
 	char		*path_texture_ea;
-	int			*positions;
+	t_positions	*positions;
 	t_color		*f_color;
 	t_color		*c_color;
 	t_texture	*textures;
@@ -239,6 +246,9 @@ void		init_map(t_camera *player, t_map *map, char *filemap);
 bool		fordward_next_color_code(char *code, int *i, int *comas);
 void		walled(char **grid, int width, int heigh, t_coords player);
 bool		is_open_wall(char **grid, int pos_x, int pos_y, t_coords limits);
+void		set_element_position(t_elements *elements, int i);
+bool		is_element_line_position(int line_pos);
+bool		return_get_elements(t_fd fd, int all_elements);
 
 /* flood fill and helpers */
 
