@@ -57,7 +57,8 @@ void	debug_print_colors(t_elements *elements)
 
 void	debug_print_player(char **grid, t_camera *player)
 {
-	printf("player position is y=%f, x=%f\n", player->pos.y, player->pos.x);
+	printf("player position is y=%i, x=%i\n", (int)player->pos.y,
+		(int)player->pos.x);
 	if (grid[(int)player->pos.y][(int)player->pos.x] == 'N')
 		printf("Player angle is North: %i°\n\n", toangle(player->angle));
 	else if (grid[(int)player->pos.y][(int)player->pos.x] == 'E')
@@ -66,5 +67,4 @@ void	debug_print_player(char **grid, t_camera *player)
 		printf("Player angle is South: %i°\n\n", toangle(player->angle));
 	else if (grid[(int)player->pos.y][(int)player->pos.x] == 'W')
 		printf("Player angle is West: %i°\n\n", toangle(player->angle));
-
 }

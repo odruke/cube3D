@@ -81,29 +81,10 @@ void	init_data(t_data *data, char *filemap)
 	data->mini_map->fov = 20;
 	data->mini_map->img.img_w = data->mlx->mlx_img->img_w / 6;
 	data->mini_map->img.img_h = data->mini_map->img.img_w;
-	data->mlx->mlx_tunnel = mlx_init();
-	if (!data->mlx->mlx_tunnel)
-		error_handle(ERR_MLX, "init", __FILE__, __LINE__);
-	data->mlx->window = mlx_new_window(data->mlx->mlx_tunnel,
-			WIN_WIDTH, WIN_HEIGHT, "cub3D");
-	if (!data->mlx->window)
-		error_handle(ERR_MLX, "new window", __FILE__, __LINE__);
+	init_mlx_core(data->mlx);
 	init_map(data->player, data->map, filemap);
 	init_textures(data->map->elements, data->map->elements->textures);
-	data->mlx->mlx_img->img = mlx_new_image(data->mlx->mlx_tunnel,
-			data->mlx->mlx_img->img_w, data->mlx->mlx_img->img_h);
-	if (!data->mlx->mlx_img->img)
-		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
-	data->mlx->mlx_img->pixel_arr = safe_mlx_get_data_addr(\
-data->mlx->mlx_img->img, &data->mlx->mlx_img->bpp, &data->mlx->mlx_img->line,
-			&data->mlx->mlx_img->endian);
-	data->mini_map->img.img = mlx_new_image(data->mlx->mlx_tunnel,
-			data->mini_map->img.img_w, data->mini_map->img.img_h);
-	if (!data->mini_map->img.img)
-		error_handle(ERR_MLX, "create image", __FILE__, __LINE__);
-	data->mini_map->img.pixel_arr = safe_mlx_get_data_addr(\
-data->mini_map->img.img, &data->mini_map->img.bpp, &data->mini_map->img.line,
-			&data->mini_map->img.endian);
+	init_mlx_images(data->mlx, data->mini_map);
 	mlx_mouse_get_pos(data->mlx->mlx_tunnel, data->mlx->window,
 		&data->mouse->x, &data->mouse->y);
 	recover_data_address(data);

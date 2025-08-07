@@ -170,6 +170,7 @@ typedef struct s_elements
 	char		*path_texture_so;
 	char		*path_texture_we;
 	char		*path_texture_ea;
+	int			*positions;
 	t_color		*f_color;
 	t_color		*c_color;
 	t_texture	*textures;
@@ -186,7 +187,7 @@ typedef struct s_map
 typedef struct s_mini_map
 {
 	int			fov;
-	t_mlx_img	img;
+	t_mlx_img	img;//make this a pointer and allocate memory when possible.(add also free functions)
 }	t_mini_map;
 
 typedef struct s_mlx
@@ -209,6 +210,8 @@ typedef struct s_data
 
 t_data		*recover_data_address(t_data *data);
 void		init_data(t_data *data, char *map_to_load);
+void		init_mlx_core(t_mlx *mlx);
+void		init_mlx_images(t_mlx *mlx, t_mini_map *mini_map);
 
 /* parsing helpers and validation functions */
 char		*get_next_line(t_fd fd, int reset);
