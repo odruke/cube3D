@@ -41,13 +41,12 @@ static bool	is_valid_color_code(char *code)
 	int	j;
 	int	comas;
 
-	i = -1;
+	i = 0;
 	comas = 0;
 	if (!code || !code[0] || !ft_isdigit(code[0]))
 		return (false);
-	while (code[++i] && !line_is_only_spaces(code + i) && comas < 2)
+	while (code[i] && !line_is_only_spaces(code + i) && comas < 3)
 	{
-
 		j = 0;
 		while (code[i + j] && ft_isdigit(code[i + j]))
 			j++;

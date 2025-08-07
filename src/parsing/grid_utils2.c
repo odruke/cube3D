@@ -14,13 +14,15 @@
 
 bool	is_open_wall(char **grid, int pos_x, int pos_y, t_coords limits)
 {
-	if (pos_y == limits.y || pos_y == 0)
+	if (pos_y + 1 >= limits.y || pos_y <= 0)
 		return (true);
-	if (pos_x == limits.x || pos_x == 0)
+	if (pos_x >= limits.x || pos_x <= 0)
 		return (true);
-	if (ft_isblank(grid[pos_y - 1][pos_x]) || ft_isblank(grid[pos_y + 1][pos_x]))
+	if (ft_isblank(grid[pos_y - 1][pos_x])
+		|| ft_isblank(grid[pos_y + 1][pos_x]))
 		return (true);
-	if (ft_isblank(grid[pos_y][pos_x - 1]) || ft_isblank(grid[pos_y][pos_x + 1]))
+	if (ft_isblank(grid[pos_y][pos_x - 1])
+		|| ft_isblank(grid[pos_y][pos_x + 1]))
 		return (true);
 	return (false);
 }
@@ -52,8 +54,14 @@ void	walled(char **grid, int width, int heigh, t_coords player)
 		while (grid[y][++x])
 		{
 			if (grid[y][x] == '0' || grid[y][x] == player_char)
+			{
 				if (is_open_wall(grid, x, y, (t_coords){heigh, width}))
-					error_handle(ERR_GRID_BAD_ITEM, "open wall", __FILE__, __LINE__);
+				{
+					free_table(grid);
+					error_handle(ERR_GRID_BAD_ITEM, "open wall",
+						__FILE__, __LINE__);
+				}
+			}
 		}
 	}
 }

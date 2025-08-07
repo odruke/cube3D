@@ -35,7 +35,7 @@ int test_bad_file(const char *filepath)
 		fd.fd = pipefd[0];
 		// Set up alarm for timeout
 		signal(SIGALRM, signal_handler);
-		alarm(TEST_TIMEOUT);
+		alarm(TEST_TIMEOUT_BAD);
 		// sleep(1);
 		buffer = NULL;
 		buffer = get_next_line(fd, CONTINUE);
@@ -43,13 +43,30 @@ int test_bad_file(const char *filepath)
 		{
 			if (!strncmp(buffer, "Error:\n", strlen(buffer)))
 			{
+				int result = 1;
+				while ((result = waitpid(pid, &status, WNOHANG)) != 0)
+					;
+				while (buffer)
+				{
+					buffer = get_next_line(fd, CONTINUE);
+					if (buffer && !strncmp(buffer, "\033[1;35m🚪Exiting game\033[0m\n", strlen(buffer)))
+					{
+						get_next_line(fd, RESET_GNL);
+						kill(pid, SIGTERM);
+						waitpid(pid, &status, 0);
+						child_pid = -1;
+						free(full_path);
+						full_path = NULL;
+						return 1; // Test passed - program running
+					}
+				}
 				get_next_line(fd, RESET_GNL);
 				kill(pid, SIGTERM);
 				waitpid(pid, &status, 0);
 				child_pid = -1;
 				free(full_path);
 				full_path = NULL;
-				return 1; // Test passed - error detected
+				return -2; // did not find closing program msg, program hang out
 			}
 			free(buffer);
 			buffer = NULL;
@@ -103,7 +120,7 @@ int test_good_file(const char *filepath)
 		fd.fd = pipefd[0];
 		// Set up alarm for timeout
 		signal(SIGALRM, signal_handler);
-		alarm(TEST_TIMEOUT);
+		alarm(TEST_TIMEOUT_GOOD);
 		// sleep(1);
 		buffer = NULL;
 		int result = waitpid(pid, &status, WNOHANG);

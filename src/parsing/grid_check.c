@@ -46,7 +46,7 @@ static bool	validate_pos(char **grid, t_coords start, t_coords max)
 
 	y = start.y;
 	x = start.x;
-	if (!grid[y][x] || ft_isblank(grid[y][x]))
+	if (y < 0 || y > max.y || x < 0 || x > max.x || !grid[y][x] || ft_isblank(grid[y][x]))
 		return (false);
 	if ((y == 0 && grid[y][x] == '0') || (x == 0 && grid[y][x] == '0'))
 		return (false);
@@ -72,17 +72,13 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 	}
 	grid[(int)start.y][(int)start.x] = 'x';
 	y -= 1;
-	if (y >= 0)
-		flood_fill(grid, (t_coords){start.y - 1, start.x}, max);
+	flood_fill(grid, (t_coords){start.y - 1, start.x}, max);
 	y += 2;
-	if (y < max.y)
-		flood_fill(grid, (t_coords){start.y + 1, start.x}, max);
+	flood_fill(grid, (t_coords){start.y + 1, start.x}, max);
 	x -= 1;
-	if (x >= 0)
-		flood_fill(grid, (t_coords){start.y, start.x - 1}, max);
+	flood_fill(grid, (t_coords){start.y, start.x - 1}, max);
 	x += 2;
-	if (x < max.x)
-		flood_fill(grid, (t_coords){start.y, start.x + 1}, max);
+	flood_fill(grid, (t_coords){start.y, start.x + 1}, max);
 }
 
 void	check_corners(char **grid)

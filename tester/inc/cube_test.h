@@ -20,7 +20,8 @@
 #define MAX_FILES 100
 #define MAX_PATH 512
 #define BUFFER_SIZE 1024
-#define TEST_TIMEOUT 3
+#define TEST_TIMEOUT_GOOD 4
+#define TEST_TIMEOUT_BAD 2
 #define CONTINUE 0
 #define RESET_GNL 1
 

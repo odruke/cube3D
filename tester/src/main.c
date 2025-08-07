@@ -102,7 +102,9 @@ int main()
 			bad_passed++;
 			print_test_result(bad_files->files[i], 1, "Error correctly detected");
 		} else if (result == 0) {
-			print_test_result(bad_files->files[i], 0, "ERROR: File was accepted!");
+			print_test_result(bad_files->files[i], 0, "ERROR: File was accepted or segfault!");
+		} else if (result == -2) {
+			print_test_result(good_files->files[i], 0, "ERROR: Program was not properly closed");
 		} else {
 			print_test_result(bad_files->files[i], 0, "Test execution failed");
 		}
@@ -129,7 +131,7 @@ int main()
 			good_passed++;
 			print_test_result(good_files->files[i], 1, "Program started successfully");
 		} else if (result == 0) {
-			print_test_result(good_files->files[i], 0, "ERROR: File was rejected!");
+			print_test_result(good_files->files[i], 0, "ERROR: File was rejected or segfault!");
 		} else if (result == -2) {
 			print_test_result(good_files->files[i], 0, "ERROR: Program was ended unexpectedly");
 		}else {
