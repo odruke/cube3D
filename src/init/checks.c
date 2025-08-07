@@ -14,20 +14,6 @@
 
 static bool	valid_txtr_ext(char *filemap)
 {
-	// int		len;
-	// char	*ext;
-
-	// len = ft_strlen(filemap);
-	// if (len <= 4)
-	// 	return (false);
-	// ext = ft_strndup(filemap + (len - 4), 4);
-	// if (!ft_strcmp(".xpm", ext))
-	// {
-	// 	free(ext);
-	// 	return (true);
-	// }
-	// free(ext);
-	// return (false);
 	int		len;
 
 	len = ft_strlen(filemap);

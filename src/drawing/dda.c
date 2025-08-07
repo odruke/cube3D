@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dda.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/08 00:34:15 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/08/08 00:34:21 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	init_dda(t_dda *dda, float angle)
@@ -40,7 +52,6 @@ void	set_dda(t_dda *dda, t_coords *ray)
 	}
 }
 
-
 static void	perform_dda(t_data *data, t_dda *dda, t_coords *ray)
 {
 	int	hit;
@@ -73,7 +84,6 @@ float	set_distance(t_data *data, t_dda *dda, t_coords *ray, float angle)
 	float	hit_y;
 	float	hit_x;
 	float	hit;
-
 
 	if (data->map->elements->textures->side == 0)
 	{

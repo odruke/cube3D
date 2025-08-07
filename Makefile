@@ -31,6 +31,7 @@ debug2: fclean
 
 $(NAME): libft/libft.a mlx/libmlx.a $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
+	@$(MAKE) compilation_success
 
 # Create object files from source files
 $(obj_dir)/%.o: $(src_dir)/*/%.c | $(obj_dir)
@@ -45,11 +46,11 @@ $(obj_dir):
 
 # Build libft
 libft/libft.a:
-	$(MAKE) -C libft
+	@$(MAKE) -C libft
 
 # Build mlx
 mlx/libmlx.a:
-	$(MAKE) -C mlx
+	@$(MAKE) -C mlx
 
 # Clean object files
 clean:
@@ -61,6 +62,18 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
 #	$(MAKE) -C mlx clean
+
+compilation_success:
+	@echo "╔╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╗"
+	@echo "╠╬╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╬╣"
+	@echo "╠╣ ██████╗██╗   ██╗██████╗ ██████╗ ██████╗ ╠╣"
+	@echo "╠╣██╔════╝██║   ██║██╔══██╗╚════██╗██╔══██╗╠╣"
+	@echo "╠╣██║     ██║   ██║██████╔╝ █████╔╝██║  ██║╠╣"
+	@echo "╠╣██║     ██║   ██║██╔══██╗ ╚═══██╗██║  ██║╠╣"
+	@echo "╠╣╚██████╗╚██████╔╝██████╔╝██████╔╝██████╔╝╠╣"
+	@echo "╠╣ ╚═════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╠╣"
+	@echo "╠╬╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╬╣"
+	@echo "╚╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╩╝"
 
 # Rebuild everything
 re: fclean all

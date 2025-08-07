@@ -32,7 +32,6 @@ static int	color_code(char	*line)
 	if (!line[i] || line_is_only_spaces(line + i))
 		i = 0;
 	return (nb);
-
 }
 
 static bool	is_valid_color_code(char *code)
@@ -101,7 +100,6 @@ static void	assign_colors(t_elements *elements, char *line, int i, int ide)
 		elements->c_color->g = color_code(line + i);
 		elements->c_color->b = color_code(line + i);
 	}
-
 }
 
 bool	get_colours(t_elements *elements, t_fd fd)

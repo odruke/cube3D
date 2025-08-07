@@ -12,66 +12,6 @@
 
 #include "cub3d.h"
 
-// void	draw_map(t_data *data)
-// {
-// 	int	i;
-// 	int	u;
-
-// 	u = 0;
-// 	while (u < data->map->height)
-// 	{
-// 		i = 0;
-// 		while (i < data->map->width && data->map->grid[u][i])
-// 		{
-// 			if ((data->map->grid)[u][i] == '1')
-// 				draw_square(data->mlx->mlx_img,
-// 					i * SQUARE, u * SQUARE, SQUARE, WHITE);
-// 			i++;
-// 		}
-// 		u++;
-// 	}
-// }
-
-// void	draw_ray(t_mlx_img *img, double x_pos, double y_pos, double angle, int square)
-// {
-// 	t_data	*data;
-// 	double	ray_y;
-// 	double	ray_x;
-// 	double	cos_angle;
-//     double	sin_angle;
-
-// 	data = recover_data_address(NULL);
-// 	ray_y = y_pos;
-// 	ray_x = x_pos;
-// 	cos_angle = cos(angle);
-// 	sin_angle = -sin(angle);
-// 	while (!touch(ray_x, ray_y, data->map->grid, square))
-// 	{
-// 		put_pixel(img, ray_x - (data->player->pos.x / square),
-// 			ray_y - (data->player->pos.y / square), GREEN);
-// 		ray_y += sin_angle;
-// 		ray_x += cos_angle;
-// 	}
-// }
-
-// void cone_of_view(t_data *data)
-// {
-// 	double	start;
-// 	double	fraction;
-// 	int	i;
-
-// 	fraction = torad(60) / WIN_WIDTH;
-// 	start = data->player->angle - torad(60) / 2;
-// 	i = 0;
-// 	while (i < WIN_WIDTH)
-// 	{
-// 		draw_ray(data->mlx->mlx_img, data->player->pos.x, data->player->pos.y, start, SQUARE);
-// 		start += fraction;
-// 		i++;
-// 	}
-// }
-
-
 void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 {
 	float		dist;
@@ -88,8 +28,6 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 		height = WIN_HEIGHT;
 	else
 		height = (SQUARE / dist) * (WIN_WIDTH / 2);
-	// if (height > WIN_HEIGHT)//temporary fix //this causes stretching when close
-	// 	height = WIN_HEIGHT;
 	start_y = (WIN_HEIGHT - height) / 2;
 	end_y = start_y + height;
 	if (start_y < 0)
@@ -101,7 +39,6 @@ void	draw_wall_line(t_data *data, float x_pos, float y_pos, float angle, int i)
 		wall_end = WIN_HEIGHT;
 	else
 		wall_end = end_y;
-
 	u = 0;
 	while (u <= start_y)
 	{
@@ -142,7 +79,7 @@ void	draw_pov(t_data *data)
 
 int	loop_hook(t_data *data)
 {
-	static bool started;
+	static bool	started;
 
 	if (!started)
 	{

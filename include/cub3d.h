@@ -254,7 +254,6 @@ bool		return_get_elements(t_fd fd, int all_elements);
 
 char		**copy_grid(char **grid, int max_y);
 
-
 /* error handeling and exiting functions*/
 
 int			error_handle(t_error error, char *msg, char *file, int line);
@@ -280,9 +279,9 @@ void		mlx_hook_start(t_data *data);
 
 /* movement helper functions */
 
-float	get_speed(void);
-bool	point_valid(t_map *map, t_coords point);
-bool	validate_move_with_radius(t_data *data, t_coords new_pos);
+float		get_speed(void);
+bool		point_valid(t_map *map, t_coords point);
+bool		validate_move_with_radius(t_data *data, t_coords new_pos);
 
 /*on-screen printing functions*/
 
@@ -307,7 +306,6 @@ void		set_dda(t_dda *dda, t_coords *ray);
 
 void		valid_textures(t_elements *elements);
 
-
 /* debug functions */
 
 void		print_debug_data(t_data *data);
@@ -318,8 +316,8 @@ void		debug_print_player(char **grid, t_camera *player);
 
 /* fps functions */
 
-void	init_fps(t_fps *fps);
-void	update_fps(t_fps *fps);
-void	draw_fps(t_data *data);
+void		init_fps(t_fps *fps);
+void		update_fps(t_fps *fps);
+void		draw_fps(t_data *data);
 
 #endif

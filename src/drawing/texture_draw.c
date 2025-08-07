@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static t_mlx_img	*get_face(t_texture *textures, float angle, int side)//import new version from original file
+static t_mlx_img	*get_face(t_texture *textures, float angle, int side)
 {
 	while (angle < 0)
 		angle += TWO_PI;
@@ -39,9 +39,9 @@ static t_mlx_img	*get_face(t_texture *textures, float angle, int side)//import n
 	return (NULL);
 }
 
-int	set_pixel_texture(t_texture *textures, float height, int y, float angle)//erase this from original file
+int	set_pixel_texture(t_texture *textures, float height, int y, float angle)
 {
-	t_mlx_img	*face;
+	t_mlx_img		*face;
 	char			*pos;
 	int				tex_x;
 	int				tex_y;

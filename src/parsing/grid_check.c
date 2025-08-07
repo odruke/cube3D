@@ -46,7 +46,8 @@ static bool	validate_pos(char **grid, t_coords start, t_coords max)
 
 	y = start.y;
 	x = start.x;
-	if (y < 0 || y > max.y || x < 0 || x > max.x || !grid[y][x] || ft_isblank(grid[y][x]))
+	if (y < 0 || y > max.y || x < 0 || x > max.x || !grid[y][x]
+		|| ft_isblank(grid[y][x]))
 		return (false);
 	if ((y == 0 && grid[y][x] == '0') || (x == 0 && grid[y][x] == '0'))
 		return (false);

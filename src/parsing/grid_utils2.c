@@ -40,6 +40,7 @@ static char	get_player_char(char **grid, t_coords player)
 	}
 	return (*chars);
 }
+
 void	walled(char **grid, int width, int heigh, t_coords player)
 {
 	int		y;

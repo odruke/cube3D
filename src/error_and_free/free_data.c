@@ -14,7 +14,6 @@
 
 static void	free_textures(t_data *data, t_texture *textures)
 {
-
 	if (data->map->elements->textures->n_wall)
 	{
 		if (textures->n_wall->img)
