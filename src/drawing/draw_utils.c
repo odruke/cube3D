@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 01:29:59 by tienshi           #+#    #+#             */
-/*   Updated: 2025/07/31 01:32:03 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/15 14:26:57 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	draw_full_square(t_mlx_img *img, int x, int y, int size)
 	while (u - y <= size)
 	{
 		i = x;
-		while (i - x < size)
+		while (i - x <= size)
 		{
 			put_pixel(img, i, u, RED);
 			i++;
