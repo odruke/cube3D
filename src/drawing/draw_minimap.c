@@ -6,13 +6,13 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 01:07:11 by tienshi           #+#    #+#             */
-/*   Updated: 2025/08/15 14:29:41 by stripet          ###   ########.fr       */
+/*   Updated: 2025/08/15 14:54:54 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	draw_walls(t_data *data, t_coords *start_p, int square)
+static void	draw_walls(t_data *data, t_coords *start_p, int s)
 {
 	int	i;
 	int	u;
@@ -28,7 +28,7 @@ static void	draw_walls(t_data *data, t_coords *start_p, int square)
 					&& (start_p->x + i >= 0 && start_p->y + u >= 0))
 				&& (data->map->grid[(int)start_p->y + u]\
 [(int)start_p->x + i] == '1'))
-				draw_full_square(&data->mini_map->img, i * square, u * square, square);
+				draw_full_square(&data->mini_map->img, i * s, u * s, s);
 			i++;
 		}
 		i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:39:26 by stripet           #+#    #+#             */
-/*   Updated: 2025/07/31 14:04:07 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/15 14:56:51 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ int	enter_win(t_data *data)
 	return (0);
 }
 
+void	handle_sens(t_data *data, int keycode)
+{
+	if (keycode == UP_ARROW)
+	{
+		if (data->mouse->sens < 2)
+			data->mouse->sens += 0.1;
+	}
+	else if (keycode == DOWN_ARROW)
+	{
+		if (data->mouse->sens > 0.2)
+			data->mouse->sens -= 0.1;
+	}
+}
+
 int	handle_keypress(int keycode, t_data *data)
 {
 	if (keycode == ESC_KEY)
@@ -57,16 +71,7 @@ int	handle_keypress(int keycode, t_data *data)
 		data->player->right_rotate = true;
 	else if (keycode == LEFT_SHIFT)
 		data->player->boost = true;
-	else if (keycode == UP_ARROW)
-	{
-		if (data->mouse->sens < 2)
-			data->mouse->sens += 0.1;
-	}
-	else if (keycode == DOWN_ARROW)
-	{
-		if (data->mouse->sens > 0.2)
-			data->mouse->sens -= 0.1;
-	}
+	handle_sens(data, keycode);
 	return (0);
 }
 

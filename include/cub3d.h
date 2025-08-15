@@ -6,7 +6,7 @@
 /*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:23:46 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/08/15 14:30:48 by stripet          ###   ########.fr       */
+/*   Updated: 2025/08/15 14:57:40 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ typedef struct s_map
 typedef struct s_mini_map
 {
 	int			fov;
-	t_mlx_img	img;//make this a pointer and allocate memory when possible.(add also free functions)
+	t_mlx_img	img;
 }	t_mini_map;
 
 typedef struct s_mlx

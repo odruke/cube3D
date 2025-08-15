@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   elements_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 16:34:43 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/08/07 16:34:45 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:53:57 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	set_element_position(t_elements *elements, int index)
 	int			*tmp;
 
 	i = -1;
-	pos_len = &elements->positions->len;// init len to 0 outside this function
+	pos_len = &elements->positions->len;
 	if (!elements->positions->pos)
 	{
 		elements->positions->pos = safe_calloc(sizeof(int), 1,

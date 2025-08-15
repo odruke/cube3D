@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_3d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tienshi <tienshi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stripet <stripet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:49:32 by stripet           #+#    #+#             */
-/*   Updated: 2025/08/01 09:07:27 by tienshi          ###   ########.fr       */
+/*   Updated: 2025/08/15 14:54:15 by stripet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,6 @@ int	loop_hook(t_data *data)
 	{
 		fill_display(data->mlx->mlx_img, data->mlx->mlx_img->img_w,
 			data->mlx->mlx_img->img_h);
-		// draw_map(data);
-		// draw_square(data->mlx->mlx_img, data->player->pos.x,
-		// 	data->player->pos.y, 5);
-		// cone_of_view(data);
 	}
 	else
 		draw_pov(data);
