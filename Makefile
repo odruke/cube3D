@@ -13,7 +13,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g3
 INCLUDES = -I ./include
 LDFLAGS = -L ./libft -L ./mlx
-LDLIBS = -lmlx -lft -lXext -lX11 -lm -lz
+LDLIBS = -lmlx -lft -lXext -lX11 -lm -lz -lXfixes
 DB = -DDEBUG=$(DEBUG)
 
 # source files (recursively find all .c files)
@@ -61,7 +61,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
-#	$(MAKE) -C mlx clean
+	$(MAKE) -C mlx clean
 
 compilation_success:
 	@echo "╔╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╦╗"

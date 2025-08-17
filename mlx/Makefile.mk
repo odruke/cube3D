@@ -1,9 +1,9 @@
 ##
 ## Makefile for MiniLibX in /home/boulon/work/c/raytraceur/minilibx
-## 
+##
 ## Made by Olivier Crouzet
 ## Login   <ol@epitech.net>
-## 
+##
 ## Started on  Tue Oct  5 15:56:43 2004 Olivier Crouzet
 ## Last update Tue May 15 15:41:20 2007 Olivier Crouzet
 ##
@@ -14,9 +14,9 @@
 INC	=%%%%
 
 UNAME = $(shell uname)
-CC	= gcc
+CC	= gcc -std=gnu99
 ifeq ($(UNAME),FreeBSD)
-	CC = clang
+	CC = clang -std=gnu99
 endif
 
 NAME		= libmlx.a
@@ -42,7 +42,7 @@ all	: $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -lXfixes $(IFLAGS) -c $< -o $@
 
 $(NAME)	: $(OBJ)
 	ar -r $(NAME) $(OBJ)
