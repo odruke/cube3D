@@ -37,7 +37,20 @@ static void	assign_texture_path(t_elements *elements,
 	else if (ide == 3)
 		elements->path_texture_ea = assign;
 }
+void	init_char_ide(char *ide[5])
+{
+	static bool	initialized;
 
+	if (!initialized)
+	{
+		ide[0] = "NO";
+		ide[1] = "SO";
+		ide[2] = "WE";
+		ide[3] = "EA";
+		ide[4] = NULL;
+		initialized = true;
+	}
+}
 static	int	check_ide_and_format(char *line, int *i)
 {
 	static char	*ide[5];
@@ -45,15 +58,11 @@ static	int	check_ide_and_format(char *line, int *i)
 
 	*i = -1;
 	id = -1;
-	ide[0] = "NO";
-	ide[1] = "SO";
-	ide[2] = "WE";
-	ide[3] = "EA";
-	ide[4] = NULL;
+	init_char_ide(ide);
 	while (ft_isblank(line[++(*i)]))
 		;
 	while (++id < 4)
-		if (!ft_strncmp(line + *i, ide[id], 2))
+		if (ide[id] && !ft_strncmp(line + *i, ide[id], 2))
 			break ;
 	if (id == 4)
 		return (-1);

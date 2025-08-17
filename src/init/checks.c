@@ -16,6 +16,8 @@ static bool	valid_txtr_ext(char *filemap)
 {
 	int		len;
 
+	if (!filemap)
+		return (false);
 	len = ft_strlen(filemap);
 	if (len <= 4)
 		return (false);
@@ -30,6 +32,8 @@ static bool	is_dir(char *arg)
 	bool	ret;
 
 	ret = false;
+	if (!arg)
+		return (ret);
 	fd = open(arg, __O_DIRECTORY);
 	if (fd >= 0)
 	{
