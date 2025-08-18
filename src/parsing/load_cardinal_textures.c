@@ -37,6 +37,7 @@ static void	assign_texture_path(t_elements *elements,
 	else if (ide == 3)
 		elements->path_texture_ea = assign;
 }
+
 void	init_char_ide(char *ide[5])
 {
 	static bool	initialized;
@@ -51,6 +52,7 @@ void	init_char_ide(char *ide[5])
 		initialized = true;
 	}
 }
+
 static	int	check_ide_and_format(char *line, int *i)
 {
 	static char	*ide[5];

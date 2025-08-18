@@ -14,7 +14,8 @@
 
 bool	fordward_next_color_code(char *code, int *i, int *comas)
 {
-	bool	found_coma;
+	bool		found_coma;
+	static int	all_codes;
 
 	found_coma = false;
 	while (code[*i] && (ft_isblank(code[*i]) || code[*i] == ','))
@@ -30,6 +31,11 @@ bool	fordward_next_color_code(char *code, int *i, int *comas)
 		}
 		*i += 1;
 	}
+	all_codes += 1;
+	if (*comas == 2 && !code[*i] && all_codes != 3)
+		error_handle(ERR_MAP_ELEM, "colour codes", __FILE__, __LINE__);
+	if (all_codes == 3)
+		all_codes = 0;
 	if (!found_coma)
 		return (false);
 	return (true);

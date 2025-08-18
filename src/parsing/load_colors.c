@@ -12,15 +12,18 @@
 
 #include "cub3d.h"
 
-static int	color_code(char	*line)
+int	color_code(char	*line)
 {
 	static int	i;
+	static int	all_colors;
 	int			j;
 	int			nb;
 	char		*number;
 
 	nb = 0;
 	j = 0;
+	while (line[i] && (ft_isblank(line[i]) || line[i] == ','))
+		i++;
 	while (line[i + j] && ft_isdigit(line[i + j]))
 		j++;
 	number = ft_substr(line, i, j);
@@ -28,8 +31,8 @@ static int	color_code(char	*line)
 	free(number);
 	number = NULL;
 	i += j;
-	i++;
-	if (!line[i] || line_is_only_spaces(line + i))
+	all_colors += 1;
+	if (all_colors == 3)
 		i = 0;
 	return (nb);
 }
