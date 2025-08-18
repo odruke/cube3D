@@ -65,6 +65,21 @@ static bool	is_valid_color_code(char *code)
 	return (true);
 }
 
+void	init_char_color_id(char *ide[3])
+{
+
+
+	static bool	initialized;
+
+	if (!initialized)
+	{
+		ide[0] = "F";
+		ide[1] = "C";
+		ide[2] = NULL;
+		initialized = true;
+	}
+}
+
 static int	check_ide_and_format_c(char *line, int *i)
 {
 	static char	*ide[3];
@@ -72,13 +87,11 @@ static int	check_ide_and_format_c(char *line, int *i)
 
 	*i = -1;
 	id = -1;
-	ide[0] = "F";
-	ide[1] = "C";
-	ide[2] = NULL;
+	init_char_color_id(ide);
 	while (ft_isblank(line[++(*i)]))
 		;
 	while (++id < 2)
-		if (!ft_strncmp(line + *i, ide[id], 1))
+		if (ide[id] && !ft_strncmp(line + *i, ide[id], 1))
 			break ;
 	if (id == 2)
 		return (-1);

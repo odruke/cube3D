@@ -1,7 +1,7 @@
 SO ./textures/SO.xpm
 NO ./textures/NO.xpm
 WE ./textures/WE.xpm
-EA ~/Desktop/42projects/lvl4/cub3d/./../cub3d/textures/EA.xpm
+EA /home/odruke-s/Desktop/42projects/lvl4/cub3d/textures/EA.xpm
 
 F 28,128,128
 C 173,216,230
