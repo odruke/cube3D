@@ -69,7 +69,7 @@ static	int	check_ide_and_format(char *line, int *i)
 	if (id == 4)
 		return (-1);
 	fordward_index(line, i);
-	if (ft_strncmp(line + *i, "./", 2))
+	if (!ft_strncmp(line + *i, "./", 2) && !ft_strncmp(line + *i, "/", 1))
 		return (-1);
 	ide[id] = '\0';
 	return (id);
