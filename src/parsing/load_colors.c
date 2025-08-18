@@ -52,9 +52,9 @@ static bool	is_valid_color_code(char *code)
 		j = 0;
 		while (code[i + j] && ft_isdigit(code[i + j]))
 			j++;
-		if ((comas < 2 && (code[i + j] != ',' && code[i + j] != ' ')) || j > 3)
+		if ((comas < 2 && (code[i + j] != ',' && code[i + j] != ' ')))
 			return (false);
-		else if (comas >= 2 && (!line_is_only_spaces(code + (i + j)) || j > 3))
+		else if (comas >= 2 && (!line_is_only_spaces(code + (i + j))))
 			return (false);
 		if (!color_is_in_range(code, i, j))
 			return (false);
