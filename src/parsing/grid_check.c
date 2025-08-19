@@ -82,13 +82,15 @@ static void	flood_fill(char **grid, t_coords start, t_coords max)
 	flood_fill(grid, (t_coords){start.y, start.x + 1}, max);
 }
 
-void	check_corners(char **grid)
+bool	check_corners(char **grid)
 {
 	int		y;
 	int		x;
+	bool	ret;
 
+	ret = true;
 	y = -1;
-	while (grid[++y])
+	while (grid[++y] && ret)
 	{
 		x = -1;
 		while (grid[y][++x])
@@ -96,16 +98,16 @@ void	check_corners(char **grid)
 			if (ft_isblank(grid[y][x]))
 			{
 				if (!validate_corner(grid, x, y))
-					error_handle(ERR_GRID_BAD_ITEM, "bad corner",
-						__FILE__, __LINE__);
-				while (grid[y][x] && grid[y][x + 1]
+					ret = false;
+				while (ret && grid[y][x] && grid[y][x + 1]
 					&& ft_isblank(grid[y][x + 2]))
 					x++;
 			}
 		}
 		if (!validate_corner(grid, x, y))
-			error_handle(ERR_GRID_BAD_ITEM, "bad corner", __FILE__, __LINE__);
+			ret = false;
 	}
+	return (ret);
 }
 
 t_coords	valid_grid(char **grid, int y, int x)
@@ -115,7 +117,11 @@ t_coords	valid_grid(char **grid, int y, int x)
 
 	max.y = y;
 	max.x = x;
-	check_corners(grid);
+	if (!check_corners(grid))
+	{
+		free_table(grid);
+		error_handle(ERR_GRID_BAD_ITEM, "bad corner", __FILE__, __LINE__);
+	}
 	player_coords = find_player(grid, y, x);
 	walled(grid, x, y, player_coords);
 	flood_fill(grid, player_coords, max);

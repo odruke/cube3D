@@ -59,7 +59,7 @@ static bool	is_valid_color_code(char *code)
 		if (!color_is_in_range(code, i, j))
 			return (false);
 		i += j;
-		if (!fordward_next_color_code(code, &i, &comas) && comas < 2)
+		if (!fordward_next_color_code(code, &i, &comas))
 			return (false);
 	}
 	return (true);

@@ -33,11 +33,11 @@ bool	fordward_next_color_code(char *code, int *i, int *comas)
 	}
 	all_codes += 1;
 	if (*comas == 2 && !code[*i] && all_codes != 3)
-		error_handle(ERR_MAP_ELEM, "colour codes wrong,", __FILE__, __LINE__);
+		return (false);
+	if (!found_coma && all_codes != 3)
+		return (false);
 	if (all_codes == 3)
 		all_codes = 0;
-	if (!found_coma)
-		return (false);
 	return (true);
 }
 

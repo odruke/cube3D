@@ -229,7 +229,7 @@ void		find_player_error(char **grid, bool player_found);
 bool		line_is_grid(char *line);
 bool		line_is_only_spaces(char *line);
 int			check_grid(t_fd fd);
-void		check_corners(char **grid);
+bool		check_corners(char **grid);
 bool		validate_corner(char **grid, int x, int y);
 bool		valid_ext(char *filemap);
 char		*skip_until_grid(t_fd fd);
