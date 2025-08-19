@@ -65,21 +65,6 @@ static bool	is_valid_color_code(char *code)
 	return (true);
 }
 
-void	init_char_color_id(char *ide[3])
-{
-
-
-	static bool	initialized;
-
-	if (!initialized)
-	{
-		ide[0] = "F";
-		ide[1] = "C";
-		ide[2] = NULL;
-		initialized = true;
-	}
-}
-
 static int	check_ide_and_format_c(char *line, int *i)
 {
 	static char	*ide[3];

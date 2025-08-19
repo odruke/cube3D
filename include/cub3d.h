@@ -249,6 +249,7 @@ bool		is_open_wall(char **grid, int pos_x, int pos_y, t_coords limits);
 void		set_element_position(t_elements *elements, int i);
 bool		is_element_line_position(int line_pos);
 bool		return_get_elements(t_fd fd, int all_elements);
+void		init_char_color_id(char *ide[3]);
 
 /* flood fill and helpers */
 

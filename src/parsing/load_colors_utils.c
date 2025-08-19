@@ -40,3 +40,16 @@ bool	fordward_next_color_code(char *code, int *i, int *comas)
 		return (false);
 	return (true);
 }
+
+void	init_char_color_id(char *ide[3])
+{
+	static bool	initialized;
+
+	if (!initialized)
+	{
+		ide[0] = "F";
+		ide[1] = "C";
+		ide[2] = NULL;
+		initialized = true;
+	}
+}
